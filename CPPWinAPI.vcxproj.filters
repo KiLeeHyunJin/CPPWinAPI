@@ -27,9 +27,15 @@
     <ClInclude Include="CPPWinAPI.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Process.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CPPWinAPI.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Process.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

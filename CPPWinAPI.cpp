@@ -3,11 +3,13 @@
 
 #include "framework.h"
 #include "CPPWinAPI.h"
+#include "Process.h"
 
 #define MAX_LOADSTRING 100
 
 // 전역 변수:
 HINSTANCE hInst;                                // 현재 인스턴스입니다.
+
 WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
 WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
 
@@ -17,6 +19,9 @@ BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 
+POINT point = { 100,100 };
+
+// 윈도우 메인함수
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
                      _In_ LPWSTR    lpCmdLine,
@@ -34,23 +39,41 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     // 애플리케이션 초기화를 수행합니다:
     if (!InitInstance (hInstance, nCmdShow))
-    {
-        return FALSE;
-    }
+    {   return FALSE;   }
 
+    // 단축키 정보를 가져옵니다.
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_CPPWINAPI));
 
-    MSG msg;
+    // 현재 틱 카운트 입니다.
+    ULONGLONG tickCount = 0;
+    // 다음 틱 카운트 입니다.
+    ULONGLONG nextTickCount = (DWORD)1000;
+    Process* process = Process::Instance();
+    int count = 0;
 
     // 기본 메시지 루프입니다:
-    while (GetMessage(&msg, nullptr, 0, 0))
+    MSG msg;
+    while (true)
     {
-        if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
+        tickCount = GetTickCount64();
+        if (nextTickCount <= tickCount)
         {
-            TranslateMessage(&msg);
-            DispatchMessage(&msg);
+            nextTickCount = tickCount + (DWORD)1000;
+            count++;
+           // process->Update();
         }
+
+        if (GetMessage(&msg, nullptr, 0, 0))
+        {
+            if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))// 단축키 처리 하지만, 단축키가 아닐 경우
+            {
+                TranslateMessage(&msg); // 입력 메시지 번역
+                DispatchMessage(&msg); // 입력 메시지 처리, WinProc에서 전달된 메시지 처리
+            }
+        }
+
     }
+
 
     return (int) msg.wParam;
 }
@@ -69,16 +92,20 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
     wcex.cbSize = sizeof(WNDCLASSEX);
 
     wcex.style          = CS_HREDRAW | CS_VREDRAW;
-    wcex.lpfnWndProc    = WndProc;
+    wcex.lpfnWndProc    = WndProc; // 메시지 처리 함수 등록 //DispatchMessage를 통해 처리
     wcex.cbClsExtra     = 0;
     wcex.cbWndExtra     = 0;
     wcex.hInstance      = hInstance;
+
     wcex.hIcon          = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_CPPWINAPI));
+    wcex.hIconSm        = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL)); // Small Icon
+
     wcex.hCursor        = LoadCursor(nullptr, IDC_ARROW);
+
     wcex.hbrBackground  = (HBRUSH)(COLOR_WINDOW+1);
-    wcex.lpszMenuName   = MAKEINTRESOURCEW(IDC_CPPWINAPI);
+
+    wcex.lpszMenuName   = nullptr; //MAKEINTRESOURCEW(IDC_CPPWINAPI);
     wcex.lpszClassName  = szWindowClass;
-    wcex.hIconSm        = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
 
     return RegisterClassExW(&wcex);
 }
@@ -96,9 +123,29 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
    hInst = hInstance; // 인스턴스 핸들을 전역 변수에 저장합니다.
+   DWORD myStyle =    WS_OVERLAPPED 
+                    | WS_CAPTION 
+                    | WS_SYSMENU 
+                    | WS_THICKFRAME 
+                    | WS_MINIMIZEBOX 
+                    //|WS_MAXIMIZEBOX
+                    ;
 
-   HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-      CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
+   HWND hWnd = CreateWindowW(
+       szWindowClass, 
+       szTitle,
+       myStyle,
+
+       400 , //Start Pos X //CW_DEFAULT
+       250,  //Start Pos Y //CW_DEFAULT
+
+       800,  //Size X
+       600,  //Size Y
+
+       nullptr,
+       nullptr, 
+       hInstance, 
+       nullptr);
 
    if (!hWnd)
    {
@@ -125,7 +172,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
     {
-    case WM_COMMAND:
+    case WM_COMMAND: //단축키
         {
             int wmId = LOWORD(wParam);
             // 메뉴 선택을 구문 분석합니다:
@@ -142,16 +189,58 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             }
         }
         break;
+    case WM_LBUTTONDOWN:
+        {
+            point.x = LOWORD(lParam);
+            point.y = HIWORD(lParam);
+            InvalidateRect(hWnd, NULL, false);
+        }
+        break;
+        // 무효화 영역이 발생했을때 실행
     case WM_PAINT:
         {
             PAINTSTRUCT ps;
             HDC hdc = BeginPaint(hWnd, &ps);
-            // TODO: 여기에 hdc를 사용하는 그리기 코드를 추가합니다...
+
+
+            Ellipse(hdc, point.x - 50, point.y - 50, point.x + 50, point.y + 50);
+
             EndPaint(hWnd, &ps);
         }
         break;
+    case WM_KEYDOWN:
+        {
+            switch (wParam)
+            {
+                case VK_LEFT :
+                case 'A':
+                    point.x -= 10;
+                    break;
+
+                case VK_RIGHT:
+                case 'D':
+                    point.x += 10;
+                    break;
+
+                case VK_DOWN:
+                case 'S':
+                    point.y += 10;
+                    break;
+
+                case VK_UP:
+                case 'W':
+                    point.y -= 10;
+                    break;
+            default:
+                break;
+            }
+            InvalidateRect(hWnd, NULL, false);
+
+        }
+        break;
+        // 윈도우 종료될때
     case WM_DESTROY:
-        PostQuitMessage(0);
+        PostQuitMessage(0); // 종료 메시지 전달
         break;
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);
