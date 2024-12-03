@@ -2,20 +2,22 @@
 
 class CCore : public SingleTon<CCore>
 {
-public :
+ public :
 	void Init();
-	void Update();
-	void Render() const;
 	void Release();
 
+	void Update();
+	void Render()	const;
+
 	friend SingleTon<CCore>;
-private:
+ private:
 	CCore();
 	virtual ~CCore();
 
-	HDC m_hdc;
 	float m_fMoveX;
 	float m_fMoveY;
+
+
 
 };
 #define CORE  CCore::GetInstance()

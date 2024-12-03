@@ -18,9 +18,8 @@ ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
-bool processState;
 
-//POINT point = { 100,100 };
+bool processState;  // 게임 진행 중이면 true 종료면 false
 
 // 윈도우 메인함수
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
@@ -28,6 +27,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_ LPWSTR    lpCmdLine,
                      _In_ int       nCmdShow)
 {
+
+#pragma region Init
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
 
@@ -39,16 +40,21 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     MyRegisterClass(hInstance);
 
     // 애플리케이션 초기화를 수행합니다:
-    if (!InitInstance (hInstance, nCmdShow))
-    {   return FALSE;   }
+    if (!InitInstance(hInstance, nCmdShow))
+    {
+        return FALSE;
+    }
 
     processState = true;
-    
+
     // 단축키 정보를 가져옵니다.
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_CPPWINAPI));
 
+#pragma endregion
+
     // 다음 틱 카운트 입니다.
     ULONGLONG nextTickCount = 0;
+    ULONGLONG tickCount;
     CORE->Init();
 
     // 기본 메시지 루프입니다:
@@ -65,7 +71,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         }
         else
         {
-            ULONGLONG tickCount = GetTickCount64();
+            tickCount = GetTickCount64();
             if (nextTickCount <= tickCount)
             {
                 nextTickCount = tickCount + 10;
@@ -80,13 +86,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     return (int) msg.wParam;
 }
 
-
-
-//
-//  함수: MyRegisterClass()
-//
-//  용도: 창 클래스를 등록합니다.
-//
+/// <summary>
+///  창 클래스를 등록합니다.
+/// </summary>
 ATOM MyRegisterClass(HINSTANCE hInstance)
 {
     WNDCLASSEXW wcex;
@@ -112,16 +114,10 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
     return RegisterClassExW(&wcex);
 }
 
-//
-//   함수: InitInstance(HINSTANCE, int)
-//
-//   용도: 인스턴스 핸들을 저장하고 주 창을 만듭니다.
-//
-//   주석:
-//
-//        이 함수를 통해 인스턴스 핸들을 전역 변수에 저장하고
-//        주 프로그램 창을 만든 다음 표시합니다.
-//
+
+/// 인스턴스 핸들을 저장하고 주 창을 만듭니다.(HINSTANCE, int)
+/// 이 함수를 통해 인스턴스 핸들을 전역 변수에 저장하고
+/// 주 프로그램 창을 만든 다음 표시합니다.
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
    hInst = hInstance; // 인스턴스 핸들을 전역 변수에 저장합니다.
@@ -138,11 +134,11 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
        szTitle,
        myStyle,
 
-       400 , //Start Pos X //CW_DEFAULT
-       250,  //Start Pos Y //CW_DEFAULT
+       STARTPOSX, //Start Pos X //CW_DEFAULT
+       STARTPOSY,  //Start Pos Y //CW_DEFAULT
 
-       800,  //Size X
-       600,  //Size Y
+       WINSIZEX,  //Size X
+       WINSIZEY,  //Size Y
 
        nullptr,
        nullptr, 
@@ -160,16 +156,10 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    return TRUE;
 }
 
-//
-//  함수: WndProc(HWND, UINT, WPARAM, LPARAM)
-//
-//  용도: 주 창의 메시지를 처리합니다.
-//
-//  WM_COMMAND  - 애플리케이션 메뉴를 처리합니다.
-//  WM_PAINT    - 주 창을 그립니다.
-//  WM_DESTROY  - 종료 메시지를 게시하고 반환합니다.
-//
-//
+/// 주 창의 메시지를 처리합니다.(HWND, UINT, WPARAM, LPARAM)
+/// WM_COMMAND  - 애플리케이션 메뉴를 처리합니다.
+/// WM_PAINT    - 주 창을 그립니다.
+/// WM_DESTROY  - 종료 메시지를 게시하고 반환합니다.
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
@@ -255,7 +245,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     return 0;
 }
 
-// 정보 대화 상자의 메시지 처리기입니다.
+/// 정보 대화 상자의 메시지 처리기입니다.
 INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
     UNREFERENCED_PARAMETER(lParam);
