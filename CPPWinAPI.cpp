@@ -3,13 +3,13 @@
 
 #include "framework.h"
 #include "CPPWinAPI.h"
-#include "Process.h"
+#include "CCore.h"
 
 #define MAX_LOADSTRING 100
 
 // 전역 변수:
 HINSTANCE hInst;                                // 현재 인스턴스입니다.
-
+HWND hWnd;
 WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
 WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
 
@@ -18,8 +18,9 @@ ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
+bool processState;
 
-POINT point = { 100,100 };
+//POINT point = { 100,100 };
 
 // 윈도우 메인함수
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
@@ -41,29 +42,20 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     if (!InitInstance (hInstance, nCmdShow))
     {   return FALSE;   }
 
+    processState = true;
+    
     // 단축키 정보를 가져옵니다.
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_CPPWINAPI));
 
-    // 현재 틱 카운트 입니다.
-    ULONGLONG tickCount = 0;
     // 다음 틱 카운트 입니다.
-    ULONGLONG nextTickCount = (DWORD)1000;
-    Process* process = Process::Instance();
-    int count = 0;
+    ULONGLONG nextTickCount = 0;
+    CORE->Init();
 
     // 기본 메시지 루프입니다:
     MSG msg;
-    while (true)
+    while (processState)
     {
-        tickCount = GetTickCount64();
-        if (nextTickCount <= tickCount)
-        {
-            nextTickCount = tickCount + (DWORD)1000;
-            count++;
-           // process->Update();
-        }
-
-        if (GetMessage(&msg, nullptr, 0, 0))
+        if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
         {
             if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))// 단축키 처리 하지만, 단축키가 아닐 경우
             {
@@ -71,10 +63,20 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                 DispatchMessage(&msg); // 입력 메시지 처리, WinProc에서 전달된 메시지 처리
             }
         }
+        else
+        {
+            ULONGLONG tickCount = GetTickCount64();
+            if (nextTickCount <= tickCount)
+            {
+                nextTickCount = tickCount + 10;
 
+                CORE->Update();
+                CORE->Render();
+            }
+        }
     }
 
-
+    CORE->Release();
     return (int) msg.wParam;
 }
 
@@ -131,7 +133,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
                     //|WS_MAXIMIZEBOX
                     ;
 
-   HWND hWnd = CreateWindowW(
+   hWnd = CreateWindowW(
        szWindowClass, 
        szTitle,
        myStyle,
@@ -183,31 +185,33 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                 break;
             case IDM_EXIT:
                 DestroyWindow(hWnd);
+                processState = false;
                 break;
             default:
                 return DefWindowProc(hWnd, message, wParam, lParam);
             }
         }
         break;
-    case WM_LBUTTONDOWN:
+
+    case WM_LBUTTONDOWN: // 마우스 왼쪽 클릭
         {
-            point.x = LOWORD(lParam);
+            /*point.x = LOWORD(lParam);
             point.y = HIWORD(lParam);
-            InvalidateRect(hWnd, NULL, false);
+            InvalidateRect(hWnd, NULL, false);*/
         }
         break;
+
         // 무효화 영역이 발생했을때 실행
     case WM_PAINT:
         {
             PAINTSTRUCT ps;
             HDC hdc = BeginPaint(hWnd, &ps);
-
-
-            Ellipse(hdc, point.x - 50, point.y - 50, point.x + 50, point.y + 50);
-
             EndPaint(hWnd, &ps);
         }
         break;
+
+#pragma region WM_KEYDOWN
+        /*
     case WM_KEYDOWN:
         {
             switch (wParam)
@@ -235,9 +239,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                 break;
             }
             InvalidateRect(hWnd, NULL, false);
-
+            
         }
         break;
+        */
+#pragma endregion
+
         // 윈도우 종료될때
     case WM_DESTROY:
         PostQuitMessage(0); // 종료 메시지 전달

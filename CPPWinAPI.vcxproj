@@ -135,15 +135,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CCore.h" />
     <ClInclude Include="CPPWinAPI.h" />
+    <ClInclude Include="CTimeManager.h" />
     <ClInclude Include="framework.h" />
-    <ClInclude Include="Process.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="SingleTon.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CCore.cpp" />
     <ClCompile Include="CPPWinAPI.cpp" />
-    <ClCompile Include="Process.cpp" />
+    <ClCompile Include="CTimeManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="CPPWinAPI.rc" />
