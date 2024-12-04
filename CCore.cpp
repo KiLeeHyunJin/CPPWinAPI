@@ -57,9 +57,13 @@ void CCore::Render() const
 	RENDER->BeginDraw();
 
 	int size = 20;
+	RENDER->SetPen(PenType::Dash, RGB(255, 0, 0), 1);
+	RENDER->SetBrush(BrushType::Solid, RGB(255, 255, 0));
 	RENDER->Rect(m_fMoveX - size, m_fMoveY - size, m_fMoveX + size, m_fMoveY + size);
 
-	RENDER->Text(0, 0, L"FPS : " + to_wstring(FPS));
+	RENDER->SetText(TextType::Right);
+	wstring str = L"FPS : " + to_wstring(FPS);
+	RENDER->Text(WINSIZEX - 30, 0, str);
 
 	RENDER->EndDraw();
 }

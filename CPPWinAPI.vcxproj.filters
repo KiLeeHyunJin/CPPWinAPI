@@ -51,6 +51,9 @@
     <ClInclude Include="CRenderManager.h">
       <Filter>Engine\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="CInputManager.h">
+      <Filter>Engine\Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CPPWinAPI.cpp">
@@ -63,6 +66,9 @@
       <Filter>Engine\Manager</Filter>
     </ClCompile>
     <ClCompile Include="CRenderManager.cpp">
+      <Filter>Engine\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="CInputManager.cpp">
       <Filter>Engine\Manager</Filter>
     </ClCompile>
   </ItemGroup>

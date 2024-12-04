@@ -7,16 +7,23 @@ enum class PenType
 enum class BrushType
 {	Solid, Null, };
 
+enum class TextType
+{	Left, Middle, Right,};
+
 class CRenderManager : public SingleTon<CRenderManager>
 {
 public :
 	void SetPen(PenType penType, COLORREF color = RGB(0,0,0), int width = 1);
 	void SetBrush(BrushType brushType, COLORREF color = RGB(255, 255, 255));
+	void SetText(TextType textType);
+
 
 	void Line(float startX, float startY, float endX, float endY)	const;
 	void Rect(float startX, float startY, float endX, float endY)	const;
 	void Circle(float x, float y, float radius)						const;
 	void Text(float x, float y, wstring str)						const;
+
+
 
 	friend CCore;
 	friend SingleTon<CRenderManager>;
@@ -42,6 +49,8 @@ private :
 	HBRUSH		m_hBrush;	
 	COLORREF	m_colorBrush;
 	BrushType	m_typeBrush;
+
+	TextType	m_typeText;
 };
 #define RENDER CRenderManager::GetInstance()
 

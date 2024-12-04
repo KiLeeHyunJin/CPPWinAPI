@@ -136,6 +136,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CCore.h" />
+    <ClInclude Include="CInputManager.h" />
     <ClInclude Include="CPPWinAPI.h" />
     <ClInclude Include="CRenderManager.h" />
     <ClInclude Include="CTimeManager.h" />
@@ -146,6 +147,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CCore.cpp" />
+    <ClCompile Include="CInputManager.cpp" />
     <ClCompile Include="CPPWinAPI.cpp" />
     <ClCompile Include="CRenderManager.cpp" />
     <ClCompile Include="CTimeManager.cpp" />
