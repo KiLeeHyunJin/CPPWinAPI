@@ -21,5 +21,16 @@ private :
 
 	void Update();
 
-};
+	void FocusOn();
+	void FocusOff();
 
+	static const int VKEY_SIZE = 255;
+	bool m_arrCurKey[VKEY_SIZE];
+	bool m_arrPrevKey[VKEY_SIZE];
+	POINT m_ptMousePos;
+};
+#define INPUT			CInputManager::GetInstance()
+#define BUTTONSTAY(key) CInputManager::GetInstance()->GetButton(key)
+#define BUTTONDOWN(key) CInputManager::GetInstance()->GetButtonDown(key)
+#define BUTTONUP(key)	CInputManager::GetInstance()->GetButtonUp(key)
+#define MOUSEPOS		CInputManager::GetInstance()->GetMousePos;

@@ -3,6 +3,8 @@
 #include "CPPWinAPI.h"
 #include "CTimeManager.h"
 #include "CRenderManager.h"
+#include "CInputManager.h"
+
 
 CCore::CCore()
 {
@@ -15,6 +17,7 @@ CCore::~CCore()
 void CCore::Init()
 {
 	TIME->Init();
+	INPUT->Init();
 	RENDER->Init();
 
 	m_fMoveX = m_fMoveY = 20;
@@ -23,33 +26,40 @@ void CCore::Init()
 void CCore::Release()
 {
 	TIME->Release();
+	INPUT->Release();
 	RENDER->Release();
 }
 
 void CCore::Update()
 {
 	TIME->Update();
+	INPUT->Update();
 
 	float speed = 20 * TIME->GetDeltaTime();
 	
-	if (GetAsyncKeyState(VK_LEFT) & 0x8000)
+	if (BUTTONSTAY(VK_LEFT))
 	{
 		m_fMoveX -= speed;
 	}
-	if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
+	if (BUTTONSTAY(VK_RIGHT))
 	{
 		m_fMoveX += speed;
 	}
 
-	if (GetAsyncKeyState(VK_UP) & 0x8000)
+	if (BUTTONSTAY(VK_UP))
 	{
 		m_fMoveY -= speed;
 	}
-	if (GetAsyncKeyState(VK_DOWN) & 0x8000)
+	if (BUTTONSTAY(VK_DOWN))
 	{
 		m_fMoveY += speed;
 	}
 
+
+	if (BUTTONDOWN(VK_SPACE))
+	{
+		m_fMoveY += speed * 100;
+	}
 }
 
 void CCore::Render() const
@@ -64,6 +74,11 @@ void CCore::Render() const
 	RENDER->SetText(TextType::Right);
 	wstring str = L"FPS : " + to_wstring(FPS);
 	RENDER->Text(WINSIZEX - 30, 0, str);
+
+	RENDER->SetText(TextType::Left);
+	POINT point = INPUT->GetMousePos();
+	wstring pointStr = L"X : " + to_wstring(point.x) + L", Y : " + to_wstring(point.y);
+	RENDER->Text(point.x, point.y, pointStr);
 
 	RENDER->EndDraw();
 }

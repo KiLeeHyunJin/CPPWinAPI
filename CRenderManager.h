@@ -10,6 +10,9 @@ enum class BrushType
 enum class TextType
 {	Left, Middle, Right,};
 
+enum class TextHeightType
+{	Top, Middle, Bottom,};
+
 class CRenderManager : public SingleTon<CRenderManager>
 {
 public :
