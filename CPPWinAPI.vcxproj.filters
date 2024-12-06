@@ -25,6 +25,9 @@
     <Filter Include="Engine\Manager">
       <UniqueIdentifier>{bb1cd4f6-66b7-475a-bd82-4381b2676908}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Manager\Resource">
+      <UniqueIdentifier>{966df866-84e9-4fa6-8fb5-3ab50deffbce}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -54,6 +57,9 @@
     <ClInclude Include="CInputManager.h">
       <Filter>Engine\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="CScene.h">
+      <Filter>Engine\Manager\Resource</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CPPWinAPI.cpp">
@@ -70,6 +76,9 @@
     </ClCompile>
     <ClCompile Include="CInputManager.cpp">
       <Filter>Engine\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="CScene.cpp">
+      <Filter>Engine\Manager\Resource</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

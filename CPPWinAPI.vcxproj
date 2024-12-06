@@ -139,6 +139,7 @@
     <ClInclude Include="CInputManager.h" />
     <ClInclude Include="CPPWinAPI.h" />
     <ClInclude Include="CRenderManager.h" />
+    <ClInclude Include="CScene.h" />
     <ClInclude Include="CTimeManager.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Resource.h" />
@@ -150,6 +151,7 @@
     <ClCompile Include="CInputManager.cpp" />
     <ClCompile Include="CPPWinAPI.cpp" />
     <ClCompile Include="CRenderManager.cpp" />
+    <ClCompile Include="CScene.cpp" />
     <ClCompile Include="CTimeManager.cpp" />
   </ItemGroup>
   <ItemGroup>

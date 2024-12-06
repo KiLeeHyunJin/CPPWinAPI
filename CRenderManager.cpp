@@ -122,25 +122,27 @@ void CRenderManager::SetText(TextType textType)
 		return;
 	}
 
+	int align;
 	switch (textType)
 	{
 	case TextType::Left:
 		m_typeText = TextType::Left;
-		SetTextAlign(m_hMemDC, TA_LEFT);
+		align = TA_LEFT;
 		break;
 	case TextType::Middle:
 		m_typeText = TextType::Middle;
-		SetTextAlign(m_hMemDC, TA_CENTER);
+		align = TA_CENTER;
 		break;
 	case TextType::Right:
 		m_typeText = TextType::Right;
-		SetTextAlign(m_hMemDC, TA_RIGHT);
+		align = TA_RIGHT;
 		break;
 	default:
 		m_typeText = TextType::Left;
-		SetTextAlign(m_hMemDC, TA_LEFT);
+		align = TA_LEFT;
 		break;
 	}
+	SetTextAlign(m_hMemDC, align);
 
 }
 
@@ -148,19 +150,14 @@ void CRenderManager::SetText(TextType textType)
 
 void CRenderManager::SetPen(PenType penType, COLORREF color, int width)
 {
-	if (m_typePen == penType && 
-		m_colorPen == color && 
+	if (m_typePen	== penType && 
+		m_colorPen	== color && 
 		m_iPenWidth == width)
 	{
 		return;
 	}
-	else
-	{
-		if (m_hPen != nullptr)
-		{
-			DeleteObject(m_hPen);
-		}
-	}
+
+	DeleteObject(m_hPen);
 
 	int penStyle;
 	switch (penType)

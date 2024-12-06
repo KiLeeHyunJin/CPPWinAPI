@@ -4,9 +4,9 @@ class CCore;
 class CInputManager : public SingleTon<CInputManager>
 {
 public :
-	bool GetButton(const int keyId);
-	bool GetButtonDown(const int keyId);
-	bool GetButtonUp(const int keyId);
+	bool GetButton(const int keyId) const;
+	bool GetButtonDown(const int keyId) const;
+	bool GetButtonUp(const int keyId) const;
 	POINT GetMousePos();
 
 
