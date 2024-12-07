@@ -2,7 +2,8 @@
 
 class CCore;
 
-class CTimeManager : public SingleTon<CTimeManager>
+class CTimeManager : 
+	public SingleTon<CTimeManager>
 {
 	public :
 		UINT	GetFPS()		const;

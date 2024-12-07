@@ -19,14 +19,17 @@
     <Filter Include="Engine\Core">
       <UniqueIdentifier>{52ba8241-0de3-4d0f-98ba-92ea66c7a673}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\Util">
-      <UniqueIdentifier>{9a2c972b-9fc9-4be8-9706-3ad5dea1b1c0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\Manager">
       <UniqueIdentifier>{bb1cd4f6-66b7-475a-bd82-4381b2676908}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\Manager\Resource">
       <UniqueIdentifier>{966df866-84e9-4fa6-8fb5-3ab50deffbce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Util">
+      <UniqueIdentifier>{6f780665-b434-4ee6-9ba6-d8a68c4028a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{b4b1dc4e-1d8f-4207-aa16-6ebe4f7f8759}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -45,9 +48,6 @@
     <ClInclude Include="CCore.h">
       <Filter>Engine\Core</Filter>
     </ClInclude>
-    <ClInclude Include="SingleTon.h">
-      <Filter>Engine\Util</Filter>
-    </ClInclude>
     <ClInclude Include="CTimeManager.h">
       <Filter>Engine\Manager</Filter>
     </ClInclude>
@@ -59,6 +59,18 @@
     </ClInclude>
     <ClInclude Include="CScene.h">
       <Filter>Engine\Manager\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="SingleTon.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="CSceneTitle.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="CSceneStage01.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="CSceneManager.h">
+      <Filter>Engine\Manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -79,6 +91,15 @@
     </ClCompile>
     <ClCompile Include="CScene.cpp">
       <Filter>Engine\Manager\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="CSceneTitle.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="CSceneStage01.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="CSceneManager.cpp">
+      <Filter>Engine\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

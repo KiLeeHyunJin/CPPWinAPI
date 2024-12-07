@@ -1,17 +1,24 @@
 #pragma once
+
+class CCore;
+
 class CScene
 {
+	friend CCore;
 public :
 	CScene();
 	virtual ~CScene();
 
-	void Init();
-	void Release();
+	virtual void Init()		= 0;
+	virtual void Release()	= 0;
 
-	void Update();
-	void Render();
+	virtual void Update()	= 0;
+	virtual void Render()	= 0;
 	
-	void Enter();
-	void Exit();
+	virtual void Enter()	= 0;
+	virtual void Exit()		= 0;
+
+private:
+
 };
 

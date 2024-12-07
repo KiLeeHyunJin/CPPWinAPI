@@ -13,7 +13,8 @@ enum class TextType
 enum class TextHeightType
 {	Top, Middle, Bottom,};
 
-class CRenderManager : public SingleTon<CRenderManager>
+class CRenderManager : 
+	public SingleTon<CRenderManager>
 {
 public :
 	void SetPen(PenType penType, COLORREF color = RGB(0,0,0), int width = 1);

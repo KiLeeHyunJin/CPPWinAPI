@@ -1,14 +1,14 @@
 #pragma once
 class CCore;
 
-class CInputManager : public SingleTon<CInputManager>
+class CInputManager : 
+	public SingleTon<CInputManager>
 {
 public :
 	bool GetButton(const int keyId) const;
 	bool GetButtonDown(const int keyId) const;
 	bool GetButtonUp(const int keyId) const;
 	POINT GetMousePos();
-
 
 	friend CCore;
 	friend SingleTon<CInputManager>;

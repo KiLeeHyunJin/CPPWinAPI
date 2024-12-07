@@ -1,5 +1,7 @@
 #pragma once
 
+class CScene;
+
 class CCore : public SingleTon<CCore>
 {
  public :
@@ -14,10 +16,9 @@ class CCore : public SingleTon<CCore>
 	CCore();
 	virtual ~CCore();
 
-	float m_fMoveX;
-	float m_fMoveY;
-
-
+	CScene* m_pCurScene;
+	CScene* m_pSceneTitle;
+	CScene* m_pSceneStage01;
 
 };
 #define CORE  CCore::GetInstance()
