@@ -4,6 +4,7 @@
 #include "CTimeManager.h"
 #include "CRenderManager.h"
 #include "CInputManager.h"
+#include "CSceneManager.h"
 
 #include "CScene.h"
 #include "CSceneStage01.h"
