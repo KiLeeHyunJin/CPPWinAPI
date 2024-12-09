@@ -1,6 +1,7 @@
 #include "framework.h"
 #include "CCore.h"
 #include "CPPWinAPI.h"
+
 #include "CTimeManager.h"
 #include "CRenderManager.h"
 #include "CInputManager.h"
@@ -39,11 +40,6 @@ void CCore::Update()
 	TIME->Update();
 	INPUT->Update();
 	SCENE->Update();
-
-	float speed = 20 * TIME->GetDeltaTime();
-
-
-
 }
 
 void CCore::Render() const
