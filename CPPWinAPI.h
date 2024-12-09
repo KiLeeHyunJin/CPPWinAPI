@@ -10,3 +10,7 @@ extern HWND hWnd;
 #define WINSIZEX 800
 #define WINSIZEY 600
 
+enum class GroupScene
+{
+	Title, Stage01, Size
+};

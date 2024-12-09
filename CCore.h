@@ -16,10 +16,6 @@ class CCore : public SingleTon<CCore>
 	CCore();
 	virtual ~CCore();
 
-	CScene* m_pCurScene;
-	CScene* m_pSceneTitle;
-	CScene* m_pSceneStage01;
-
 };
 #define CORE  CCore::GetInstance()
 

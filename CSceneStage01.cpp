@@ -1,7 +1,10 @@
 #include "framework.h"
-#include "CSceneStage01.h"
-#include "CRenderManager.h"
 #include "CPPWinAPI.h"
+#include "CSceneStage01.h"
+
+#include "CRenderManager.h"
+#include "CInputManager.h"
+#include "CSceneManager.h"
 
 void CSceneStage01::Init()
 {
@@ -13,6 +16,10 @@ void CSceneStage01::Release()
 
 void CSceneStage01::Update()
 {
+	if (BUTTONDOWN(VK_ESCAPE))
+	{
+		SCENE->ChangeScene(GroupScene::Title);
+	}
 }
 
 void CSceneStage01::Render()

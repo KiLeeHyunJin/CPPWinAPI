@@ -1,7 +1,10 @@
 #include "framework.h"
 #include "CSceneTitle.h"
-#include "CRenderManager.h"
 #include "CPPWinAPI.h"
+
+#include "CRenderManager.h"
+#include "CInputManager.h"
+#include "CSceneManager.h"
 
 void CSceneTitle::Init()
 {
@@ -13,6 +16,10 @@ void CSceneTitle::Release()
 
 void CSceneTitle::Update()
 {
+	if (BUTTONDOWN(VK_SPACE))
+	{
+		SCENE->ChangeScene(GroupScene::Stage01);
+	}
 }
 
 void CSceneTitle::Render()

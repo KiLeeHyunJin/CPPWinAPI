@@ -1,14 +1,14 @@
 #pragma once
-
-class CCore;
+class CSceneManager;
 
 class CScene
 {
-	friend CCore;
-public :
+public:
 	CScene();
 	virtual ~CScene();
 
+	friend CSceneManager;
+private:
 	virtual void Init()		= 0;
 	virtual void Release()	= 0;
 
@@ -17,8 +17,6 @@ public :
 	
 	virtual void Enter()	= 0;
 	virtual void Exit()		= 0;
-
-private:
 
 };
 
