@@ -21,12 +21,15 @@ class CTimeManager :
 
 		void	Update();
 
+		/// Frame Per Second
 		UINT	m_uiFPS;
 		UINT	m_uiUpdateCount;
+		float	m_fUpdateOnSecond;	
 
-		float	m_fUpdateOnSecond;
+		/// Frame Delta Time
 		float	m_fDeltaTime;
 
+		/// Chrono Time
 		chrono::high_resolution_clock::time_point curTime;
 		chrono::high_resolution_clock::time_point prevTime;
 };	

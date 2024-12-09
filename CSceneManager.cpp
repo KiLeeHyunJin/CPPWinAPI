@@ -24,49 +24,37 @@ void CSceneManager::Init()
 	m_mapScene.insert(make_pair(GroupScene::Stage01, pStatge01));
 #pragma endregion
 
-#pragma region  InitScene
-	map<GroupScene, CScene*>::iterator iter;
-	for (iter = m_mapScene.begin();
-		iter != m_mapScene.end();
-		iter++)
+	for (pair<GroupScene, CScene*> scene : m_mapScene)
 	{
-		iter->second->Init();
+		scene.second->SceneInit();
 	}
-#pragma endregion
 
 	m_pCurScene = pSceneTitle;
-	m_pCurScene->Enter();
+	m_pCurScene->SceneEnter();
 }
 
 /// Release And Delete Scene
 void CSceneManager::Release()			
 {
-	map<GroupScene, CScene*>::iterator iter;
-	CScene* pScene;
-	for (iter = m_mapScene.begin();
-		iter != m_mapScene.end();
-		iter++)
+	for (pair<GroupScene, CScene*> scene : m_mapScene)
 	{
-		pScene = iter->second;
-
-		pScene->Release();
-		delete pScene;
+		scene.second->SceneRelease();
+		delete scene.second;
 	}
-
 	m_mapScene.clear();
 }
 
-void CSceneManager::Update()			{ m_pCurScene->Update();	}
+void CSceneManager::Update()			{ m_pCurScene->SceneUpdate();	}
 
-void CSceneManager::Render()			{ m_pCurScene->Render();	}
+void CSceneManager::Render()			{ m_pCurScene->SceneRender();	}
 
-CScene* CSceneManager::GetCurScene()	{ return m_pCurScene;	}
+CScene* CSceneManager::GetCurScene()	{ return m_pCurScene;			}
 
 void CSceneManager::ChangeScene(GroupScene changeScene)
 {
-	m_pCurScene->Exit();
+	m_pCurScene->SceneExit();
 	m_pCurScene = m_mapScene[changeScene];
-	m_pCurScene->Enter();
+	m_pCurScene->SceneEnter();
 }
 
 

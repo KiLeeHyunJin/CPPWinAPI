@@ -26,8 +26,10 @@
 #include <list>
 #include <map>
 
+
 using namespace std;
 
 //Util
 #include "SingleTon.h"
+#include "Struct.h"
 

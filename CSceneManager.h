@@ -23,6 +23,7 @@ private :
 	void Update();
 	void Render();
 
+	/// Scene
 	map<GroupScene, CScene*>	m_mapScene;
 	CScene*						m_pCurScene;
 };

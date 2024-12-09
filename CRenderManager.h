@@ -41,19 +41,23 @@ private :
 	void BeginDraw();
 	void EndDraw();
 	
+	/// Buffer
 	HDC			m_hdc;		// 게임 화면 DC , 프론트 버퍼 (결과화면 그릴 DC)
 	HDC			m_hMemDC;	// 백버퍼 DC (임시 화면 DC)
 	HBITMAP		m_hBmp;		// 백버퍼 비트맵 (임시 화면 그림)
 
+	/// Pen
 	HPEN		m_hPen;	
 	COLORREF	m_colorPen;
 	PenType		m_typePen;
 	int			m_iPenWidth;
 
+	/// Brush
 	HBRUSH		m_hBrush;	
 	COLORREF	m_colorBrush;
 	BrushType	m_typeBrush;
 
+	/// Text
 	TextType	m_typeText;
 };
 #define RENDER CRenderManager::GetInstance()

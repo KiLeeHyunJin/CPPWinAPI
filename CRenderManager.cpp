@@ -109,7 +109,7 @@ void CRenderManager::Text(float x, float y, wstring str) const
 	const HPEN prevPen = static_cast<HPEN>(SelectObject(m_hMemDC, m_hPen));
 	const HBRUSH prevBrush = static_cast<HBRUSH>(SelectObject(m_hMemDC, m_hBrush));
 
-	TextOutW(m_hMemDC, x, y, str.c_str(), str.size());
+	TextOutW(m_hMemDC, (int)x, (int)y, str.c_str(), (int)str.size());
 
 	SelectObject(m_hMemDC, prevPen);
 	SelectObject(m_hMemDC, prevBrush);

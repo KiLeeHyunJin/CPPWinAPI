@@ -16,7 +16,7 @@ void CInputManager::Init()
 {
 	m_arrCurKey[0]	= false;
 	m_arrPrevKey[0] = false;
-	m_ptMousePos	= { 0,0 };
+	m_ptMousePos	= {0,0};
 }
 
 void CInputManager::Release()
