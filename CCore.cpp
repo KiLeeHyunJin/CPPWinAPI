@@ -12,12 +12,10 @@
 #include "CSceneTitle.h"
 
 CCore::CCore()
-{
-}
+{	}
 
 CCore::~CCore()
-{
-}
+{	}
 
 void CCore::Init()
 {
