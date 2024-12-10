@@ -10,17 +10,21 @@ CGameObject::CGameObject() :
 }
 
 CGameObject::~CGameObject()
-{
-}
+{	}
 
 Vector CGameObject::GetPosition()	const
 {
 	return m_vecPos;
 }
 
-void CGameObject::SetPosition(Vector pos)
+void CGameObject::SetPosition(Vector vecPos)
 {
-	memcpy(&m_vecPos, &pos, sizeof(Vector));
+	memcpy(&m_vecPos, &vecPos, sizeof(Vector));
+}
+
+void CGameObject::SetScale(Vector vecScale)
+{
+	memcpy(&m_vecScale, &vecScale, sizeof(Vector));
 }
 
 void CGameObject::SetPosition(float x, float y)
@@ -29,20 +33,15 @@ void CGameObject::SetPosition(float x, float y)
 	m_vecPos.y = y;
 }
 
-Vector CGameObject::GetScale()		const
-{
-	return m_vecScale;
-}
-
-void CGameObject::SetScale(Vector scale)
-{
-	memcpy(&m_vecScale, &scale, sizeof(Vector));
-}
-
 void CGameObject::SetScale(float x, float y)
 {
 	m_vecScale.x = x;
 	m_vecScale.y = y;
+}
+
+Vector CGameObject::GetScale()		const
+{
+	return m_vecScale;
 }
 
 bool CGameObject::GetSafeToDelete() const

@@ -3,16 +3,17 @@
 
 class CCore;
 class CScene;
+class CEventManager;
 
 class CSceneManager : 
 	public SingleTon<CSceneManager>
 {
 public :
 	CScene* GetCurScene();
-	void ChangeScene(GroupScene changeScene);
 
 	friend CCore;
 	friend SingleTon<CSceneManager>;
+	friend CEventManager;
 private :
 	CSceneManager();
 	virtual ~CSceneManager();
@@ -22,6 +23,8 @@ private :
 
 	void Update();
 	void Render();
+
+	void ChangeScene(GroupScene changeScene);
 
 	/// Scene
 	map<GroupScene, CScene*>	m_mapScene;

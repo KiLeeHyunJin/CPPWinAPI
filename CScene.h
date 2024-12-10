@@ -9,10 +9,10 @@ public:
 	virtual ~CScene();
 
 	void AddGameObject(CGameObject* pObj);
-	//void DeleteGameObject(CGameObject* pObj);
 
 	friend CSceneManager;
 private:
+	//코어에서 호출  // 게임오브젝트 호출 및 virtual 메소드 호출
 	void SceneInit();
 	void SceneRelease();
 
@@ -22,6 +22,7 @@ private:
 	void SceneEnter();
 	void SceneExit();
 
+	//수정해서 사용
 	virtual void Init()		= 0;
 	virtual void Release()	= 0;
 
@@ -30,6 +31,7 @@ private:
 	
 	virtual void Enter()	= 0;
 	virtual void Exit()		= 0;
+
 
 	list<CGameObject*> m_listObj;
 };

@@ -1,18 +1,17 @@
 #include "framework.h"
 #include "CEventManager.h"
 #include "CSceneManager.h"
+
 #include "CScene.h"
 #include "CGameObject.h"
+
 CEventManager::CEventManager()		{	}
 
 CEventManager::~CEventManager()		{	}
 
 void CEventManager::Init()			{	}
 
-void CEventManager::Release()
-{
-
-}
+void CEventManager::Release()		{	}
 
 void CEventManager::EventAddObject(CGameObject* pGameObj)
 {
@@ -22,6 +21,11 @@ void CEventManager::EventAddObject(CGameObject* pGameObj)
 void CEventManager::EventDeleteObject(CGameObject* pGameObj)
 {
 	m_quequeDeleteObject.push(pGameObj);
+}
+
+void CEventManager::EventChangerScene(GroupScene eScene)
+{
+	m_queueChangeScene.push(eScene);
 }
 
 void CEventManager::ProgressAddObject()
@@ -44,10 +48,21 @@ void CEventManager::ProgressDeleteObject()
 	}
 }
 
+void CEventManager::ProgressChangeScene()
+{
+	while (m_queueChangeScene.empty() == false)
+	{
+		GroupScene scene = m_queueChangeScene.front();
+		m_queueChangeScene.pop();
+		SCENE->ChangeScene(scene);
+	}
+}
+
 void CEventManager::Update()
 {
 	ProgressAddObject();
 	ProgressDeleteObject();
+	ProgressChangeScene();
 }
 
 

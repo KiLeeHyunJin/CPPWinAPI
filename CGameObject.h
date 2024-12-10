@@ -10,13 +10,14 @@ public:
 	CGameObject();
 	virtual ~CGameObject();
 
-	Vector	GetPosition() const;
-	void	SetPosition(Vector pos);
-	void	SetPosition(float x, float y);
+	Vector	GetPosition()	const;
+	Vector	GetScale()		const;
 
-	Vector	GetScale() const;
-	void	SetScale(Vector scale);
-	void	SetScale(float x, float y);
+	void	SetPosition	(Vector vecPos);
+	void	SetScale	(Vector vecScale);
+
+	void	SetPosition	(float x, float y);
+	void	SetScale	(float x, float y);
 
 	bool GetReserveDelete() const;
 
@@ -36,6 +37,7 @@ private:
 
 	void SetSafeToDelete();
 	void SetReserveDelete(); 
+
 	bool GetSafeToDelete() const;
 
 	bool m_bSafeToDelete;

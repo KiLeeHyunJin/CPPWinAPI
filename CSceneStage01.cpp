@@ -4,13 +4,20 @@
 
 #include "CRenderManager.h"
 #include "CInputManager.h"
-#include "CSceneManager.h"
+#include "CEventManager.h"
 
 #include "CPlayer.h"
+#include "CMonster.h"
 
 void CSceneStage01::Init()
 {
-	AddGameObject(new CPlayer());
+	CPlayer* pPlayer = new CPlayer();
+	AddGameObject(pPlayer);
+
+	CMonster* pMonster = new CMonster();
+	pMonster->SetPosition(WINSIZEX, WINSIZEY);
+	pMonster->SetTarget(pPlayer);
+	AddGameObject(pMonster);
 }
 
 void CSceneStage01::Release()
@@ -21,7 +28,7 @@ void CSceneStage01::Update()
 {
 	if (BUTTONDOWN(VK_ESCAPE))
 	{
-		SCENE->ChangeScene(GroupScene::Title);
+		CHANGESCENE(GroupScene::Title);
 	}
 
 }

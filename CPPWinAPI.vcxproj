@@ -135,10 +135,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CComponent.h" />
     <ClInclude Include="CCore.h" />
     <ClInclude Include="CEventManager.h" />
     <ClInclude Include="CGameObject.h" />
     <ClInclude Include="CInputManager.h" />
+    <ClInclude Include="CMonster.h" />
     <ClInclude Include="CPlayer.h" />
     <ClInclude Include="CPPWinAPI.h" />
     <ClInclude Include="CRenderManager.h" />
@@ -155,10 +157,12 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CComponent.cpp" />
     <ClCompile Include="CCore.cpp" />
     <ClCompile Include="CEventManager.cpp" />
     <ClCompile Include="CGameObject.cpp" />
     <ClCompile Include="CInputManager.cpp" />
+    <ClCompile Include="CMonster.cpp" />
     <ClCompile Include="CPlayer.cpp" />
     <ClCompile Include="CPPWinAPI.cpp" />
     <ClCompile Include="CRenderManager.cpp" />

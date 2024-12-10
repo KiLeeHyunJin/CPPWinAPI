@@ -42,18 +42,14 @@ void CPlayer::Update()
 	{
 		m_vecPos.y += m_fSpeed * DeltaTime;
 	}
-	if (m_vecPos.x > 200)
-	{
-		DELETEOBJECT(this);
-	}
 }
 
 void CPlayer::Render()
 {
 	RENDER->Rect(
-		m_vecPos.x - m_vecSize.x, 
-		m_vecPos.y - m_vecSize.y, 
-		m_vecPos.x + m_vecSize.x, 
-		m_vecPos.y + m_vecSize.y);
+		m_vecPos.x - m_vecScale.x, 
+		m_vecPos.y - m_vecScale.y,
+		m_vecPos.x + m_vecScale.x,
+		m_vecPos.y + m_vecScale.y);
 }
 
