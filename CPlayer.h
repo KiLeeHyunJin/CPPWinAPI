@@ -9,7 +9,6 @@ public:
     virtual ~CPlayer();
 
 
-
 private:
     // CGameObject을(를) 통해 상속됨
     void Init()     override;
@@ -18,7 +17,7 @@ private:
     void Update()   override;
     void Render()   override;
 
-    Vector m_vecSize = {10,10};
-    float m_fSpeed = 100;
+    Vector m_vecSize    = {10,10};
+    float m_fSpeed      = 100;
 };
 

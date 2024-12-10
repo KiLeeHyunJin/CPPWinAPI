@@ -89,6 +89,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     }
 
     CORE->Release();
+
     return (int) msg.wParam;
 }
 

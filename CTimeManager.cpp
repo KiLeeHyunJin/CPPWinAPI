@@ -40,6 +40,11 @@ void CTimeManager::Update()
 
 	chrono::duration<float> elapsed = curTime - prevTime; // 이전 프레임이랑 차이 시간 계산
 	m_fDeltaTime = elapsed.count();
+
+	//지연에 의한 순간이동 현상을 억제
+	if (m_fDeltaTime > 0.1f)
+	{	m_fDeltaTime = 0.1f;	}
+
 	prevTime = curTime;
 
 	m_uiUpdateCount++;

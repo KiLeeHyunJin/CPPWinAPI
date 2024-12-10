@@ -28,4 +28,3 @@ private :
 	CScene*						m_pCurScene;
 };
 #define SCENE	CSceneManager::GetInstance()
-

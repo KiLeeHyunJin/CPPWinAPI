@@ -7,6 +7,7 @@
 #include "CSceneManager.h"
 
 #include "CPlayer.h"
+
 void CSceneStage01::Init()
 {
 	AddGameObject(new CPlayer());

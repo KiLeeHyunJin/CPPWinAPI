@@ -34,8 +34,31 @@ void CScene::SceneRelease()
 void CScene::SceneUpdate()
 {
 	for (CGameObject* pGameObject : m_listObj)
-	{	pGameObject->Update();	}
+	{	
+		if (pGameObject->GetReserveDelete() == false)
+		{
+			pGameObject->Update();
+		}
+		else
+		{
+			pGameObject->SetSafeToDelete();
+		}
+	}
+
 	Update();
+
+	m_listObj.remove_if([](CGameObject* target)
+		{
+			if (target->GetSafeToDelete())
+			{
+				delete target;
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		});
 }
 
 void CScene::SceneRender()

@@ -84,6 +84,12 @@
     <ClInclude Include="CPlayer.h">
       <Filter>GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="Logger.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="CEventManager.h">
+      <Filter>Engine\Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CPPWinAPI.cpp">
@@ -118,6 +124,9 @@
     </ClCompile>
     <ClCompile Include="CPlayer.cpp">
       <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="CEventManager.cpp">
+      <Filter>Engine\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

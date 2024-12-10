@@ -17,15 +17,15 @@ class CRenderManager :
 	public SingleTon<CRenderManager>
 {
 public :
-	void SetPen(PenType penType, COLORREF color = RGB(0,0,0), int width = 1);
-	void SetBrush(BrushType brushType, COLORREF color = RGB(255, 255, 255));
-	void SetText(TextType textType);
+	void SetPen		(PenType penType, COLORREF color = RGB(0,0,0), int width = 1);
+	void SetBrush	(BrushType brushType, COLORREF color = RGB(255, 255, 255));
+	void SetText	(TextType textType);
 
 
-	void Line(float startX, float startY, float endX, float endY)	const;
-	void Rect(float startX, float startY, float endX, float endY)	const;
-	void Circle(float x, float y, float radius)						const;
-	void Text(float x, float y, wstring str)						const;
+	void Line		(float startX, float startY, float endX, float endY)	const;	
+	void Rect		(float startX, float startY, float endX, float endY)	const;	
+	void Circle		(float x, float y, float radius)						const;	
+	void Text		(float x, float y, wstring str)							const;	
 
 
 
@@ -40,6 +40,8 @@ private :
 
 	void BeginDraw();
 	void EndDraw();
+
+	void SelectPenNBruchObject(HPEN prevPen, HBRUSH prevBrush) const;
 	
 	/// Buffer
 	HDC			m_hdc;		// 게임 화면 DC , 프론트 버퍼 (결과화면 그릴 DC)

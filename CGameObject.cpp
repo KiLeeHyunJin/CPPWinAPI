@@ -3,7 +3,9 @@
 
 CGameObject::CGameObject() :
 	m_vecPos	(Vector(0,0)),
-	m_vecScale	(Vector(0,0))
+	m_vecScale	(Vector(0,0)),
+	m_bReserveDelete(false),
+	m_bSafeToDelete(false)
 {
 }
 
@@ -42,3 +44,31 @@ void CGameObject::SetScale(float x, float y)
 	m_vecScale.x = x;
 	m_vecScale.y = y;
 }
+
+bool CGameObject::GetSafeToDelete() const
+{
+	return m_bSafeToDelete;
+}
+
+bool CGameObject::GetReserveDelete() const
+{
+	return m_bReserveDelete;
+}
+
+void CGameObject::SetSafeToDelete()
+{
+	if (m_bSafeToDelete == false)
+	{
+		m_bSafeToDelete = true;
+	}
+}
+
+void CGameObject::SetReserveDelete() 
+{
+	if (m_bReserveDelete == false)
+	{
+		m_bReserveDelete = true;
+	}
+}
+
+

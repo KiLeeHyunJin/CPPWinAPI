@@ -3,16 +3,35 @@ template<typename T>
 class SingleTon
 {
 public:
-	static T* GetInstance() 
+	static T* GetInstance()
 	{
-		static T instance;
-		return &instance;
+		if (instance == nullptr)
+		{
+			instance = new T;
+		}
+		return instance;
 	};
 
-protected :
+protected:
 	static T* instance;
 
-	SingleTon()				{ };
-	virtual ~SingleTon()	{ };
+	SingleTon()				{};
+	virtual ~SingleTon()	
+	{
+		ReleaseInstance(); 
+	};
+
+	static void ReleaseInstance()
+	{
+		if (instance != nullptr)
+		{
+			instance = nullptr;
+		}
+	}
 };
+
+template<typename T>
+T* SingleTon<T>::instance = nullptr;
+
+
 

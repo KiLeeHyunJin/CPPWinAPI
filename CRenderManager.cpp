@@ -13,11 +13,12 @@ CRenderManager::CRenderManager():
 }
 
 CRenderManager::~CRenderManager()
-{
+{	
 }
 
 void CRenderManager::Init()
 {
+
 	m_hdc = GetDC(hWnd);
 	m_hMemDC = CreateCompatibleDC(m_hdc); //동일한 속성의 또 다른 DC를 생성
 	m_hBmp = CreateCompatibleBitmap(m_hdc, WINSIZEX, WINSIZEY); //화면 크기의 비트맵 생성
@@ -53,8 +54,10 @@ void CRenderManager::Release()
 /// 백버퍼 화면 초기화
 /// </summary>
 void CRenderManager::BeginDraw()
-{
-	PatBlt(m_hMemDC, 0, 0, WINSIZEX, WINSIZEY, WHITENESS); 
+{	
+	PatBlt(
+		m_hMemDC, 0, 0, WINSIZEX, WINSIZEY, 
+		WHITENESS);	
 }
 
 /// 프론트 버퍼에 복사
@@ -65,7 +68,11 @@ void CRenderManager::EndDraw()
 		m_hMemDC, 0, 0, SRCCOPY);
 }
 
-
+void CRenderManager::SelectPenNBruchObject(HPEN prevPen, HBRUSH prevBrush) const
+{
+	SelectObject(m_hMemDC, prevPen);
+	SelectObject(m_hMemDC, prevBrush);
+}
 
 void CRenderManager::Rect(float startX, float startY, float endX, float endY) const
 {
@@ -74,8 +81,7 @@ void CRenderManager::Rect(float startX, float startY, float endX, float endY) co
 
 	Rectangle(m_hMemDC, (int)startX, (int)startY, (int)endX, (int)endY);
 
-	SelectObject(m_hMemDC, prevPen);
-	SelectObject(m_hMemDC, prevBrush);
+	SelectPenNBruchObject(prevPen, prevBrush);
 }
 
 void CRenderManager::Circle(float x, float y, float radius) const
@@ -85,8 +91,7 @@ void CRenderManager::Circle(float x, float y, float radius) const
 
 	Ellipse(m_hMemDC, (int)(x - radius), (int)(y - radius), (int)(x + radius), (int)(y + radius));
 
-	SelectObject(m_hMemDC, prevPen);
-	SelectObject(m_hMemDC, prevBrush);
+	SelectPenNBruchObject(prevPen, prevBrush);
 }
 
 void CRenderManager::Line(float startX, float startY, float endX, float endY) const
@@ -98,8 +103,7 @@ void CRenderManager::Line(float startX, float startY, float endX, float endY) co
 	MoveToEx(m_hMemDC, (int)startX, (int)startY, NULL);
 	LineTo(m_hMemDC, (int)endX, (int)endY);
 
-	SelectObject(m_hMemDC, prevPen);
-	SelectObject(m_hMemDC, prevBrush);
+	SelectPenNBruchObject(prevPen, prevBrush);
 }
 
 void CRenderManager::Text(float x, float y, wstring str) const
@@ -111,9 +115,10 @@ void CRenderManager::Text(float x, float y, wstring str) const
 
 	TextOutW(m_hMemDC, (int)x, (int)y, str.c_str(), (int)str.size());
 
-	SelectObject(m_hMemDC, prevPen);
-	SelectObject(m_hMemDC, prevBrush);
+	SelectPenNBruchObject(prevPen, prevBrush);
 }
+
+
 
 void CRenderManager::SetText(TextType textType)
 {
@@ -160,7 +165,11 @@ void CRenderManager::SetPen(PenType penType, COLORREF color, int width)
 	DeleteObject(m_hPen);
 
 	int penStyle;
-	switch (penType)
+	m_typePen = penType;
+	m_colorPen = color;
+	m_iPenWidth = width;
+
+	switch (m_typePen)
 	{
 	case PenType::Solid:
 		penStyle = PS_SOLID;
@@ -178,9 +187,7 @@ void CRenderManager::SetPen(PenType penType, COLORREF color, int width)
 		penStyle = PS_SOLID;
 		break;
 	}
-	m_typePen = (PenType)penStyle;
-	m_colorPen = color;
-	m_iPenWidth = width;
+
 
 	m_hPen = CreatePen(penStyle, width, color);
 }

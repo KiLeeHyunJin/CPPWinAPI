@@ -6,22 +6,25 @@
 #include "CSceneTitle.h"
 #include "CSceneStage01.h"
 
-CSceneManager::CSceneManager():
+CSceneManager::CSceneManager() :
 	m_pCurScene(nullptr)
 {	}
 
 CSceneManager::~CSceneManager()
-{	}
+{	
+}
 
 void CSceneManager::Init()
 {
 
 #pragma region  AddScene
+
 	CScene* pSceneTitle = new CSceneTitle;
 	m_mapScene.insert(make_pair(GroupScene::Title, pSceneTitle));
 
 	CScene* pStatge01 = new CSceneStage01;
 	m_mapScene.insert(make_pair(GroupScene::Stage01, pStatge01));
+
 #pragma endregion
 
 	for (pair<GroupScene, CScene*> scene : m_mapScene)
