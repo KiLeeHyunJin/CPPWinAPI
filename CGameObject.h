@@ -3,6 +3,8 @@
 
 class CScene;
 class CEventManager;
+class CComponent;
+class CCollider;
 
 class CGameObject
 {
@@ -21,10 +23,6 @@ public:
 
 	bool GetReserveDelete() const;
 
-protected:
-	Vector m_vecPos;
-	Vector m_vecScale;
-
 	friend CScene;
 	friend CEventManager;
 private:
@@ -39,6 +37,30 @@ private:
 	void SetReserveDelete(); 
 
 	bool GetSafeToDelete() const;
+
+	void AddComponent(CComponent* component);
+	void RemoveComponent(CComponent* component);
+
+	void AddCollider(Vector scale, Vector offset);
+	void RemoveCollider();
+	CCollider* GetCollider();
+
+	void GameObjectInit();
+	void GameObjectUpdate();
+	void GameObjectRender();
+	void GameObjectRelease();
+
+public:
+
+protected:
+	Vector m_vecPos;
+	Vector m_vecScale;
+
+private:
+	list<CComponent*> m_listComponent;
+
+	CCollider* m_pCollider;
+
 
 	bool m_bSafeToDelete;
 	bool m_bReserveDelete;

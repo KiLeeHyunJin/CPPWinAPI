@@ -153,7 +153,7 @@ void CRenderManager::SetText(TextType textType)
 
 
 
-void CRenderManager::SetPen(PenType penType, COLORREF color, int width)
+void CRenderManager::SetPen(PenType penType = PenType::Solid, COLORREF color, int width)
 {
 	if (m_typePen	== penType && 
 		m_colorPen	== color && 
@@ -192,7 +192,7 @@ void CRenderManager::SetPen(PenType penType, COLORREF color, int width)
 	m_hPen = CreatePen(penStyle, width, color);
 }
 
-void CRenderManager::SetBrush(BrushType brushType, COLORREF color)
+void CRenderManager::SetBrush(BrushType brushType = BrushType::Solid, COLORREF color = RGB(255,255,255))
 {
 	if (m_typeBrush == brushType && 
 		m_colorBrush == color )

@@ -18,14 +18,14 @@ void CScene::SceneInit()
 {
 	Init();
 	for (CGameObject* pGameObject : m_listObj)
-	{	pGameObject->Init();	}
+	{	pGameObject->GameObjectInit();	}
 }
 
 void CScene::SceneRelease()
 {
 	for (CGameObject* pGameObject : m_listObj)
 	{
-		pGameObject->Release();
+		pGameObject->GameObjectRelease();
 		delete pGameObject;
 	}
 	Release();
@@ -36,13 +36,9 @@ void CScene::SceneUpdate()
 	for (CGameObject* pGameObject : m_listObj)
 	{	
 		if (pGameObject->GetReserveDelete() == false)
-		{
-			pGameObject->Update();
-		}
+		{	pGameObject->GameObjectUpdate();	}
 		else
-		{
-			pGameObject->SetSafeToDelete();
-		}
+		{	pGameObject->SetSafeToDelete();		}
 	}
 
 	Update();
@@ -64,7 +60,7 @@ void CScene::SceneUpdate()
 void CScene::SceneRender()
 {
 	for (CGameObject* pGameObject : m_listObj)
-	{	pGameObject->Render();	}
+	{	pGameObject->GameObjectRender();	}
 	Render();
 }
 

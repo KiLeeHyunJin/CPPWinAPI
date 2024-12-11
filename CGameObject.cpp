@@ -1,5 +1,6 @@
 #include "framework.h"
 #include "CGameObject.h"
+#include "CComponent.h"
 
 CGameObject::CGameObject() :
 	m_vecPos	(Vector(0,0)),
@@ -47,6 +48,58 @@ Vector CGameObject::GetScale()		const
 bool CGameObject::GetSafeToDelete() const
 {
 	return m_bSafeToDelete;
+}
+
+void CGameObject::AddComponent(CComponent* component)
+{
+	m_listComponent.push_back(component);
+	component->Init();
+	component->SetOwner(this);
+}
+
+void CGameObject::RemoveComponent(CComponent* component)
+{
+	m_listComponent.remove(component);
+	component->Release();
+	delete component;
+}
+
+void CGameObject::GameObjectInit()
+{
+	for (CComponent* component : m_listComponent)
+	{
+		component->Init();
+	}
+	Init();
+}
+
+void CGameObject::GameObjectUpdate()
+{
+	for (CComponent* component : m_listComponent)
+	{
+		component->Update();
+	}
+	Update();
+}
+
+void CGameObject::GameObjectRender()
+{
+	for (CComponent* component : m_listComponent)
+	{
+		component->Render();
+	}
+	Render();
+}
+
+void CGameObject::GameObjectRelease()
+{
+	for (CComponent* component : m_listComponent)
+	{
+		component->Release();
+		delete component;
+	}
+	m_listComponent.clear();
+	Release();
 }
 
 bool CGameObject::GetReserveDelete() const

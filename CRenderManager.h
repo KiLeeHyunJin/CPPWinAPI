@@ -17,8 +17,8 @@ class CRenderManager :
 	public SingleTon<CRenderManager>
 {
 public :
-	void SetPen		(PenType penType, COLORREF color = RGB(0,0,0), int width = 1);
-	void SetBrush	(BrushType brushType, COLORREF color = RGB(255, 255, 255));
+	void SetPen		(PenType penType = PenType::Solid, COLORREF color = RGB(0,0,0), int width = 1);
+	void SetBrush	(BrushType brushType = BrushType::Solid, COLORREF color = RGB(255, 255, 255));
 	void SetText	(TextType textType);
 
 
