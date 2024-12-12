@@ -41,22 +41,24 @@ void CCollider::Release()
 
 void CCollider::Update()
 {
+}
+
+void CCollider::PhysicsUpdate()
+{
 	m_vecPos = GetOwner()->GetPosition() + m_vecOffset;
 }
 
 void CCollider::Render()
 {
 #ifdef _DEBUG
-	RENDER->SetPen(PenType::Solid, RGB(0, 255, 0));
+	RENDER->SetPen(PenType::Dot, RGB(255, 0, 0));
 	RENDER->SetBrush(BrushType::Null);
 	RENDER->Rect(
 		m_vecPos.x + m_vecOffset.x - m_vecScale.x,
 		m_vecPos.y + m_vecOffset.y - m_vecScale.y,
 		m_vecPos.x + m_vecOffset.x + m_vecScale.x,
 		m_vecPos.y + m_vecOffset.y + m_vecScale.y
-		);
-	RENDER->SetPen();
-	RENDER->SetBrush();
+	);
 #endif
 }
 

@@ -6,6 +6,7 @@
 #include "CRenderManager.h"
 #include "CEventManager.h"
 
+
 CPlayer::CPlayer()
 {
 }
@@ -18,6 +19,8 @@ void CPlayer::Init()
 {
 	SetScale(m_vecSize);
 	SetPosition(m_vecPos);
+
+	AddCollider(Vector(20, 20), Vector(0, 0));
 }
 
 void CPlayer::Release()
@@ -46,6 +49,7 @@ void CPlayer::Update()
 
 void CPlayer::Render()
 {
+	RENDER->SetPen(PenType::Solid, RGB(0, 255, 0), 1);
 	RENDER->Rect(
 		m_vecPos.x - m_vecScale.x, 
 		m_vecPos.y - m_vecScale.y,

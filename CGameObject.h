@@ -23,6 +23,11 @@ public:
 
 	bool GetReserveDelete() const;
 
+protected:
+	void AddCollider(Vector scale, Vector offset);
+	void RemoveCollider();
+	CCollider* GetCollider();
+
 	friend CScene;
 	friend CEventManager;
 private:
@@ -41,12 +46,11 @@ private:
 	void AddComponent(CComponent* component);
 	void RemoveComponent(CComponent* component);
 
-	void AddCollider(Vector scale, Vector offset);
-	void RemoveCollider();
-	CCollider* GetCollider();
+	
 
 	void GameObjectInit();
 	void GameObjectUpdate();
+	void GameObjectPhysicsUpdate();
 	void GameObjectRender();
 	void GameObjectRelease();
 

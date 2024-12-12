@@ -1,5 +1,7 @@
 #pragma once
 #include "CComponent.h"
+class CGameObject;
+
 class CCollider :
     public CComponent
 {
@@ -11,12 +13,14 @@ public:
     Vector GetOffset();
     Vector GetScale();
 
+    friend CGameObject;
 private:
     // CComponent을(를) 통해 상속됨
-    void Init()     override;
-    void Release()  override;
-    void Update()   override;
-    void Render()   override;
+    void Init()             override;
+    void Release()          override;
+    void Update()           override;
+    void PhysicsUpdate()    override;
+    void Render()           override;
 
     void OnCollision(CCollider* pOtherCollider);
 

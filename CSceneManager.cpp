@@ -47,7 +47,11 @@ void CSceneManager::Release()
 	m_mapScene.clear();
 }
 
-void CSceneManager::Update()			{ m_pCurScene->SceneUpdate();	}
+void CSceneManager::Update()			
+{ 
+	m_pCurScene->SceneUpdate();
+	m_pCurScene->ScenePhysicsUpdate();
+}
 
 void CSceneManager::Render()			{ m_pCurScene->SceneRender();	}
 

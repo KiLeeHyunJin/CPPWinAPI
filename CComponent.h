@@ -16,6 +16,8 @@ private:
 	virtual void Release()	= 0;
 
 	virtual void Update()	= 0;
+	virtual void PhysicsUpdate() {};
+
 	virtual void Render()	= 0;
 
 	void SetOwner(CGameObject* pOwner);

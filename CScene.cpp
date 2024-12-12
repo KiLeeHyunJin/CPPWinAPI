@@ -57,6 +57,14 @@ void CScene::SceneUpdate()
 		});
 }
 
+void CScene::ScenePhysicsUpdate()
+{
+	for (CGameObject* pGameObject : m_listObj)
+	{
+		pGameObject->GameObjectPhysicsUpdate();
+	}
+}
+
 void CScene::SceneRender()
 {
 	for (CGameObject* pGameObject : m_listObj)

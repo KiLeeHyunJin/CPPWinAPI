@@ -17,6 +17,7 @@ private:
 	void SceneRelease();
 
 	void SceneUpdate();
+	void ScenePhysicsUpdate();
 	void SceneRender();
 
 	void SceneEnter();

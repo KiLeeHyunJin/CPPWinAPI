@@ -1,12 +1,14 @@
 #include "framework.h"
 #include "CGameObject.h"
 #include "CComponent.h"
+#include "CCollider.h"
 
 CGameObject::CGameObject() :
 	m_vecPos	(Vector(0,0)),
 	m_vecScale	(Vector(0,0)),
 	m_bReserveDelete(false),
-	m_bSafeToDelete(false)
+	m_bSafeToDelete(false),
+	m_pCollider(nullptr)
 {
 }
 
@@ -64,6 +66,34 @@ void CGameObject::RemoveComponent(CComponent* component)
 	delete component;
 }
 
+void CGameObject::AddCollider(Vector scale, Vector offset)
+{
+	if (m_pCollider != nullptr)
+	{
+		return;
+	}
+	m_pCollider = new CCollider();
+	AddComponent(m_pCollider);
+
+	m_pCollider->SetScale(scale);
+	m_pCollider->SetOffset(offset);
+}
+
+void CGameObject::RemoveCollider()
+{
+	if (m_pCollider != nullptr)
+	{
+		return;
+	}
+	RemoveComponent(m_pCollider);
+	m_pCollider = nullptr;
+}
+
+CCollider* CGameObject::GetCollider()
+{
+	return m_pCollider;
+}
+
 void CGameObject::GameObjectInit()
 {
 	for (CComponent* component : m_listComponent)
@@ -75,20 +105,30 @@ void CGameObject::GameObjectInit()
 
 void CGameObject::GameObjectUpdate()
 {
+	Update();
+
 	for (CComponent* component : m_listComponent)
 	{
 		component->Update();
 	}
-	Update();
+}
+
+void CGameObject::GameObjectPhysicsUpdate()
+{
+	for (CComponent* component : m_listComponent)
+	{
+		component->PhysicsUpdate();
+	}
 }
 
 void CGameObject::GameObjectRender()
 {
+	Render();
+
 	for (CComponent* component : m_listComponent)
 	{
 		component->Render();
 	}
-	Render();
 }
 
 void CGameObject::GameObjectRelease()
