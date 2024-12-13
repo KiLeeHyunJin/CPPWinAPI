@@ -14,3 +14,13 @@ enum class GroupScene
 {
 	Title, Stage01, Size
 };
+
+enum class Layer
+{
+	Default,
+	Monster,
+	Character,
+
+	UI,
+	Size
+};

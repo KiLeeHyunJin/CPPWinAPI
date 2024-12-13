@@ -8,7 +8,8 @@ CGameObject::CGameObject() :
 	m_vecScale	(Vector(0,0)),
 	m_bReserveDelete(false),
 	m_bSafeToDelete(false),
-	m_pCollider(nullptr)
+	m_pCollider(nullptr),
+	m_layer(Layer::Default)
 {
 }
 
@@ -145,6 +146,16 @@ void CGameObject::GameObjectRelease()
 bool CGameObject::GetReserveDelete() const
 {
 	return m_bReserveDelete;
+}
+
+Layer CGameObject::GetLayer() const 
+{
+	return m_layer;
+}
+
+void CGameObject::SetLayer(Layer layer)
+{
+	m_layer = layer;
 }
 
 void CGameObject::SetSafeToDelete()

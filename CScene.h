@@ -1,4 +1,7 @@
 #pragma once
+#include "CPPWinAPI.h"
+
+
 class CSceneManager;
 class CGameObject;
 
@@ -34,6 +37,7 @@ private:
 	virtual void Exit()		= 0;
 
 
-	list<CGameObject*> m_listObj;
+	list<CGameObject*> m_listObj[(int)Layer::Size];
+	
 };
 

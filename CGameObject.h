@@ -1,5 +1,6 @@
 #pragma once
 #include "Struct.h"
+#include "CPPWinAPI.h"
 
 class CScene;
 class CEventManager;
@@ -22,6 +23,9 @@ public:
 	void	SetScale	(float x, float y);
 
 	bool GetReserveDelete() const;
+
+	Layer GetLayer() const;
+	void SetLayer(Layer layer);
 
 protected:
 	void AddCollider(Vector scale, Vector offset);
@@ -57,8 +61,10 @@ private:
 public:
 
 protected:
-	Vector m_vecPos;
-	Vector m_vecScale;
+	Vector	m_vecPos;
+	Vector	m_vecScale;
+
+	Layer	m_layer;
 
 private:
 	list<CComponent*> m_listComponent;

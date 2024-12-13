@@ -51,8 +51,8 @@ void CCollider::PhysicsUpdate()
 void CCollider::Render()
 {
 #ifdef _DEBUG
-	RENDER->SetPen(PenType::Dot, RGB(255, 0, 0));
-	RENDER->SetBrush(BrushType::Null);
+	RENDER->SetPen(PenType::Solid, RGB(255, 0, 0));
+	RENDER->SetBrush(BrushType::Solid);
 	RENDER->Rect(
 		m_vecPos.x + m_vecOffset.x - m_vecScale.x,
 		m_vecPos.y + m_vecOffset.y - m_vecScale.y,

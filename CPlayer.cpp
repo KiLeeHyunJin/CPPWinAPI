@@ -9,6 +9,7 @@
 
 CPlayer::CPlayer()
 {
+	m_layer = Layer::Character;
 }
 
 CPlayer::~CPlayer()

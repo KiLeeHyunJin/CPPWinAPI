@@ -11,6 +11,7 @@ CMonster::CMonster():
 {
 	SetScale(Vector{10,10});
 	SetPosition(Vector{ 0,0 });
+	m_layer = Layer::Monster;
 }
 
 CMonster::~CMonster()
@@ -24,6 +25,8 @@ void CMonster::SetTarget(CPlayer* pTargetPlayer)
 
 void CMonster::Init()
 {
+	AddCollider(Vector(90,90), Vector(0,0));
+
 }
 
 void CMonster::Release()
@@ -32,7 +35,7 @@ void CMonster::Release()
 
 void CMonster::Update()
 {
-	float speed = 10;
+	float speed = 30;
 
 	bool dirX	= (m_pTarget->GetPosition().x > m_vecPos.x) ? true : false;
 	bool dirY	= (m_pTarget->GetPosition().y > m_vecPos.y) ? true : false;

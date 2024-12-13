@@ -93,9 +93,6 @@
     <ClInclude Include="CEventManager.h">
       <Filter>Engine\Manager</Filter>
     </ClInclude>
-    <ClInclude Include="CMonster.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="CComponent.h">
       <Filter>Engine\Component</Filter>
     </ClInclude>
@@ -104,6 +101,9 @@
     </ClInclude>
     <ClInclude Include="CCollisionManager.h">
       <Filter>Engine\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="CMonster.h">
+      <Filter>GameObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -143,9 +143,6 @@
     <ClCompile Include="CEventManager.cpp">
       <Filter>Engine\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="CMonster.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="CComponent.cpp">
       <Filter>Engine\Component</Filter>
     </ClCompile>
@@ -154,6 +151,9 @@
     </ClCompile>
     <ClCompile Include="CCollisionManager.cpp">
       <Filter>Engine\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="CMonster.cpp">
+      <Filter>GameObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

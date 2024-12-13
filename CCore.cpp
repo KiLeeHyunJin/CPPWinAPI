@@ -7,6 +7,7 @@
 #include "CInputManager.h"
 #include "CSceneManager.h"
 #include "CEventManager.h"
+#include "CCollisionManager.h"
 
 #pragma region Scene Header
 #include "CScene.h"
@@ -38,6 +39,7 @@ void CCore::Init()
 	RENDER->Init();
 
 	SCENE->Init();
+	COLLISION->Init();
 }
 
 void CCore::Release()
@@ -49,6 +51,7 @@ void CCore::Release()
 	RENDER->Release();
 
 	SCENE->Release();
+	COLLISION->Release();
 
 	delete CORE;
 }
@@ -60,6 +63,8 @@ void CCore::Update()
 
 	INPUT->Update();
 	SCENE->Update();
+
+	COLLISION->PhysicsUpdate();
 }
 
 void CCore::Render() const
