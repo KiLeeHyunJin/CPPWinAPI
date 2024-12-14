@@ -24,3 +24,11 @@ enum class Layer
 	UI,
 	Size
 };
+
+enum class Component
+{
+	GameObject,
+	Collider,
+
+	Size
+};

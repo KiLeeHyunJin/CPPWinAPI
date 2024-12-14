@@ -4,13 +4,9 @@
 
 
 CInputManager::CInputManager()
-{
-	Init();
-}
+{	Init();	}
 
-CInputManager::~CInputManager()
-{
-}
+CInputManager::~CInputManager()	{	}
 
 void CInputManager::Init()
 {
@@ -19,22 +15,16 @@ void CInputManager::Init()
 	m_ptMousePos	= {0,0};
 }
 
-void CInputManager::Release()
-{
-}
+void CInputManager::Release()	{	}
 
 void CInputManager::Update()
 {
 	memcpy(m_arrPrevKey, m_arrCurKey, VKEY_SIZE);
 
 	if (GetFocus() != hWnd)
-	{
-		FocusOff();
-	}
+	{	FocusOff();	}
 	else
-	{
-		FocusOn();
-	}
+	{	FocusOn();	}
 }
 
 void CInputManager::FocusOn()
@@ -49,14 +39,11 @@ void CInputManager::FocusOn()
 }
 
 void CInputManager::FocusOff()
-{
-	memset(m_arrCurKey, 0, VKEY_SIZE);
-}
+{	memset(m_arrCurKey, 0, VKEY_SIZE);	}
+
 
 bool CInputManager::GetButton(const int keyId)		const
-{
-	return m_arrCurKey[keyId];
-}
+{	return m_arrCurKey[keyId];			}
 
 bool CInputManager::GetButtonDown(const int keyId)	const
 {
@@ -77,6 +64,4 @@ bool CInputManager::GetButtonUp(const int keyId)	const
 }
 
 POINT CInputManager::GetMousePos()
-{
-	return m_ptMousePos;
-}
+{	return m_ptMousePos;				}

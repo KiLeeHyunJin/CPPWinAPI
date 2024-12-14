@@ -6,6 +6,7 @@ class CScene;
 class CEventManager;
 class CComponent;
 class CCollider;
+class CCollisionManager;
 
 class CGameObject
 {
@@ -33,7 +34,9 @@ protected:
 	CCollider* GetCollider();
 
 	friend CScene;
+	friend CCollider;
 	friend CEventManager;
+	friend CCollisionManager;
 private:
 	virtual void Init()		= 0;
 	virtual void Release() = 0;
@@ -41,6 +44,7 @@ private:
 	virtual void Update()	= 0;
 	virtual void Render()	= 0;
 
+	virtual void OnCollision() {};
 
 	void SetSafeToDelete();
 	void SetReserveDelete(); 

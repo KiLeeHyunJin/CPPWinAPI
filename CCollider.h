@@ -1,6 +1,7 @@
 #pragma once
 #include "CComponent.h"
 class CGameObject;
+class CCollisionManager;
 
 class CCollider :
     public CComponent
@@ -14,6 +15,7 @@ public:
     Vector GetScale();
 
     friend CGameObject;
+    friend CCollisionManager;
 private:
     // CComponent을(를) 통해 상속됨
     void Init()             override;

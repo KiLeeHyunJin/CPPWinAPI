@@ -18,6 +18,7 @@ void CSceneStage01::Init()
 	pMonster->SetPosition(WINSIZEX, WINSIZEY);
 	pMonster->SetTarget(pPlayer);
 	AddGameObject(pMonster);
+
 }
 
 void CSceneStage01::Release()

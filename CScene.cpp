@@ -2,6 +2,8 @@
 #include "CScene.h"
 #include "CGameObject.h"
 
+
+
 CScene::CScene()
 {	}
 
@@ -12,6 +14,8 @@ void CScene::AddGameObject(CGameObject * pObj)
 {
 	m_listObj[(int)pObj->GetLayer()].push_back(pObj);
 	pObj->Init();
+
+	
 }
 
 void CScene::SceneInit()

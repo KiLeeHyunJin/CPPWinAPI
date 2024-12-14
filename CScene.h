@@ -4,7 +4,7 @@
 
 class CSceneManager;
 class CGameObject;
-
+class CCollisionManager;
 class CScene
 {
 public:
@@ -14,6 +14,7 @@ public:
 	void AddGameObject(CGameObject* pObj);
 
 	friend CSceneManager;
+	friend CCollisionManager;
 private:
 	//코어에서 호출  // 게임오브젝트 호출 및 virtual 메소드 호출
 	void SceneInit();

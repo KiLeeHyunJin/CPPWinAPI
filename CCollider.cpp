@@ -3,7 +3,6 @@
 #include "CRenderManager.h"
 
 #include "CGameObject.h"
-#include "Logger.h"
 
 CCollider::CCollider()
 {
@@ -64,7 +63,7 @@ void CCollider::Render()
 
 void CCollider::OnCollision(CCollider* pOtherCollider)
 {
-	Logger::Debug(L"충돌 감지");
+	GetOwner()->OnCollision();
 }
 
 void CCollider::SetPos(Vector pos)

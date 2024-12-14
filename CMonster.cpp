@@ -9,8 +9,7 @@
 CMonster::CMonster():
 	m_pTarget(nullptr)
 {
-	SetScale(Vector{10,10});
-	SetPosition(Vector{ 0,0 });
+
 	m_layer = Layer::Monster;
 }
 
@@ -25,7 +24,9 @@ void CMonster::SetTarget(CPlayer* pTargetPlayer)
 
 void CMonster::Init()
 {
-	AddCollider(Vector(90,90), Vector(0,0));
+	SetScale(Vector{ 10,10 });
+	SetPosition(Vector{ 0,0 });
+	AddCollider(Vector(20,20), Vector(0,0));
 
 }
 
@@ -61,6 +62,8 @@ void CMonster::Update()
 
 void CMonster::Render()
 {
+	return;
+
 	RENDER->Rect(
 		m_vecPos.x - m_vecScale.x,
 		m_vecPos.y - m_vecScale.y,

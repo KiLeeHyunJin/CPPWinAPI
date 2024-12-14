@@ -6,6 +6,8 @@
 #include "CRenderManager.h"
 #include "CEventManager.h"
 
+#include "Logger.h"
+
 
 CPlayer::CPlayer()
 {
@@ -50,11 +52,18 @@ void CPlayer::Update()
 
 void CPlayer::Render()
 {
+	return;
+
 	RENDER->SetPen(PenType::Solid, RGB(0, 255, 0), 1);
 	RENDER->Rect(
 		m_vecPos.x - m_vecScale.x, 
 		m_vecPos.y - m_vecScale.y,
 		m_vecPos.x + m_vecScale.x,
 		m_vecPos.y + m_vecScale.y);
+}
+
+void CPlayer::OnCollision()
+{
+	Logger::Debug(L"충돌 감지");
 }
 
