@@ -27,3 +27,10 @@ struct Vector
 		return Vector(x * other.x, y * other.y);
 	}
 };
+
+struct ColliderMatrix
+{
+	Vector pos;
+	Vector offset;
+	Vector scale;
+};

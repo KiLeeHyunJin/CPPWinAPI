@@ -1,4 +1,5 @@
 #pragma once
+#include "CPPWinAPI.h"
 
 class CGameObject;
 
@@ -9,6 +10,9 @@ public :
 	virtual ~CComponent();
 
 	CGameObject* GetOwner();
+	Component GetComponentType() const;
+protected:
+	Component m_component;
 
 	friend CGameObject;
 private:

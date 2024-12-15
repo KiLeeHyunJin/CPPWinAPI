@@ -24,6 +24,7 @@ void CPlayer::Init()
 	SetPosition(m_vecPos);
 
 	AddCollider(Vector(20, 20), Vector(0, 0));
+	AddCollider(Vector(20, 20), Vector(20, 0));
 }
 
 void CPlayer::Release()
@@ -62,7 +63,7 @@ void CPlayer::Render()
 		m_vecPos.y + m_vecScale.y);
 }
 
-void CPlayer::OnCollision()
+void CPlayer::OnCollisionStay(CCollider* pOtherCollider)
 {
 	Logger::Debug(L"충돌 감지");
 }

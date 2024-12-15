@@ -18,6 +18,7 @@ CCollisionManager::~CCollisionManager()
 
 void CCollisionManager::Init()
 {
+	CheckLayer(Layer::Character, Layer::Monster);
 }
 
 void CCollisionManager::PhysicsUpdate()
@@ -59,13 +60,12 @@ void CCollisionManager::CollisionUpdate(Layer leftLayer, Layer rightLayer)
 				continue;
 			}
 
-			CCollider* pLeftCollider = pLeftObj->GetCollider();
-			CCollider* pRightCollider = pRightObj->GetCollider();
-			if (IsCollision(pLeftCollider, pRightCollider))
-			{
-				pLeftCollider->OnCollision(pRightCollider);
-				pRightCollider->OnCollision(pLeftCollider);
-			}
+			list<CCollider*>* pLeftCollider  = pLeftObj->GetCollider();
+			list<CCollider*>* pRightCollider = pRightObj->GetCollider();
+			
+			bool reserveDelete = pLeftObj->GetReserveDelete() || pRightObj->GetReserveDelete();
+
+			IsCollisionList(pLeftCollider, pRightCollider, reserveDelete);
 		}
 	}
 }
@@ -92,13 +92,73 @@ void CCollisionManager::ResetLayer()
 	memset(m_arrLayer, 0, sizeof(bool) * (int)Layer::Size * (int)Layer::Size);
 }
 
+
+bool CCollisionManager::IsCollisionList(list<CCollider*>* pListLeftCollider, list<CCollider*>* pListRightCollider, bool reserveDelete)
+{
+	for (CCollider* pLeftCollider : *pListLeftCollider)
+	{
+		for (CCollider* pRightCollider : *pListRightCollider)
+		{
+
+			UINT64 id = CollisionID(pLeftCollider->GetID(), pRightCollider->GetID());
+			if (m_umapPrevCollision.find(id) == m_umapPrevCollision.end())
+			{
+				m_umapPrevCollision.insert(make_pair(id, false));
+			}
+			bool prevCollision = m_umapPrevCollision[id];
+			bool curCollision = IsCollision(pLeftCollider, pRightCollider);
+
+			if (curCollision)
+			{
+				if (prevCollision)
+				{
+
+					if (reserveDelete)
+					{
+						pLeftCollider->OnCollisionExit(pRightCollider);
+						pRightCollider->OnCollisionExit(pLeftCollider);
+						m_umapPrevCollision[id] = false;
+					}
+					else
+					{
+						pLeftCollider->OnCollisionStay(pRightCollider);
+						pRightCollider->OnCollisionStay(pLeftCollider);
+						m_umapPrevCollision[id] = true;
+					}	
+				}
+				else
+				{
+					if (reserveDelete)
+					{
+						return false;
+					}
+					pLeftCollider->OnCollisionEnter(pRightCollider);
+					pRightCollider->OnCollisionEnter(pLeftCollider);
+					m_umapPrevCollision[id] = true;
+				}
+				return true;
+			}
+			else
+			{
+				if (prevCollision)
+				{
+					pLeftCollider->OnCollisionExit(pRightCollider);
+					pRightCollider->OnCollisionExit(pLeftCollider);
+					m_umapPrevCollision[id] = false;
+				}
+			}
+		}
+	}
+	return false;
+}
+
 bool CCollisionManager::IsCollision(CCollider* pLeftCollider, CCollider* pRightCollider)
 {
-	const Vector vecLeftPos = pLeftCollider->GetPos();
-	const Vector vecRightPos = pRightCollider->GetPos();
+	const Vector vecLeftPos		= pLeftCollider->GetPos();
+	const Vector vecRightPos	= pRightCollider->GetPos();
 
-	const Vector vecLeftScale = pLeftCollider->GetScale();
-	const Vector vecRightScale = pRightCollider->GetScale();
+	const Vector vecLeftScale	= pLeftCollider->GetScale();
+	const Vector vecRightScale	= pRightCollider->GetScale();
 
 	float absXPos = abs(vecLeftPos.x - vecRightPos.x);
 	float absYPos = abs(vecLeftPos.y - vecRightPos.y);
@@ -112,4 +172,22 @@ bool CCollisionManager::IsCollision(CCollider* pLeftCollider, CCollider* pRightC
 		return true;
 	}
 	return false;
+}
+
+UINT64 CCollisionManager::CollisionID(UINT leftID, UINT rightID)
+{
+	UINT64 result = 0;
+
+	if (leftID > rightID)
+	{
+		result |= ((UINT64)leftID) << 32;
+		result |= (UINT64)rightID;
+	}
+	else
+	{
+		result |= ((UINT64)rightID) << 32;
+		result |= (UINT64)leftID;
+	}
+
+	return result;
 }

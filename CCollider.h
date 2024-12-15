@@ -1,5 +1,7 @@
 #pragma once
 #include "CComponent.h"
+
+
 class CGameObject;
 class CCollisionManager;
 
@@ -9,6 +11,9 @@ class CCollider :
 public:
     CCollider();
     virtual ~CCollider();
+
+    UINT GetID();
+    const wstring* GetName();
 
     Vector GetPos();
     Vector GetOffset();
@@ -24,16 +29,20 @@ private:
     void PhysicsUpdate()    override;
     void Render()           override;
 
-    void OnCollision(CCollider* pOtherCollider);
+    void OnCollisionEnter(CCollider* pOtherCollider);
+    void OnCollisionStay(CCollider* pOtherCollider) ;
+    void OnCollisionExit(CCollider* pOtherCollider) ;
 
     void SetPos(Vector pos);
     void SetOffset(Vector offset);
     void SetScale(Vector scale);
 
+    ColliderMatrix m_cmatrixTransform;
 
-    Vector m_vecPos;
-    Vector m_vecScale;
-    Vector m_vecOffset;
+    UINT32    m_uiID;
+    static UINT32 s_uiID;    
+
+    UINT32 m_uiCollisionCount;
 
 };
 

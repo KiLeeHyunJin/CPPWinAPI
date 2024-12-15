@@ -17,7 +17,7 @@ private:
     void Update()   override;
     void Render()   override;
 
-    void OnCollision() override;
+    void OnCollisionStay(CCollider* pOtherCollision) override;
 
     Vector m_vecSize    = {10,10};
     float m_fSpeed      = 100;

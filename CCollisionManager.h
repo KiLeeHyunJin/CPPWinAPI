@@ -15,17 +15,22 @@ private:
     virtual ~CCollisionManager();
 
     void Init();
-    void PhysicsUpdate();
-    void CollisionUpdate(Layer leftLayer, Layer rightLayer);
     void Release();
 
-    void CheckLayer(Layer left, Layer right);
-    void UnCheckLayer(Layer left, Layer right);
+    void PhysicsUpdate();
+    void CollisionUpdate(Layer leftLayer, Layer rightLayer);
+
+    void CheckLayer     (Layer left, Layer right);
+    void UnCheckLayer   (Layer left, Layer right);
     void ResetLayer();
 
+    bool IsCollisionList(list<CCollider*>* pLeftCollider, list<CCollider*>* pRightCollider, bool reserveDelete);
     bool IsCollision(CCollider* pLeftCollider, CCollider* pRightCollider);
+
+    UINT64 CollisionID(UINT leftID, UINT rightID);
     
-    bool m_arrLayer[(int)Layer::Size][(int)Layer::Size];
+    bool m_arrLayer[(int)Layer::Size][(int)Layer::Size];        //충돌 레이어
+    unordered_map<UINT64, bool> m_umapPrevCollision;              //충돌 상태
 };
 #define COLLISION CCollisionManager::GetInstance()
 

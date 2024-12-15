@@ -14,20 +14,18 @@ void CScene::AddGameObject(CGameObject * pObj)
 {
 	m_listObj[(int)pObj->GetLayer()].push_back(pObj);
 	pObj->Init();
-
-	
 }
 
 void CScene::SceneInit()
 {
 	Init();
-	for (int i = 0; i < (int)Layer::Size; i++)
-	{
-		for (CGameObject* pGameObject : m_listObj[i])
-		{
-			pGameObject->GameObjectInit();
-		}
-	}
+	//for (int i = 0; i < (int)Layer::Size; i++)
+	//{
+	//	for (CGameObject* pGameObject : m_listObj[i])
+	//	{
+	//		pGameObject->GameObjectInit();
+	//	}
+	//}
 }
 
 void CScene::SceneRelease()
@@ -48,6 +46,22 @@ void CScene::SceneUpdate()
 {
 	for (int i = 0; i < (int)Layer::Size; i++)
 	{
+		m_listObj[i].remove_if([](CGameObject* target)
+			{
+				if (target->GetSafeToDelete())
+				{
+					delete target;
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+			});
+	}
+
+	for (int i = 0; i < (int)Layer::Size; i++)
+	{
 		for (CGameObject* pGameObject : m_listObj[i])
 		{
 			if (pGameObject->GetReserveDelete() == false)
@@ -63,21 +77,7 @@ void CScene::SceneUpdate()
 
 	Update();
 
-	for (int i = 0; i < (int)Layer::Size; i++)
-	{
-		m_listObj[i].remove_if([](CGameObject* target)
-			{
-				if (target->GetSafeToDelete())
-				{
-					delete target;
-					return true;
-				}
-				else
-				{
-					return false;
-				}
-			});
-	}
+
 	
 }
 
