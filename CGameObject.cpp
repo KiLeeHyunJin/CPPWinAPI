@@ -65,18 +65,15 @@ bool CGameObject::GetSafeToDelete()
 
 void CGameObject::AddComponent(CComponent* component)
 {
-	Component com = component->GetComponentType();
-	map<Component, list<CComponent*>>::iterator iter = m_mapListComponent.find(com);
-	if (iter == m_mapListComponent.end())
+	ComponentType com = component->GetComponentType();
+	map<ComponentType, CComponent*>::iterator iter = m_mapComponent.find(com);
+	if (iter == m_mapComponent.end())
 	{
-		pair<Component, list<CComponent*>> newPair;
-		newPair.first = com;
-		newPair.second.push_back(component);
-		m_mapListComponent.insert(newPair);
+		m_mapComponent.insert(pair<ComponentType, CComponent*> (com, component));
 	}
 	else
 	{
-		iter->second.push_back(component);
+		//iter->second.push_back(component);
 	}
 	component->Init();
 	component->SetOwner(this);
@@ -84,59 +81,62 @@ void CGameObject::AddComponent(CComponent* component)
 
 void CGameObject::RemoveComponent(CComponent* component)
 {
-	map<Component, list<CComponent*>>::iterator iter = m_mapListComponent.find(component->GetComponentType());
-	if (iter == m_mapListComponent.end())
+	const ComponentType componentType = component->GetComponentType();
+	map<ComponentType, CComponent*>::iterator iter = m_mapComponent.find(componentType);
+	if (iter == m_mapComponent.end())
 	{
 		return;
 	}
-	iter->second.remove(component);
 	component->Release();
 	delete component;
+	m_mapComponent.erase(componentType);
 }
 
-void CGameObject::AddCollider(Vector scale, Vector offset)
+void CGameObject::AddCollider(ColliderType type, SHORT colliderId, Vector scale, Vector offset)
 {
-	CCollider* m_pCollider = new CCollider();
+	map<ComponentType, CComponent*>::iterator iter = m_mapComponent.find(ComponentType::Collider);
+	CCollider* m_pCollider = nullptr;
+	if (iter == m_mapComponent.end())
+	{
+		m_pCollider = new CCollider();
+	}
+	else
+	{
+		m_pCollider = reinterpret_cast<CCollider*>(iter->second);
+	}
 
-	m_pCollider->SetScale(scale);
-	m_pCollider->SetOffset(offset);
+	m_pCollider->SetCollider(type, colliderId, offset, scale);
 
 	AddComponent(m_pCollider);
 }
 
 void CGameObject::RemoveCollider()
 {
-	map<Component, list<CComponent*>>::iterator iter = m_mapListComponent.find(Component::Collider);
-	if (iter != m_mapListComponent.end())
+	map<ComponentType, CComponent*>::iterator iter = m_mapComponent.find(ComponentType::Collider);
+	if (iter != m_mapComponent.end())
 	{
-		if (iter->second.size() > 0)
-		{
-			CComponent* component = iter->second.front();
-			iter->second.pop_front();
-			component->Release();
-			delete component;
-		}
+		CComponent* component = iter->second;
+		iter->second = nullptr;
+		component->Release();
+		delete component;
 	}
 }
 
-list<CCollider*>* CGameObject::GetCollider()
+CCollider* CGameObject::GetCollider()
 {
-	map<Component, list<CComponent*>>::iterator iter = m_mapListComponent.find(Component::Collider);
-	if (iter == m_mapListComponent.end())
+	map<ComponentType, CComponent*>::iterator iter = m_mapComponent.find(ComponentType::Collider);
+	if (iter == m_mapComponent.end())
 	{
 		return nullptr;
 	}
-	return reinterpret_cast<list<CCollider*>*>(&iter->second);
+	return reinterpret_cast<CCollider*>(iter->second);
 }
 
 void CGameObject::GameObjectInit()
 {
-	for (pair<Component, list<CComponent*>> listComponent : m_mapListComponent)
+	for (pair<ComponentType, CComponent*> component : m_mapComponent)
 	{
-		for (CComponent* component : listComponent.second)
-		{
-			component->Init();
-		}
+		component.second->Init();
 	}
 	Init();
 }
@@ -145,23 +145,17 @@ void CGameObject::GameObjectUpdate()
 {
 	Update();
 
-	for (pair<Component, list<CComponent*>> listComponent : m_mapListComponent)
+	for (const pair<ComponentType, CComponent*>& component : m_mapComponent)
 	{
-		for (CComponent* component : listComponent.second)
-		{
-			component->Update();
-		}
+		component.second->Update();
 	}
 }
 
 void CGameObject::GameObjectPhysicsUpdate()
 {
-	for (pair<Component, list<CComponent*>> listComponent : m_mapListComponent)
+	for (const pair<ComponentType, CComponent*>& component : m_mapComponent)
 	{
-		for (CComponent* component : listComponent.second)
-		{
-			component->PhysicsUpdate();
-		}
+		component.second->PhysicsUpdate();
 	}
 }
 
@@ -169,28 +163,21 @@ void CGameObject::GameObjectRender()
 {
 	Render();
 
-	for (pair<Component, list<CComponent*>> listComponent : m_mapListComponent)
+	for (const pair<ComponentType, CComponent*>& component : m_mapComponent)
 	{
-		for (CComponent* component : listComponent.second)
-		{
-			component->Render();
-		}
+		component.second->Render();
 	}
 
 }
 
 void CGameObject::GameObjectRelease()
 {
-	for (pair<Component,list<CComponent*>> listComponent : m_mapListComponent)
+	for (const pair<ComponentType, CComponent*>& component : m_mapComponent)
 	{
-		for (CComponent* component : listComponent.second)
-		{
-			component->Release();
-			delete component;
-		}
-		listComponent.second.clear();
+		component.second->Release();
+		delete component.second;
 	}
-	m_mapListComponent.clear();
+	m_mapComponent.clear();
 	Release();
 }
 

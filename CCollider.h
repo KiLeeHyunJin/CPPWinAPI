@@ -5,6 +5,10 @@
 class CGameObject;
 class CCollisionManager;
 
+
+enum class ColliderType
+{    Rect, Circle,   };
+
 class CCollider :
     public CComponent
 {
@@ -16,8 +20,11 @@ public:
     const wstring* GetName();
 
     Vector GetPos();
-    Vector GetOffset();
-    Vector GetScale();
+    Vector GetOffset(SHORT offsetId);
+    Vector GetScale(SHORT scaleId);
+
+    Size GetBaseSize();
+    ColliderType GetType();
 
     friend CGameObject;
     friend CCollisionManager;
@@ -33,11 +40,15 @@ private:
     void OnCollisionStay(CCollider* pOtherCollider) ;
     void OnCollisionExit(CCollider* pOtherCollider) ;
 
-    void SetPos(Vector pos);
-    void SetOffset(Vector offset);
-    void SetScale(Vector scale);
+    void SetCollider(ColliderType type, SHORT colliderId,Vector offset, Vector scale);
 
-    ColliderMatrix m_cmatrixTransform;
+    void SetPos(Vector pos);
+    void SetType(ColliderType type);
+
+    map<SHORT, ColliderMatrix> m_mapColliderTransform;
+
+    Vector m_vecPos;
+    Size m_sizeBase;
 
     UINT32    m_uiID;
     static UINT32 s_uiID;    

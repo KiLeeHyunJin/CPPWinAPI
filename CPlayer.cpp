@@ -7,7 +7,7 @@
 #include "CEventManager.h"
 
 #include "Logger.h"
-
+#include "CCollider.h"
 
 CPlayer::CPlayer()
 {
@@ -23,8 +23,8 @@ void CPlayer::Init()
 	SetScale(m_vecSize);
 	SetPosition(m_vecPos);
 
-	AddCollider(Vector(20, 20), Vector(0, 0));
-	AddCollider(Vector(20, 20), Vector(20, 0));
+	AddCollider(ColliderType::Rect,		0, Vector(20, 20), Vector(0, 0));
+	AddCollider(ColliderType::Circle,	1, Vector(20, 20), Vector(20, 0));
 }
 
 void CPlayer::Release()

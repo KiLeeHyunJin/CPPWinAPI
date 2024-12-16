@@ -10,9 +10,9 @@ public :
 	virtual ~CComponent();
 
 	CGameObject* GetOwner();
-	Component GetComponentType() const;
+	ComponentType GetComponentType() const;
 protected:
-	Component m_component;
+	ComponentType m_component;
 
 	friend CGameObject;
 private:

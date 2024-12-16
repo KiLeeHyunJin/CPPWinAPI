@@ -3,7 +3,7 @@
 
 CComponent::CComponent():
     m_pOwner(nullptr),
-    m_component(Component::GameObject)
+    m_component(ComponentType::GameObject)
 {
 }
 
@@ -16,7 +16,7 @@ CGameObject* CComponent::GetOwner()
     return m_pOwner;
 }
 
-Component CComponent::GetComponentType() const
+ComponentType CComponent::GetComponentType() const
 {
     return m_component;
 }

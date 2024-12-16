@@ -7,6 +7,9 @@ class CEventManager;
 class CComponent;
 class CCollider;
 class CCollisionManager;
+enum class ColliderType;
+
+
 
 class CGameObject
 {
@@ -34,12 +37,12 @@ public:
 protected:
 
 	template<typename T>
-	T GetComponent(Component component);
+	T GetComponent(ComponentType component);
 
-	void AddCollider(Vector scale, Vector offset);
+	void AddCollider(ColliderType type, SHORT colliderId, Vector scale, Vector offset);
 	void RemoveCollider();
 
-	list<CCollider*>* GetCollider();
+	CCollider* GetCollider();
 
 	friend CScene;
 	friend CCollider;
@@ -81,7 +84,7 @@ protected:
 	wstring m_strName;
 
 private:
-	map<Component, list<CComponent*>> m_mapListComponent;
+	map<ComponentType, CComponent*> m_mapComponent;
 
 
 	bool m_bSafeToDelete;
@@ -89,7 +92,7 @@ private:
 };
 
 template<typename T>
-inline T CGameObject::GetComponent(Component component)
+inline T CGameObject::GetComponent(ComponentType component)
 {
 	return T();
 }

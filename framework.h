@@ -14,12 +14,13 @@
 #include <malloc.h>
 #include <memory.h>
 #include <tchar.h>
+#include <cassert>
 
 // C++ 표준 라이브러리
 #include <clocale>
 #include <chrono>
 #include <string>
-
+#include <cmath>
 
 //STL
 #include <vector>

@@ -24,8 +24,11 @@ private:
     void UnCheckLayer   (Layer left, Layer right);
     void ResetLayer();
 
-    bool IsCollisionList(list<CCollider*>* pLeftCollider, list<CCollider*>* pRightCollider, bool reserveDelete);
-    bool IsCollision(CCollider* pLeftCollider, CCollider* pRightCollider);
+    bool IsCollisionTrigger (CCollider* const pLeftCollider, CCollider* const pRightCollider, const bool reserveDelete);
+    bool IsCollisionCheck   (CCollider* const pLeftCollider, CCollider* const pRightCollider);
+    bool RectCollision(const ColliderMatrix& const matLeft, const ColliderMatrix& const matRight, Vector& const vecLeftPos, Vector& const vecRightPos);
+    bool CircleCollision(float leftRadius,float rightRadius, Vector& const vecLeftPos, Vector& const vecRightPos);
+    bool RectCircleCollision(const ColliderMatrix& const matRect, float circleRadius, Vector& const vecRectPos, Vector& const vecCirclePos);
 
     UINT64 CollisionID(UINT leftID, UINT rightID);
     

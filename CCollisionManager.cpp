@@ -13,8 +13,7 @@ CCollisionManager::CCollisionManager()
 }
 
 CCollisionManager::~CCollisionManager()
-{
-}
+{}
 
 void CCollisionManager::Init()
 {
@@ -60,12 +59,12 @@ void CCollisionManager::CollisionUpdate(Layer leftLayer, Layer rightLayer)
 				continue;
 			}
 
-			list<CCollider*>* pLeftCollider  = pLeftObj->GetCollider();
-			list<CCollider*>* pRightCollider = pRightObj->GetCollider();
+			CCollider* pLeftCollider  = pLeftObj->GetCollider();
+			CCollider* pRightCollider = pRightObj->GetCollider();
 			
 			bool reserveDelete = pLeftObj->GetReserveDelete() || pRightObj->GetReserveDelete();
 
-			IsCollisionList(pLeftCollider, pRightCollider, reserveDelete);
+			IsCollisionTrigger(pLeftCollider, pRightCollider, reserveDelete);
 		}
 	}
 }
@@ -93,58 +92,119 @@ void CCollisionManager::ResetLayer()
 }
 
 
-bool CCollisionManager::IsCollisionList(list<CCollider*>* pListLeftCollider, list<CCollider*>* pListRightCollider, bool reserveDelete)
+bool CCollisionManager::IsCollisionTrigger(CCollider* const pLeftCollider,CCollider* const pRightCollider, const bool reserveDelete)
 {
-	for (CCollider* pLeftCollider : *pListLeftCollider)
+	UINT64 id = CollisionID(pLeftCollider->GetID(), pRightCollider->GetID());
+	if (m_umapPrevCollision.find(id) == m_umapPrevCollision.end())
 	{
-		for (CCollider* pRightCollider : *pListRightCollider)
+		m_umapPrevCollision.insert(make_pair(id, false));
+	}
+	bool prevCollision = m_umapPrevCollision[id];
+	bool curCollision = IsCollisionCheck(pLeftCollider, pRightCollider);
+
+	if (curCollision)
+	{
+		if (prevCollision)
 		{
 
-			UINT64 id = CollisionID(pLeftCollider->GetID(), pRightCollider->GetID());
-			if (m_umapPrevCollision.find(id) == m_umapPrevCollision.end())
+			if (reserveDelete)
 			{
-				m_umapPrevCollision.insert(make_pair(id, false));
-			}
-			bool prevCollision = m_umapPrevCollision[id];
-			bool curCollision = IsCollision(pLeftCollider, pRightCollider);
-
-			if (curCollision)
-			{
-				if (prevCollision)
-				{
-
-					if (reserveDelete)
-					{
-						pLeftCollider->OnCollisionExit(pRightCollider);
-						pRightCollider->OnCollisionExit(pLeftCollider);
-						m_umapPrevCollision[id] = false;
-					}
-					else
-					{
-						pLeftCollider->OnCollisionStay(pRightCollider);
-						pRightCollider->OnCollisionStay(pLeftCollider);
-						m_umapPrevCollision[id] = true;
-					}	
-				}
-				else
-				{
-					if (reserveDelete)
-					{
-						return false;
-					}
-					pLeftCollider->OnCollisionEnter(pRightCollider);
-					pRightCollider->OnCollisionEnter(pLeftCollider);
-					m_umapPrevCollision[id] = true;
-				}
-				return true;
+				pLeftCollider->OnCollisionExit(pRightCollider);
+				pRightCollider->OnCollisionExit(pLeftCollider);
+				m_umapPrevCollision[id] = false;
 			}
 			else
 			{
-				if (prevCollision)
+				pLeftCollider->OnCollisionStay(pRightCollider);
+				pRightCollider->OnCollisionStay(pLeftCollider);
+				m_umapPrevCollision[id] = true;
+			}
+		}
+		else
+		{
+			if (reserveDelete)
+			{
+				return false;
+			}
+			pLeftCollider->OnCollisionEnter(pRightCollider);
+			pRightCollider->OnCollisionEnter(pLeftCollider);
+			m_umapPrevCollision[id] = true;
+		}
+		return true;
+	}
+	else
+	{
+		if (prevCollision)
+		{
+			pLeftCollider->OnCollisionExit(pRightCollider);
+			pRightCollider->OnCollisionExit(pLeftCollider);
+			m_umapPrevCollision[id] = false;
+		}
+	}
+	return false;
+}
+
+bool CCollisionManager::IsCollisionCheck(CCollider* const pLeftCollider, CCollider* const pRightCollider)
+{
+	const Size sizeLeft		= pLeftCollider->GetBaseSize();
+	const Size sizeRight	= pRightCollider->GetBaseSize();
+
+	if ((sizeLeft.left > sizeRight.right && sizeLeft.left > sizeRight.left) ||
+		(sizeLeft.right < sizeRight.left && sizeLeft.right < sizeRight.right))
+	{
+		return false;
+	}
+	if ((sizeLeft.top > sizeRight.top && sizeLeft.top > sizeRight.bottom) ||
+		(sizeLeft.bottom < sizeRight.top && sizeLeft.bottom < sizeRight.bottom))
+	{
+		return false;
+	}
+
+	Vector vecLeftPos	= pLeftCollider->GetPos();
+	Vector vecRightPos	= pRightCollider->GetPos();
+
+	for (const pair<SHORT, ColliderMatrix>& leftSize : pLeftCollider->m_mapColliderTransform)
+	{
+		for (const pair<SHORT, ColliderMatrix>& rightSize : pRightCollider->m_mapColliderTransform)
+		{
+
+			ColliderType leftType	= leftSize.second.type;
+			ColliderType rightType	= leftSize.second.type;
+
+			Vector leftPos	= vecLeftPos	+ leftSize.second.offset;
+			Vector rightPos = vecRightPos	+ rightSize.second.offset;
+
+			if (leftType	== ColliderType::Rect && 
+				rightType	== ColliderType::Rect)
+			{
+				if (RectCollision(leftSize.second, rightSize.second, leftPos, rightPos))
 				{
-					pLeftCollider->OnCollisionExit(pRightCollider);
-					pRightCollider->OnCollisionExit(pLeftCollider);
-					m_umapPrevCollision[id] = false;
+					return true;
+				}
+			}
+			if (leftType	== ColliderType::Circle && 
+				rightType	== ColliderType::Circle)
+			{
+				if (CircleCollision(leftSize.second.scale.x, rightSize.second.scale.x, leftPos, rightPos))
+				{
+					return true;
+				}
+			}
+			else
+			{
+				if (leftType == ColliderType::Rect)
+				{
+					if (RectCircleCollision(leftSize.second, rightSize.second.scale.x, leftPos, rightPos))
+					{
+						return true;
+					}
+				}
+				else
+				{
+					if (RectCircleCollision(rightSize.second, leftSize.second.scale.x, rightPos, leftPos))
+					{
+						return true;
+					}
 				}
 			}
 		}
@@ -152,13 +212,10 @@ bool CCollisionManager::IsCollisionList(list<CCollider*>* pListLeftCollider, lis
 	return false;
 }
 
-bool CCollisionManager::IsCollision(CCollider* pLeftCollider, CCollider* pRightCollider)
+bool CCollisionManager::RectCollision(const ColliderMatrix& const matLeft, const ColliderMatrix& const matRight, Vector& const vecLeftPos, Vector& const vecRightPos)
 {
-	const Vector vecLeftPos		= pLeftCollider->GetPos();
-	const Vector vecRightPos	= pRightCollider->GetPos();
-
-	const Vector vecLeftScale	= pLeftCollider->GetScale();
-	const Vector vecRightScale	= pRightCollider->GetScale();
+	const Vector vecLeftScale	= matRight.scale;
+	const Vector vecRightScale	= matLeft.scale;
 
 	float absXPos = abs(vecLeftPos.x - vecRightPos.x);
 	float absYPos = abs(vecLeftPos.y - vecRightPos.y);
@@ -170,6 +227,86 @@ bool CCollisionManager::IsCollision(CCollider* pLeftCollider, CCollider* pRightC
 		absYPos < disY)
 	{
 		return true;
+	}
+}
+
+bool CCollisionManager::CircleCollision(float leftRadius, float rightRadius, Vector& const vecLeftPos, Vector& const vecRightPos)
+{
+	float xDistance		= vecLeftPos.x	- vecRightPos.x;
+	float yDistance		= vecRightPos.y - vecRightPos.y;
+	float scaleDistance = (leftRadius + rightRadius) * 0.5f;
+
+	xDistance		*= xDistance;
+	yDistance		*= yDistance;
+	scaleDistance	*= scaleDistance;
+	
+	return scaleDistance >= xDistance + yDistance;
+}
+
+bool CCollisionManager::RectCircleCollision(const ColliderMatrix& const matRect, float circleRadius, Vector& const vecRectPos, Vector& const vecCirclePos)
+{
+	int totalPoint, xPoint, yPoint;
+
+	Vector rectScale = matRect.scale.x * 0.5f;
+	float circleScale = vecCirclePos.x * 0.5f;
+
+	if (circleScale < vecRectPos.x - (rectScale.x))
+	{
+		xPoint = -1;
+	}
+	else 
+	if (circleScale > vecRectPos.x + (rectScale.x))
+	{
+		xPoint = 1;
+	}
+	else
+	{
+		xPoint = 0;
+	}
+
+	if (circleScale < vecRectPos.y - (rectScale.y))
+	{
+		yPoint = -1;
+	}
+	else
+	if (circleScale > vecRectPos.y + (rectScale.y))
+	{
+		yPoint = 1;
+	}
+	else
+	{
+		yPoint = 0;
+	}
+	totalPoint = 3 * yPoint + xPoint;
+	switch (totalPoint)
+	{
+	case 0:
+		return true;
+
+	case -1:
+	case  1:
+		return (rectScale.x) + (circleRadius) > abs(vecRectPos.x - vecCirclePos.x);
+
+	case -3:
+	case  3:
+		return (rectScale.y) + (circleRadius) > abs(vecRectPos.y - vecCirclePos.y);
+
+	case -4:
+	case -2:
+	case  2:
+	case  4:
+	{
+		float cornerX = (xPoint < 0) ? vecRectPos.x - (rectScale.x) : vecRectPos.x + (rectScale.x);
+		float cornerY = (yPoint < 0) ? vecRectPos.y - (rectScale.y) : vecRectPos.y + (rectScale.y);
+		if (pow(cornerX - circleRadius, 2) + pow(cornerY - circleRadius, 2) < pow(circleRadius, 2))
+		{
+			return true;
+		}
+	}
+		break;
+
+	default:
+		break;
 	}
 	return false;
 }
