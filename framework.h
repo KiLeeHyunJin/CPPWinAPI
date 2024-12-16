@@ -35,4 +35,16 @@ using namespace std;
 //Util
 #include "SingleTon.h"
 #include "Struct.h"
+#include "Logger.h"
+
+
+//D2D
+#include <d2d1.h>
+#include <dwrite.h>
+#include <wincodec.h>
+#pragma comment(lib,"D2D1.lib")
+#pragma comment(lib,"Dwrite.lib")
+
+using namespace D2D1;
+
 

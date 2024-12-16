@@ -20,6 +20,8 @@ void CCollisionManager::Init()
 	CheckLayer(Layer::Character, Layer::Monster);
 }
 
+void CCollisionManager::Release()	{	}
+
 void CCollisionManager::PhysicsUpdate()
 {
 	for (int left = 0; left < (int)Layer::Size; left++)
@@ -69,27 +71,7 @@ void CCollisionManager::CollisionUpdate(Layer leftLayer, Layer rightLayer)
 	}
 }
 
-void CCollisionManager::Release()
-{
 
-}
-
-void CCollisionManager::CheckLayer(Layer left, Layer right)
-{
-	m_arrLayer[(int)left][(int)right] = true;
-	m_arrLayer[(int)right][(int)left] = true;
-}
-
-void CCollisionManager::UnCheckLayer(Layer left, Layer right)
-{
-	m_arrLayer[(int)left][(int)right] = false;
-	m_arrLayer[(int)right][(int)left] = false;
-}
-
-void CCollisionManager::ResetLayer()
-{
-	memset(m_arrLayer, 0, sizeof(bool) * (int)Layer::Size * (int)Layer::Size);
-}
 
 
 bool CCollisionManager::IsCollisionTrigger(CCollider* const pLeftCollider,CCollider* const pRightCollider, const bool reserveDelete)
@@ -146,8 +128,8 @@ bool CCollisionManager::IsCollisionTrigger(CCollider* const pLeftCollider,CColli
 
 bool CCollisionManager::IsCollisionCheck(CCollider* const pLeftCollider, CCollider* const pRightCollider)
 {
-	const Size sizeLeft		= pLeftCollider->GetBaseSize();
-	const Size sizeRight	= pRightCollider->GetBaseSize();
+	const RectSize sizeLeft		= pLeftCollider->GetBaseSize();
+	const RectSize sizeRight	= pRightCollider->GetBaseSize();
 
 	if ((sizeLeft.left > sizeRight.right && sizeLeft.left > sizeRight.left) ||
 		(sizeLeft.right < sizeRight.left && sizeLeft.right < sizeRight.right))
@@ -212,7 +194,7 @@ bool CCollisionManager::IsCollisionCheck(CCollider* const pLeftCollider, CCollid
 	return false;
 }
 
-bool CCollisionManager::RectCollision(const ColliderMatrix& const matLeft, const ColliderMatrix& const matRight, Vector& const vecLeftPos, Vector& const vecRightPos)
+bool CCollisionManager::RectCollision(const ColliderMatrix& matLeft, const ColliderMatrix& matRight, const Vector&  vecLeftPos, const Vector&  vecRightPos)
 {
 	const Vector vecLeftScale	= matRight.scale;
 	const Vector vecRightScale	= matLeft.scale;
@@ -228,9 +210,10 @@ bool CCollisionManager::RectCollision(const ColliderMatrix& const matLeft, const
 	{
 		return true;
 	}
+	return false;
 }
 
-bool CCollisionManager::CircleCollision(float leftRadius, float rightRadius, Vector& const vecLeftPos, Vector& const vecRightPos)
+bool CCollisionManager::CircleCollision(float leftRadius, float rightRadius, const Vector&  vecLeftPos, const Vector&  vecRightPos)
 {
 	float xDistance		= vecLeftPos.x	- vecRightPos.x;
 	float yDistance		= vecRightPos.y - vecRightPos.y;
@@ -243,9 +226,9 @@ bool CCollisionManager::CircleCollision(float leftRadius, float rightRadius, Vec
 	return scaleDistance >= xDistance + yDistance;
 }
 
-bool CCollisionManager::RectCircleCollision(const ColliderMatrix& const matRect, float circleRadius, Vector& const vecRectPos, Vector& const vecCirclePos)
+bool CCollisionManager::RectCircleCollision(const ColliderMatrix& matRect, float circleRadius, const Vector&  vecRectPos, const Vector&  vecCirclePos)
 {
-	int totalPoint, xPoint, yPoint;
+	int totalPoint, xPoint, yPoint = 0;
 
 	Vector rectScale = matRect.scale.x * 0.5f;
 	float circleScale = vecCirclePos.x * 0.5f;
@@ -277,22 +260,22 @@ bool CCollisionManager::RectCircleCollision(const ColliderMatrix& const matRect,
 	{
 		yPoint = 0;
 	}
+
 	totalPoint = 3 * yPoint + xPoint;
+	if (totalPoint < 0)
+	{		totalPoint * -1;	}
+	
 	switch (totalPoint)
 	{
 	case 0:
 		return true;
 
-	case -1:
 	case  1:
 		return (rectScale.x) + (circleRadius) > abs(vecRectPos.x - vecCirclePos.x);
 
-	case -3:
 	case  3:
 		return (rectScale.y) + (circleRadius) > abs(vecRectPos.y - vecCirclePos.y);
 
-	case -4:
-	case -2:
 	case  2:
 	case  4:
 	{
@@ -310,6 +293,26 @@ bool CCollisionManager::RectCircleCollision(const ColliderMatrix& const matRect,
 	}
 	return false;
 }
+
+
+void CCollisionManager::CheckLayer(Layer left, Layer right)
+{
+	m_arrLayer[(int)left][(int)right] = true;
+	m_arrLayer[(int)right][(int)left] = true;
+}
+
+void CCollisionManager::UnCheckLayer(Layer left, Layer right)
+{
+	m_arrLayer[(int)left][(int)right] = false;
+	m_arrLayer[(int)right][(int)left] = false;
+}
+
+void CCollisionManager::ResetLayer()
+{
+	memset(m_arrLayer, 0, sizeof(bool) * (int)Layer::Size * (int)Layer::Size);
+}
+
+
 
 UINT64 CCollisionManager::CollisionID(UINT leftID, UINT rightID)
 {

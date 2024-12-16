@@ -1,6 +1,8 @@
 #pragma once
 #include "CGameObject.h"
 
+class CImage;
+
 class CPlayer :
     public CGameObject
 {
@@ -19,7 +21,9 @@ private:
 
     void OnCollisionStay(CCollider* pOtherCollision) override;
 
-    Vector m_vecSize    = {10,10};
+    Vector m_vecSize    = {50,50};
     float m_fSpeed      = 100;
+
+    CImage* pImg;
 };
 

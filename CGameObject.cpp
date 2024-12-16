@@ -43,9 +43,9 @@ void CGameObject::SetScale(float x, float y)
 	m_vecScale.y = y;
 }
 
-const wstring* CGameObject::GetName()
+const wstring& CGameObject::GetName()
 {
-	return &m_strName;
+	return m_strName;
 }
 
 void CGameObject::SetName(const wstring& name)
@@ -69,11 +69,7 @@ void CGameObject::AddComponent(CComponent* component)
 	map<ComponentType, CComponent*>::iterator iter = m_mapComponent.find(com);
 	if (iter == m_mapComponent.end())
 	{
-		m_mapComponent.insert(pair<ComponentType, CComponent*> (com, component));
-	}
-	else
-	{
-		//iter->second.push_back(component);
+		m_mapComponent.insert(make_pair(com, component));
 	}
 	component->Init();
 	component->SetOwner(this);
@@ -134,7 +130,7 @@ CCollider* CGameObject::GetCollider()
 
 void CGameObject::GameObjectInit()
 {
-	for (pair<ComponentType, CComponent*> component : m_mapComponent)
+	for (const pair<ComponentType, CComponent*>& component : m_mapComponent)
 	{
 		component.second->Init();
 	}

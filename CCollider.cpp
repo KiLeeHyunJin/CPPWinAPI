@@ -50,12 +50,22 @@ Vector CCollider::GetScale(SHORT scaleId)
 	return iter->second.scale;
 }
 
-Size CCollider::GetBaseSize()
+RectSize CCollider::GetBaseSize()
 {
 	return m_sizeBase + m_vecPos;
 }
 
-const wstring* CCollider::GetName()
+ColliderType CCollider::GetType(SHORT colliderId)
+{
+	map<SHORT, ColliderMatrix>::iterator iter = m_mapColliderTransform.find(colliderId);
+	if (iter == m_mapColliderTransform.end())
+	{
+		return ColliderType::Rect;
+	}
+	return iter->second.type;
+}
+
+const wstring& CCollider::GetName()
 {
 	return GetOwner()->GetName();;
 }
@@ -73,7 +83,8 @@ void CCollider::PhysicsUpdate()
 void CCollider::Render()
 {
 #ifdef _DEBUG
-	RENDER->SetPen(PenType::Solid, RGB(255, 0, 0));
+	return;
+	/*RENDER->SetPen(PenType::Solid, RGB(255, 0, 0));
 	RENDER->SetBrush(BrushType::Solid);
 
 
@@ -98,7 +109,7 @@ void CCollider::Render()
 				m_vecPos.y + (offset.y),
 				scale.x);
 		}
-	}
+	}*/
 	
 #endif
 }
@@ -150,7 +161,7 @@ void CCollider::SetCollider(ColliderType type, SHORT colliderId, Vector offset, 
 		}
 	}
 	m_mapColliderTransform.insert(
-		pair<SHORT, ColliderMatrix> (colliderId, ColliderMatrix(type, offset, scale))
+		make_pair(colliderId, ColliderMatrix(type, offset, scale))
 	);
 }
 

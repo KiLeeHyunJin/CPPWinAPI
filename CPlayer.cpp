@@ -5,13 +5,17 @@
 #include "CTimeManager.h"
 #include "CRenderManager.h"
 #include "CEventManager.h"
+#include "CPathManager.h"
 
 #include "Logger.h"
 #include "CCollider.h"
+#include "CResourceManager.h"
 
 CPlayer::CPlayer()
 {
 	m_layer = Layer::Character;
+	//pImg = RESOURCE->LoadImg(L"Player", L"Image\\Player.bmp");
+
 }
 
 CPlayer::~CPlayer()
@@ -20,6 +24,8 @@ CPlayer::~CPlayer()
 
 void CPlayer::Init()
 {
+	//pImg->Load(GETPATH + );
+
 	SetScale(m_vecSize);
 	SetPosition(m_vecPos);
 
@@ -53,14 +59,21 @@ void CPlayer::Update()
 
 void CPlayer::Render()
 {
-	return;
 
-	RENDER->SetPen(PenType::Solid, RGB(0, 255, 0), 1);
-	RENDER->Rect(
-		m_vecPos.x - m_vecScale.x, 
-		m_vecPos.y - m_vecScale.y,
-		m_vecPos.x + m_vecScale.x,
-		m_vecPos.y + m_vecScale.y);
+	//RENDER->SetPen(PenType::Solid, RGB(0, 255, 0), 1);
+	//RENDER->Rect(
+	//	m_vecPos.x - m_vecScale.x, 
+	//	m_vecPos.y - m_vecScale.y,
+	//	m_vecPos.x + m_vecScale.x,
+	//	m_vecPos.y + m_vecScale.y);
+
+	//RENDER->TransparentImage(pImg,
+	//	m_vecPos,
+	//	m_vecScale);
+
+	RENDER->FillEllipse(m_vecPos, 100, Color(100, 0, 100, 0.5f), 1);
+
+
 }
 
 void CPlayer::OnCollisionStay(CCollider* pOtherCollider)

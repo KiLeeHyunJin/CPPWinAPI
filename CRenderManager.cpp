@@ -1,7 +1,7 @@
 #include "framework.h"
 #include "CRenderManager.h"
 #include "CPPWinAPI.h"
-
+#include "CImage.h"
 
 CRenderManager::CRenderManager():
 	m_hBmp(0), m_hdc(0), m_hMemDC(0), 
@@ -25,6 +25,76 @@ void CRenderManager::Init()
 
 	HBITMAP oldBitMap = static_cast<HBITMAP>(SelectObject(m_hMemDC, m_hBmp));
 	DeleteObject(oldBitMap);
+
+
+	HRESULT hResult;
+
+	hResult = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, &m_pFactory); //D2D 팩토리 생성
+	assert(S_OK == hResult && L"D2D1CreateFactory Create Failed");
+
+	hResult = m_pFactory->CreateHwndRenderTarget	//윈도우 클라이언트 영역을 그리기 위한 RenderTarget생성
+	(
+		RenderTargetProperties(),
+		HwndRenderTargetProperties
+		(
+			hWnd,
+			SizeU(WINSIZEX, WINSIZEY),
+			D2D1_PRESENT_OPTIONS_IMMEDIATELY
+		),
+		&m_pRenderTarget
+	);
+	assert(S_OK == hResult && L"HwnRenderTarget Create Failed");
+
+
+	hResult = CoInitialize(nullptr);	//WICImagingFactory 생성
+	assert(S_OK == hResult && L"CoInitialize Failed");
+
+	hResult = CoCreateInstance(CLSID_WICImagingFactory, nullptr, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&m_pImageFactory)); //
+	assert(S_OK == hResult && L"ImageFactory Create Failed");
+
+	hResult = DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(m_pWriteFactory), reinterpret_cast<IUnknown**>(&m_pWriteFactory));
+	assert(S_OK == hResult && L"WriteFactory Create Failed");
+
+	//텍스트 포맷 생성
+	hResult = m_pWriteFactory->CreateTextFormat(
+		L"굴림"
+		,NULL, DWRITE_FONT_WEIGHT_NORMAL, DWRITE_FONT_STYLE_NORMAL, DWRITE_FONT_STRETCH_NORMAL,
+		10,
+		L"ko", &m_pDefaultTextFormat);
+	assert(S_OK == hResult && L"TextFormat Create Failed");
+
+	hResult = m_pDefaultTextFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
+	assert(S_OK == hResult && L"TextFormat Set Alignment Failed");
+
+	hResult = m_pDefaultTextFormat->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_CENTER);
+	assert(S_OK == hResult && L"TextFormat SetParagraphAlignment Failed");
+
+	//브러시 생성
+	hResult = m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(.0f, .0f, .0f), &m_pDefaultBrush);
+	assert(S_OK == hResult && L"SolidColorBrush Create Failed");
+
+	//텍스트 포맷 생성
+	hResult = m_pWriteFactory->CreateTextFormat(
+		L"굴림"
+		, NULL, DWRITE_FONT_WEIGHT_NORMAL, DWRITE_FONT_STYLE_NORMAL, DWRITE_FONT_STRETCH_NORMAL,
+		10,
+		L"ko", &m_pCurTextFormat);
+	assert(S_OK == hResult && L"TextFormat Create Failed");
+
+	hResult = m_pCurTextFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
+	assert(S_OK == hResult && L"TextFormat Set Alignment Failed");
+
+	hResult = m_pCurTextFormat->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_CENTER);
+	assert(S_OK == hResult && L"TextFormat SetParagraphAlignment Failed");
+
+	//브러시 생성
+	hResult = m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(.0f, .0f, .0f), &m_pCurBrush);
+	assert(S_OK == hResult && L"SolidColorBrush Create Failed");
+
+
+
+
+
 }
 
 void CRenderManager::Release()
@@ -47,6 +117,55 @@ void CRenderManager::Release()
 	m_typePen = PenType::Solid;
 	m_colorPen = RGB(0, 0, 0);
 	m_iPenWidth = 1;
+
+	
+	if (m_pCurBrush != nullptr)
+	{
+		m_pCurBrush->Release();
+		m_pCurBrush = nullptr;
+	}
+
+	if (m_pCurTextFormat != nullptr)
+	{
+		m_pCurTextFormat->Release();
+		m_pCurTextFormat = nullptr;
+	}
+
+	if (m_pDefaultBrush != nullptr)
+	{
+		m_pDefaultBrush->Release();
+		m_pDefaultBrush = nullptr;
+	}
+
+	if (m_pDefaultTextFormat != nullptr)
+	{
+		m_pDefaultTextFormat->Release();
+		m_pDefaultTextFormat = nullptr;
+	}
+
+	if (m_pWriteFactory != nullptr)
+	{
+		m_pWriteFactory->Release();
+		m_pWriteFactory = nullptr;
+	}
+
+	if (m_pImageFactory != nullptr)
+	{
+		m_pImageFactory->Release();
+		m_pImageFactory = nullptr;
+	}
+
+	if (m_pRenderTarget != nullptr)
+	{
+		m_pRenderTarget->Release();
+		m_pRenderTarget = nullptr;
+	}
+
+	if (m_pFactory != nullptr)
+	{
+		m_pFactory->Release();
+		m_pFactory = nullptr;
+	}
 }
 
 
@@ -55,17 +174,20 @@ void CRenderManager::Release()
 /// </summary>
 void CRenderManager::BeginDraw()
 {	
-	PatBlt(
-		m_hMemDC, 0, 0, WINSIZEX, WINSIZEY, 
-		WHITENESS);	
+	//PatBlt(
+	//	m_hMemDC, 0, 0, WINSIZEX, WINSIZEY, 
+	//	WHITENESS);	
+	m_pRenderTarget->BeginDraw();
+
 }
 
 /// 프론트 버퍼에 복사
 void CRenderManager::EndDraw()
 {
-	BitBlt(
-		m_hdc, 0, 0, WINSIZEX, WINSIZEY, 
-		m_hMemDC, 0, 0, SRCCOPY);
+	//BitBlt(
+	//	m_hdc, 0, 0, WINSIZEX, WINSIZEY, 
+	//	m_hMemDC, 0, 0, SRCCOPY);
+	m_pRenderTarget->EndDraw();
 }
 
 void CRenderManager::SelectPenNBruchObject(HPEN prevPen, HBRUSH prevBrush) const
@@ -73,6 +195,7 @@ void CRenderManager::SelectPenNBruchObject(HPEN prevPen, HBRUSH prevBrush) const
 	SelectObject(m_hMemDC, prevPen);
 	SelectObject(m_hMemDC, prevBrush);
 }
+
 
 void CRenderManager::Rect(float startX, float startY, float endX, float endY) const
 {
@@ -116,6 +239,71 @@ void CRenderManager::Text(float x, float y, wstring str) const
 	TextOutW(m_hMemDC, (int)x, (int)y, str.c_str(), (int)str.size());
 
 	SelectPenNBruchObject(prevPen, prevBrush);
+}
+
+void CRenderManager::BitImage(CImage* pImg, float startXPos, float startYPos, float endXPos, float endYPos)
+{
+	BitBlt(m_hMemDC, 
+		(int)startXPos, 
+		(int)startYPos, 
+		(int)endXPos, 
+		(int)endYPos, 
+		pImg->GetImgDC(), 0, 0, SRCCOPY);
+}
+
+void CRenderManager::BitImage(CImage* pImg, Vector vecPos, Vector vecScale)
+{
+	BitBlt(m_hMemDC, 
+		(int)vecPos.x - (int)vecScale.x,
+		(int)vecPos.y - (int)vecScale.y,
+		(int)vecPos.x + (int)vecScale.x,
+		(int)vecPos.y + (int)vecScale.y,
+		pImg->GetImgDC(), 0, 0, SRCCOPY);
+}
+
+void CRenderManager::StrectchImage(CImage* pImg, float startXPos, float startYPos, float endXPos, float endYPos)
+{
+	StretchBlt(m_hMemDC, 
+		(int)startXPos, 
+		(int)startYPos, 
+		(int)endXPos - (int)startXPos, 
+		(int)endYPos - (int)startYPos,
+		pImg->GetImgDC(), 0, 0, (int)pImg->GetBmpWidth(), (int)pImg->GetBmpHeight(), SRCCOPY);
+}
+
+void CRenderManager::StrectchImage(CImage* pImg, Vector vecPos, Vector vecScale)
+{
+	StretchBlt(m_hMemDC, 
+		(int)vecPos.x - (int)vecScale.x,
+		(int)vecPos.y - (int)vecScale.y,
+		((int)vecPos.x + (int)vecScale.x) - ((int)vecPos.x - (int)vecScale.x),
+		((int)vecPos.y + (int)vecScale.y) - ((int)vecPos.y - (int)vecScale.y),
+		pImg->GetImgDC(), 0, 0, (int)pImg->GetBmpWidth(), (int)pImg->GetBmpHeight(), SRCCOPY);
+}
+
+void CRenderManager::TransparentImage(CImage* pImg, float startXPos, float startYPos, float endXPos, float endYPos, COLORREF transparent)
+{
+	TransparentBlt(m_hMemDC, 
+		(int)startXPos, 
+		(int)startYPos, 
+		(int)endXPos - (int)startXPos, 
+		(int)endYPos - (int)startYPos,
+		pImg->GetImgDC(), 0, 0, (int)pImg->GetBmpWidth(), (int)pImg->GetBmpHeight(), (UINT)transparent);
+}
+
+void CRenderManager::TransparentImage(CImage* pImg, Vector vecPos, Vector vecScale, COLORREF transparent)
+{
+	TransparentBlt(m_hMemDC, 
+		(int)vecPos.x - (int)vecScale.x, 
+		(int)vecPos.y - (int)vecScale.y, 
+		((int)vecPos.x + (int)vecScale.x) - ((int)vecPos.x - (int)vecScale.x), 
+		((int)vecPos.y + (int)vecScale.y) - ((int)vecPos.y - (int)vecScale.y),
+		pImg->GetImgDC(), 0, 0, (int)pImg->GetBmpWidth(), (int)pImg->GetBmpHeight(), (UINT)transparent);
+}
+
+HDC CRenderManager::GetMemDC()
+{
+	return m_hMemDC;
 }
 
 
@@ -223,3 +411,125 @@ void CRenderManager::SetBrush(BrushType brushType , COLORREF color )
 	m_colorBrush = color;
 }
 
+void CRenderManager::SetBrush(Color color)
+{
+	m_pDefaultBrush->SetColor(
+		D2D1::ColorF(
+			(FLOAT)	color.r / 255.f,
+			(FLOAT)	color.g / 255.f,
+			(FLOAT)	color.b / 255.f,
+					color.a / 255.f)
+	);
+
+}
+
+void CRenderManager::SetTextFormat(wstring fontName, DWRITE_FONT_WEIGHT fontWeight, DWRITE_FONT_STYLE fontstyle, DWRITE_FONT_STRETCH fontStretch, FLOAT fontSize, wstring localName)
+{
+	DWRITE_TEXT_ALIGNMENT textAlignment = m_pDefaultTextFormat->GetTextAlignment();
+	DWRITE_PARAGRAPH_ALIGNMENT paragraphAlignment = m_pDefaultTextFormat->GetParagraphAlignment();
+
+	if (m_pDefaultTextFormat != nullptr)
+	{
+		m_pDefaultTextFormat = nullptr;
+		m_pDefaultTextFormat->Release();
+	}
+	HRESULT hResult = m_pWriteFactory->CreateTextFormat(
+		fontName.c_str(),
+		NULL,
+		fontWeight,
+		fontstyle,
+		fontStretch,
+		fontSize,
+		localName.c_str(),
+		&m_pDefaultTextFormat
+	);
+	assert(S_OK == hResult && L"TextFormat Create Failed");
+}
+
+void CRenderManager::SetTextAlignment(DWRITE_TEXT_ALIGNMENT textAlignment)
+{
+	HRESULT hResult = m_pDefaultTextFormat->SetTextAlignment(textAlignment);
+	assert(S_OK == hResult && L"TextFormat Set Alignment Failed");
+}
+
+void CRenderManager::SetTextParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT paragraphAlignment)
+{
+	HRESULT hResult = m_pDefaultTextFormat->SetParagraphAlignment(paragraphAlignment);
+	assert(S_OK == hResult && L"TextFormat SetParagraphAlignment Failed");
+}
+
+
+
+void CRenderManager::Image(CImage* pImg, Vector startPoint, Vector endPoint, float alph)
+{
+	D2D1_RECT_F imgRect = { startPoint.x, startPoint.y, endPoint.x, endPoint.y };
+	m_pRenderTarget->DrawBitmap(pImg->GetImage(), imgRect);
+}
+
+void CRenderManager::FrameImage(CImage* pImg, float dstX, float dstY, float dstW, float dstH, float srcX, float srcY, float srcW, float srcH, float alph)
+{
+	D2D1_RECT_F imgRect = { dstX,dstY, dstW,dstH };
+	D2D1_RECT_F srcRect = { srcX,srcY, srcW,srcH };
+	m_pRenderTarget->DrawBitmap(pImg->GetImage(), imgRect, 1.0f, D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR, srcRect);
+}
+
+IWICImagingFactory* CRenderManager::GetImageFactory()
+{
+	return m_pImageFactory;
+}
+
+ID2D1HwndRenderTarget* CRenderManager::GetRenderTarget()
+{
+	return m_pRenderTarget;
+}
+
+void CRenderManager::FillEllipse(Vector startPoint, float radius)
+{
+	D2D1_ELLIPSE ellipse = { startPoint.x, startPoint.y ,radius , radius };
+	m_pRenderTarget->FillEllipse(ellipse, m_pDefaultBrush);
+}
+
+void CRenderManager::FillEllipse(Vector startPoint, float radius, Color color, float strokeWidth)
+{
+	D2D1_ELLIPSE ellipse = { startPoint.x, startPoint.y ,radius , radius };
+	m_pCurBrush->SetColor(D2D1::ColorF(
+		(FLOAT)color.r / 255.f,
+		(FLOAT)color.g / 255.f,
+		(FLOAT)color.b / 255.f,
+		color.a));
+	m_pRenderTarget->FillEllipse(ellipse, m_pCurBrush);
+}
+
+void CRenderManager::FrameCircle(Vector startPoint, float radius)
+{
+	D2D1_ELLIPSE ellipse = { startPoint.x, startPoint.y ,radius , radius };
+	m_pRenderTarget->DrawEllipse(ellipse, m_pDefaultBrush);
+}
+
+void CRenderManager::FrameCircle(Vector startPoint, float radius, Color color, float strokeWidth)
+{
+	D2D1_ELLIPSE ellipse = { startPoint.x, startPoint.y , radius , radius };
+	m_pCurBrush->SetColor(D2D1::ColorF(
+		(FLOAT)color.r / 255.f,
+		(FLOAT)color.g / 255.f,
+		(FLOAT)color.b / 255.f,
+		color.a));
+	m_pRenderTarget->DrawEllipse(ellipse, m_pCurBrush, strokeWidth);
+}
+
+void CRenderManager::FillCircle(Vector startPoint, float radius)
+{
+	D2D1_ELLIPSE ellipse = { startPoint.x, startPoint.y ,radius , radius };
+	m_pRenderTarget->FillEllipse(ellipse, m_pDefaultBrush);
+}
+
+void CRenderManager::FillCircle(Vector startPoint, float radius, Color color, float strokeWidth)
+{
+	D2D1_ELLIPSE ellipse = { startPoint.x, startPoint.y ,radius , radius };
+	m_pCurBrush->SetColor(D2D1::ColorF(
+		(FLOAT)color.r / 255.f,
+		(FLOAT)color.g / 255.f,
+		(FLOAT)color.b / 255.f,
+		color.a));
+	m_pRenderTarget->FillEllipse(ellipse, m_pCurBrush);
+}

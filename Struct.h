@@ -117,26 +117,26 @@ struct Vector
 	}
 };
 
-struct Size
+struct RectSize
 {
 	float left;
 	float right;
 	float top;
 	float bottom;
-	Size() { left = 0; right = 0; top = 0; bottom = 0; }
-	Size(float left, float right, float top, float bottom)
+	RectSize() { left = 0; right = 0; top = 0; bottom = 0; }
+	RectSize(float left, float right, float top, float bottom)
 	{
 		this->left = left; this->right = right;
 		this->top = top; this->bottom = bottom;
 	}
 
-	Size operator+(const Vector& other)
+	RectSize operator+(const Vector& other)
 	{
-		return Size(left + other.x, right + other.x, top + other.y, bottom + other.y);
+		return RectSize(left + other.x, right + other.x, top + other.y, bottom + other.y);
 	}
-	Size operator-(const Vector& other)
+	RectSize operator-(const Vector& other)
 	{
-		return Size(left - other.x, right - other.x, top - other.y, bottom - other.y);
+		return RectSize(left - other.x, right - other.x, top - other.y, bottom - other.y);
 	}
 };
 

@@ -1,37 +1,22 @@
 #pragma once
-template<typename T>
+
+template <typename T>
 class SingleTon
 {
+protected:
+	SingleTon() {};
+	virtual ~SingleTon() {};
+
 public:
 	static T* GetInstance()
 	{
-		if (instance == nullptr)
-		{
-			instance = new T;
-		}
-		return instance;
-	};
-
-protected:
-	static T* instance;
-
-	SingleTon()				{};
-	virtual ~SingleTon()	
-	{
-		ReleaseInstance(); 
-	};
-
-	static void ReleaseInstance()
-	{
-		if (instance != nullptr)
-		{
-			instance = nullptr;
-		}
+		static T instance;
+		return &instance;
 	}
 };
 
-template<typename T>
-T* SingleTon<T>::instance = nullptr;
+#define SINGLE(A)	A::GetInstance()
+
 
 
 

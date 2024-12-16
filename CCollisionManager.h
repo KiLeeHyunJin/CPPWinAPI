@@ -26,9 +26,9 @@ private:
 
     bool IsCollisionTrigger (CCollider* const pLeftCollider, CCollider* const pRightCollider, const bool reserveDelete);
     bool IsCollisionCheck   (CCollider* const pLeftCollider, CCollider* const pRightCollider);
-    bool RectCollision(const ColliderMatrix& const matLeft, const ColliderMatrix& const matRight, Vector& const vecLeftPos, Vector& const vecRightPos);
-    bool CircleCollision(float leftRadius,float rightRadius, Vector& const vecLeftPos, Vector& const vecRightPos);
-    bool RectCircleCollision(const ColliderMatrix& const matRect, float circleRadius, Vector& const vecRectPos, Vector& const vecCirclePos);
+    bool RectCollision(const ColliderMatrix& matLeft, const ColliderMatrix& matRight, const Vector&  vecLeftPos, const Vector&  vecRightPos);
+    bool CircleCollision(float leftRadius,float rightRadius, const Vector&  vecLeftPos, const Vector&  vecRightPos);
+    bool RectCircleCollision(const ColliderMatrix& matRect, float circleRadius, const Vector&  vecRectPos, const Vector&  vecCirclePos);
 
     UINT64 CollisionID(UINT leftID, UINT rightID);
     

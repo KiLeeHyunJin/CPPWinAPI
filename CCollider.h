@@ -1,6 +1,6 @@
 #pragma once
 #include "CComponent.h"
-
+#include "Struct.h"
 
 class CGameObject;
 class CCollisionManager;
@@ -17,14 +17,14 @@ public:
     virtual ~CCollider();
 
     UINT GetID();
-    const wstring* GetName();
+    const wstring& GetName();
 
     Vector GetPos();
     Vector GetOffset(SHORT offsetId);
     Vector GetScale(SHORT scaleId);
 
-    Size GetBaseSize();
-    ColliderType GetType();
+    RectSize GetBaseSize();
+    ColliderType GetType(SHORT colliderId);
 
     friend CGameObject;
     friend CCollisionManager;
@@ -43,12 +43,12 @@ private:
     void SetCollider(ColliderType type, SHORT colliderId,Vector offset, Vector scale);
 
     void SetPos(Vector pos);
-    void SetType(ColliderType type);
+    //void SetType(ColliderType type);
 
     map<SHORT, ColliderMatrix> m_mapColliderTransform;
 
     Vector m_vecPos;
-    Size m_sizeBase;
+    RectSize m_sizeBase;
 
     UINT32    m_uiID;
     static UINT32 s_uiID;    

@@ -22,9 +22,6 @@
     <Filter Include="Engine\Manager">
       <UniqueIdentifier>{bb1cd4f6-66b7-475a-bd82-4381b2676908}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\Manager\Resource">
-      <UniqueIdentifier>{966df866-84e9-4fa6-8fb5-3ab50deffbce}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Util">
       <UniqueIdentifier>{6f780665-b434-4ee6-9ba6-d8a68c4028a2}</UniqueIdentifier>
     </Filter>
@@ -36,6 +33,9 @@
     </Filter>
     <Filter Include="Engine\Component">
       <UniqueIdentifier>{c7f04a38-d26e-4228-837f-4c8820605531}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Resource">
+      <UniqueIdentifier>{966df866-84e9-4fa6-8fb5-3ab50deffbce}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -64,7 +64,7 @@
       <Filter>Engine\Manager</Filter>
     </ClInclude>
     <ClInclude Include="CScene.h">
-      <Filter>Engine\Manager\Resource</Filter>
+      <Filter>Engine\Resource</Filter>
     </ClInclude>
     <ClInclude Include="SingleTon.h">
       <Filter>Util</Filter>
@@ -79,7 +79,7 @@
       <Filter>Engine\Manager</Filter>
     </ClInclude>
     <ClInclude Include="CGameObject.h">
-      <Filter>Engine\Manager\Resource</Filter>
+      <Filter>Engine\Resource</Filter>
     </ClInclude>
     <ClInclude Include="Struct.h">
       <Filter>Util</Filter>
@@ -105,6 +105,18 @@
     <ClInclude Include="CMonster.h">
       <Filter>GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="CPathManager.h">
+      <Filter>Engine\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="CResource.h">
+      <Filter>Engine\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="CImage.h">
+      <Filter>Engine\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="CResourceManager.h">
+      <Filter>Engine\Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CPPWinAPI.cpp">
@@ -123,7 +135,7 @@
       <Filter>Engine\Manager</Filter>
     </ClCompile>
     <ClCompile Include="CScene.cpp">
-      <Filter>Engine\Manager\Resource</Filter>
+      <Filter>Engine\Resource</Filter>
     </ClCompile>
     <ClCompile Include="CSceneTitle.cpp">
       <Filter>Scene</Filter>
@@ -135,7 +147,7 @@
       <Filter>Engine\Manager</Filter>
     </ClCompile>
     <ClCompile Include="CGameObject.cpp">
-      <Filter>Engine\Manager\Resource</Filter>
+      <Filter>Engine\Resource</Filter>
     </ClCompile>
     <ClCompile Include="CPlayer.cpp">
       <Filter>GameObject</Filter>
@@ -154,6 +166,18 @@
     </ClCompile>
     <ClCompile Include="CMonster.cpp">
       <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="CPathManager.cpp">
+      <Filter>Engine\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="CResource.cpp">
+      <Filter>Engine\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="CImage.cpp">
+      <Filter>Engine\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="CResourceManager.cpp">
+      <Filter>Engine\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

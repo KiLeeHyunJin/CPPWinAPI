@@ -44,11 +44,11 @@ void CMonster::Render()
 {
 	return;
 
-	RENDER->Rect(
-		m_vecPos.x - m_vecScale.x,
-		m_vecPos.y - m_vecScale.y,
-		m_vecPos.x + m_vecScale.x,
-		m_vecPos.y + m_vecScale.y);
+	//RENDER->Rect(
+	//	m_vecPos.x - m_vecScale.x,
+	//	m_vecPos.y - m_vecScale.y,
+	//	m_vecPos.x + m_vecScale.x,
+	//	m_vecPos.y + m_vecScale.y);
 }
 
 void CMonster::Trace()

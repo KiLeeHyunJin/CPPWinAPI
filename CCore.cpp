@@ -8,6 +8,8 @@
 #include "CSceneManager.h"
 #include "CEventManager.h"
 #include "CCollisionManager.h"
+#include "CPathManager.h"
+#include "CResourceManager.h"
 
 #pragma region Scene Header
 #include "CScene.h"
@@ -15,31 +17,25 @@
 #include "CSceneTitle.h"
 #pragma endregion
 
-
-
 CCore::CCore()
 {	}
 
 CCore::~CCore()
-{	
-	delete EVENT;
-	delete TIME;
-
-	delete INPUT;
-	delete RENDER;
-	delete SCENE;
-}
+{	}
 
 void CCore::Init()
 {
+	PATH->Init();
+	RESOURCE->Init();
+
 	EVENT->Init();
 	TIME->Init();
 
 	INPUT->Init();
 	RENDER->Init();
 
-	SCENE->Init();
 	COLLISION->Init();
+	SCENE->Init();
 }
 
 void CCore::Release()
@@ -53,7 +49,8 @@ void CCore::Release()
 	SCENE->Release();
 	COLLISION->Release();
 
-	delete CORE;
+	PATH->Release();
+	RESOURCE->Release();
 }
 
 void CCore::Update()

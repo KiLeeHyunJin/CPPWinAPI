@@ -29,7 +29,7 @@ public:
 	Layer	GetLayer() const;
 	void	SetLayer(Layer layer);
 
-	const wstring*	GetName();
+	const wstring& GetName();
 	void			SetName(const wstring& name);
 
 	bool GetReserveDelete() const;
