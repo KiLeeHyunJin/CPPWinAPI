@@ -25,10 +25,3 @@ enum class Layer
 	Size
 };
 
-enum class ComponentType
-{
-	GameObject,
-	Collider,
-
-	Size
-};

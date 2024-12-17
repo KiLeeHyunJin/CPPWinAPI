@@ -1,6 +1,7 @@
 #pragma once
 #include "Struct.h"
 #include "CPPWinAPI.h"
+#include "CComponent.h"
 
 class CScene;
 class CEventManager;
@@ -41,6 +42,7 @@ protected:
 
 	void AddCollider(ColliderType type, SHORT colliderId, Vector scale, Vector offset);
 	void RemoveCollider();
+	void AddComponent(CComponent* component);
 
 	CCollider* GetCollider();
 
@@ -65,7 +67,6 @@ private:
 
 	bool GetSafeToDelete();
 
-	void AddComponent(CComponent* component);
 	void RemoveComponent(CComponent* component);
 
 	void GameObjectInit();

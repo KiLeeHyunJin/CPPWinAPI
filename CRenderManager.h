@@ -67,7 +67,8 @@ private :
 
 	void SelectPenNBruchObject(HPEN prevPen, HBRUSH prevBrush) const;
 	
-
+	void SetCurBrush(const Color& color);
+	void SetCurFontSize(float fontSize);
 
 	/// Buffer
 	HDC			m_hdc;		// 게임 화면 DC , 프론트 버퍼 (결과화면 그릴 DC)
@@ -113,32 +114,37 @@ public :
 	void SetTextAlignment(DWRITE_TEXT_ALIGNMENT textAlignment);
 	void SetTextParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT paragraphAlignment);
 
-	/*void Text(wstring str, float dstX, float dstY, float dstW, float dstH);
-	void Text(wstring str, float dstX, float dstY, float dstW, float dstH, Color color, float fontSize);
+	void Text(const wstring& str, const Vector& startPoint, const Vector& endPoint);
+	void Text(const wstring& str, const Vector& startPoint, const Vector& endPoint, const Color& color, float fontSize);
 
-	void Line(Vector startPoint, Vector endPoint);
-	void Line(Vector startPoint, Vector endPoint, Color color, float strokeWidth = 1.f);
+	void Text(const wstring& str, float dstX, float dstY, float dstW, float dstH);
+	void Text(const wstring& str, float dstX, float dstY, float dstW, float dstH, const Color& color, float fontSize);
 
-	void FrameRect(Vector startPoint, Vector endPoint);
-	void FrameRect(Vector startPoint, Vector endPoint, Color color, float strokeWidth = 1.f);
+	void Line(const Vector& startPoint, const Vector& endPoint);
+	void Line(const Vector& startPoint, const Vector& endPoint, const Color& color, float strokeWidth = 1.f);
 
-	void FillRect(Vector startPoint, Vector endPoint);
-	void FillRect(Vector startPoint, Vector endPoint, Color color, float strokeWidth = 1.f);
+	void FrameRect(const Vector& startPoint, const Vector& endPoint, float strokeWidth = 1.f);
+	void FrameRect(const Vector& startPoint, const Vector& endPoint, const Color& color, float strokeWidth = 1.f);
 
-	void FrameEllipse(Vector startPoint, Vector endPoint);
-	void FrameEllipse(Vector startPoint, Vector endPoint, Color color, float strokeWidth = 1.f);*/
+	void FillRect(const Vector& startPoint, const Vector& endPoint);
+	void FillRect(const Vector& startPoint, const Vector& endPoint, const Color& color);
 
-	void FillEllipse(Vector startPoint, float radius);
-	void FillEllipse(Vector startPoint, float radius, Color color, float strokeWidth = 1.f);
+	void FrameEllipse(const Vector& startPoint,  float radius, float strokeWidth = 1.f);
+	void FrameEllipse(const Vector& startPoint,  float radius, const Color& color, float strokeWidth = 1.f);
 
-	void FrameCircle(Vector startPoint,  float radius);
-	void FrameCircle(Vector startPoint,  float radius, Color color, float strokeWidth = 1.f);
+	void FillEllipse(const Vector& startPoint, float radius);
+	void FillEllipse(const Vector& startPoint, float radius, const Color& color);
 
-	void FillCircle(Vector startPoint, float radius);
-	void FillCircle(Vector startPoint, float radius, Color color, float strokeWidth = 1.f);
+	void FrameCircle(const Vector& startPoint,  float radius);
+	void FrameCircle(const Vector& startPoint,  float radius, const Color& color, float strokeWidth = 1.f);
 
-	void Image(CImage* pImg, Vector startPoint, Vector endPoint, float alph = 1.f);
-	void FrameImage(CImage* pImg, float dstX, float dstY, float dstW, float dstH, float srcX, float srcY, float srcW, float srcH, float alph = 1.f);
+	void FillCircle(const Vector& startPoint, float radius);
+	void FillCircle(const Vector& startPoint, float radius, const Color& color);
+
+	void Image(CImage* pImg, const Vector& startPoint, const Vector& endPoint, float alpha = 1.f);
+	void FrameImage(CImage* pImg, 
+		const Vector& drawStartPoint,	const Vector& drawEndPoint, 
+		const Vector& sliceStartPoint,	const Vector& sliceEndPoint, float alpha = 1.f);
 
 	IWICImagingFactory* GetImageFactory();
 	ID2D1HwndRenderTarget* GetRenderTarget();

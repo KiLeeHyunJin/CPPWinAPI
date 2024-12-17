@@ -61,19 +61,19 @@ void CImage::Load(const wstring& filePath)
 
 	HRESULT hResult;
 	hResult = RENDER->GetImageFactory()->CreateDecoderFromFilename(filePath.c_str(), NULL, GENERIC_READ, WICDecodeMetadataCacheOnDemand, &p_decoder);
-	assert(m_hBmp && L"DecoderFromFilename Faild");
+	assert(hResult == S_OK && L"DecoderFromFilename Faild");
 
 	hResult = p_decoder->GetFrame(0, &p_frame);
-	assert(m_hBmp && L"GetFrame Faild");
+	assert(hResult == S_OK && L"GetFrame Faild");
 
 	hResult = RENDER->GetImageFactory()->CreateFormatConverter(&p_converter);
-	assert(m_hBmp && L"CreateFormatConverter Faild");
+	assert(hResult == S_OK && L"CreateFormatConverter Faild");
 
 	hResult = p_converter->Initialize(p_frame, GUID_WICPixelFormat32bppPBGRA, WICBitmapDitherTypeNone, NULL, 0, WICBitmapPaletteTypeCustom);
-	assert(m_hBmp && L"converter Initialize Faild");
+	assert(hResult == S_OK && L"converter Initialize Faild");
 
 	hResult = RENDER->GetRenderTarget()->CreateBitmapFromWicBitmap(p_converter, NULL, &m_pBitmap);
-	assert(m_hBmp && L"CreateBitmap Faild");
+	assert(hResult == S_OK && L"CreateBitmap Faild");
 
 	p_converter->Release();
 	p_frame->Release();

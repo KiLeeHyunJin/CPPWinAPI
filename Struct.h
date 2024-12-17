@@ -35,6 +35,7 @@ struct Vector
 		this->y + other.y;
 		return *this;
 	}
+
 	template<typename T>
 	Vector operator - (T num)
 	{
@@ -59,8 +60,8 @@ struct Vector
 	template<typename T>
 	Vector& operator *= (T num)
 	{
-		this->x* num;
-		this->y* num;
+		this->x	* num;
+		this->y	* num;
 		return *this;
 	}
 

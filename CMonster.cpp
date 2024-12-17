@@ -25,7 +25,7 @@ void CMonster::SetTarget(CPlayer* pTargetPlayer)
 void CMonster::Init()
 {
 	SetScale(Vector{ 20,10 });
-	SetPosition(Vector{ WINSIZEX * 0.5f, WINSIZEY * 0.5f });
+	SetPosition(Vector{ 0.5f, 0.5f });
 	AddCollider(ColliderType::Rect, 0, Vector(20, 50), Vector(0,0));
 
 }
@@ -42,13 +42,9 @@ void CMonster::Update()
 
 void CMonster::Render()
 {
-	return;
-
-	//RENDER->Rect(
-	//	m_vecPos.x - m_vecScale.x,
-	//	m_vecPos.y - m_vecScale.y,
-	//	m_vecPos.x + m_vecScale.x,
-	//	m_vecPos.y + m_vecScale.y);
+	RENDER->FrameRect(
+		Vector(m_vecPos.x - m_vecScale.x,	m_vecPos.y - m_vecScale.y),
+		Vector(m_vecPos.x + m_vecScale.x,	m_vecPos.y + m_vecScale.y));
 }
 
 void CMonster::Trace()

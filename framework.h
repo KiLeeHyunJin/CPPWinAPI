@@ -42,6 +42,7 @@ using namespace std;
 #include <d2d1.h>
 #include <dwrite.h>
 #include <wincodec.h>
+
 #pragma comment(lib,"D2D1.lib")
 #pragma comment(lib,"Dwrite.lib")
 

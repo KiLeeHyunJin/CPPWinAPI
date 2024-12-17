@@ -1,6 +1,15 @@
 #pragma once
 #include "CPPWinAPI.h"
 
+enum class ComponentType
+{
+	GameObject,
+	Collider,
+	Animator,
+
+	Size
+};
+
 class CGameObject;
 
 class CComponent

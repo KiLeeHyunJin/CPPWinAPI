@@ -2,6 +2,7 @@
 #include "CGameObject.h"
 
 class CImage;
+class CAnimator;
 
 class CPlayer :
     public CGameObject
@@ -19,11 +20,22 @@ private:
     void Update()   override;
     void Render()   override;
 
-    void OnCollisionStay(CCollider* pOtherCollision) override;
+    void OnCollisionEnter(CCollider* pOtherCollider)override;
+    void OnCollisionStay(CCollider* pOtherCollider)	override;
+    void OnCollisionExit(CCollider* pOtherCollider)	override;
 
-    Vector m_vecSize    = {50,50};
-    float m_fSpeed      = 100;
+    void AnimationUpdate();
 
-    CImage* pImg;
+    Vector  m_vecMoveDir;
+    Vector  m_vecLookDir;
+    bool    m_bIsMove;
+
+    float   m_fSpeed;
+
+    CImage* m_pImg;
+
+    CImage* m_pIdleImg;
+    CImage* m_pMoveImg;
+    CAnimator* m_pAnim;
 };
 

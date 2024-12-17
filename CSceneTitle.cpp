@@ -5,6 +5,8 @@
 #include "CRenderManager.h"
 #include "CInputManager.h"
 #include "CEventManager.h"
+#include "CCameraManager.h"
+
 
 void CSceneTitle::Init()
 {
@@ -18,7 +20,8 @@ void CSceneTitle::Update()
 {
 	if (BUTTONDOWN(VK_SPACE))
 	{
-		CHANGESCENE(GroupScene::Stage01);
+		CAMERA->FadeOut(1);
+		DELAYCHANGESCENE(GroupScene::Stage01, 1);
 	}
 }
 
@@ -30,6 +33,7 @@ void CSceneTitle::Render()
 
 void CSceneTitle::Enter()
 {
+	CAMERA->FadeIn(1);
 }
 
 void CSceneTitle::Exit()

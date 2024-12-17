@@ -1,7 +1,8 @@
 #include "framework.h"
 #include "CInputManager.h"
-#include "CPPWinAPI.h"
+#include "CCameraManager.h"
 
+#include "CPPWinAPI.h"
 
 CInputManager::CInputManager()
 {	Init();	}
@@ -12,14 +13,13 @@ void CInputManager::Init()
 {
 	m_arrCurKey[0]	= false;
 	m_arrPrevKey[0] = false;
-	m_ptMousePos	= {0,0};
 }
 
 void CInputManager::Release()	{	}
 
 void CInputManager::Update()
 {
-	memcpy(m_arrPrevKey, m_arrCurKey, VKEY_SIZE);
+	memcpy(m_arrPrevKey, m_arrCurKey, sizeof(bool) * VKEY_SIZE);
 
 	if (GetFocus() != hWnd)
 	{	FocusOff();	}
@@ -33,13 +33,17 @@ void CInputManager::FocusOn()
 	{
 		m_arrCurKey[key] = GetAsyncKeyState(key) & 0x8000;
 	}
-
-	GetCursorPos(&m_ptMousePos);
-	ScreenToClient(hWnd, &m_ptMousePos);
+	POINT mousePoint;
+	GetCursorPos(&mousePoint);
+	ScreenToClient(hWnd, &mousePoint);
+	m_vecMousePos.x = mousePoint.x;
+	m_vecMousePos.y = mousePoint.y;
 }
 
 void CInputManager::FocusOff()
-{	memset(m_arrCurKey, 0, VKEY_SIZE);	}
+{	
+	memset(m_arrCurKey, 0, sizeof(bool) * VKEY_SIZE);	
+}
 
 
 bool CInputManager::GetButton(const int keyId)		const
@@ -63,5 +67,12 @@ bool CInputManager::GetButtonUp(const int keyId)	const
 	return buttonUpResult;
 }
 
-POINT CInputManager::GetMousePos()
-{	return m_ptMousePos;				}
+Vector CInputManager::GetMouseScreenPosition() const
+{
+	return m_vecMousePos;	
+}
+
+Vector CInputManager::GetMouseWorldPosition() const
+{
+	return CAMERA->ScreenToWorldPoint(m_vecMousePos);
+}

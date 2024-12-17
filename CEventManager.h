@@ -11,7 +11,7 @@ class CEventManager :
 public:
     void EventAddObject     (CGameObject* pGameObj);
     void EventDeleteObject  (CGameObject* pGameObj);
-    void EventChangerScene  (GroupScene eScene);
+    void EventChangerScene  (GroupScene eScene, float delay = 0);
 
     friend CCore;
     friend SingleTon<CEventManager>;
@@ -30,9 +30,10 @@ private:
 
     queue<CGameObject*> m_quequeAddObject;
     queue<CGameObject*> m_quequeDeleteObject;
-    queue<GroupScene>   m_queueChangeScene;
+    pair<GroupScene,float>*   m_pChangeScene;
 };
-#define EVENT               CEventManager::GetInstance()
-#define ADDOBJECT(pObj)     CEventManager::GetInstance()->EventAddObject(pObj);
-#define DELETEOBJECT(pObj)  CEventManager::GetInstance()->EventDeleteObject(pObj)
-#define CHANGESCENE(scene)  CEventManager::GetInstance()->EventChangerScene(scene)
+#define EVENT                           CEventManager::GetInstance()
+#define ADDOBJECT(pObj)                 CEventManager::GetInstance()->EventAddObject(pObj);
+#define DELETEOBJECT(pObj)              CEventManager::GetInstance()->EventDeleteObject(pObj)
+#define CHANGESCENE(scene)              CEventManager::GetInstance()->EventChangerScene(scene)
+#define DELAYCHANGESCENE(scene, delay)  CEventManager::GetInstance()->EventChangerScene(scene, delay)

@@ -1,5 +1,6 @@
 #include "framework.h"
 #include "CRenderManager.h"
+#include "CCameraManager.h"
 #include "CPPWinAPI.h"
 #include "CImage.h"
 
@@ -178,7 +179,7 @@ void CRenderManager::BeginDraw()
 	//	m_hMemDC, 0, 0, WINSIZEX, WINSIZEY, 
 	//	WHITENESS);	
 	m_pRenderTarget->BeginDraw();
-
+	FillRect(CAMERA->ScreenToWorldPoint(Vector(0, 0)), CAMERA->ScreenToWorldPoint(Vector(WINSIZEX, WINSIZEY)), Color(255, 255, 255, 1));
 }
 
 /// 프론트 버퍼에 복사
@@ -195,7 +196,6 @@ void CRenderManager::SelectPenNBruchObject(HPEN prevPen, HBRUSH prevBrush) const
 	SelectObject(m_hMemDC, prevPen);
 	SelectObject(m_hMemDC, prevBrush);
 }
-
 
 void CRenderManager::Rect(float startX, float startY, float endX, float endY) const
 {
@@ -241,19 +241,21 @@ void CRenderManager::Text(float x, float y, wstring str) const
 	SelectPenNBruchObject(prevPen, prevBrush);
 }
 
+#pragma region  BitImage
+
 void CRenderManager::BitImage(CImage* pImg, float startXPos, float startYPos, float endXPos, float endYPos)
 {
-	BitBlt(m_hMemDC, 
-		(int)startXPos, 
-		(int)startYPos, 
-		(int)endXPos, 
-		(int)endYPos, 
+	BitBlt(m_hMemDC,
+		(int)startXPos,
+		(int)startYPos,
+		(int)endXPos,
+		(int)endYPos,
 		pImg->GetImgDC(), 0, 0, SRCCOPY);
 }
 
 void CRenderManager::BitImage(CImage* pImg, Vector vecPos, Vector vecScale)
 {
-	BitBlt(m_hMemDC, 
+	BitBlt(m_hMemDC,
 		(int)vecPos.x - (int)vecScale.x,
 		(int)vecPos.y - (int)vecScale.y,
 		(int)vecPos.x + (int)vecScale.x,
@@ -261,19 +263,23 @@ void CRenderManager::BitImage(CImage* pImg, Vector vecPos, Vector vecScale)
 		pImg->GetImgDC(), 0, 0, SRCCOPY);
 }
 
+#pragma endregion
+
+#pragma region  StrectchImage
+
 void CRenderManager::StrectchImage(CImage* pImg, float startXPos, float startYPos, float endXPos, float endYPos)
 {
-	StretchBlt(m_hMemDC, 
-		(int)startXPos, 
-		(int)startYPos, 
-		(int)endXPos - (int)startXPos, 
+	StretchBlt(m_hMemDC,
+		(int)startXPos,
+		(int)startYPos,
+		(int)endXPos - (int)startXPos,
 		(int)endYPos - (int)startYPos,
 		pImg->GetImgDC(), 0, 0, (int)pImg->GetBmpWidth(), (int)pImg->GetBmpHeight(), SRCCOPY);
 }
 
 void CRenderManager::StrectchImage(CImage* pImg, Vector vecPos, Vector vecScale)
 {
-	StretchBlt(m_hMemDC, 
+	StretchBlt(m_hMemDC,
 		(int)vecPos.x - (int)vecScale.x,
 		(int)vecPos.y - (int)vecScale.y,
 		((int)vecPos.x + (int)vecScale.x) - ((int)vecPos.x - (int)vecScale.x),
@@ -281,32 +287,37 @@ void CRenderManager::StrectchImage(CImage* pImg, Vector vecPos, Vector vecScale)
 		pImg->GetImgDC(), 0, 0, (int)pImg->GetBmpWidth(), (int)pImg->GetBmpHeight(), SRCCOPY);
 }
 
+#pragma endregion
+
+#pragma region TransparentImage
+
 void CRenderManager::TransparentImage(CImage* pImg, float startXPos, float startYPos, float endXPos, float endYPos, COLORREF transparent)
 {
-	TransparentBlt(m_hMemDC, 
-		(int)startXPos, 
-		(int)startYPos, 
-		(int)endXPos - (int)startXPos, 
+	TransparentBlt(m_hMemDC,
+		(int)startXPos,
+		(int)startYPos,
+		(int)endXPos - (int)startXPos,
 		(int)endYPos - (int)startYPos,
 		pImg->GetImgDC(), 0, 0, (int)pImg->GetBmpWidth(), (int)pImg->GetBmpHeight(), (UINT)transparent);
 }
 
 void CRenderManager::TransparentImage(CImage* pImg, Vector vecPos, Vector vecScale, COLORREF transparent)
 {
-	TransparentBlt(m_hMemDC, 
-		(int)vecPos.x - (int)vecScale.x, 
-		(int)vecPos.y - (int)vecScale.y, 
-		((int)vecPos.x + (int)vecScale.x) - ((int)vecPos.x - (int)vecScale.x), 
+	TransparentBlt(m_hMemDC,
+		(int)vecPos.x - (int)vecScale.x,
+		(int)vecPos.y - (int)vecScale.y,
+		((int)vecPos.x + (int)vecScale.x) - ((int)vecPos.x - (int)vecScale.x),
 		((int)vecPos.y + (int)vecScale.y) - ((int)vecPos.y - (int)vecScale.y),
 		pImg->GetImgDC(), 0, 0, (int)pImg->GetBmpWidth(), (int)pImg->GetBmpHeight(), (UINT)transparent);
 }
+
+#pragma endregion
+
 
 HDC CRenderManager::GetMemDC()
 {
 	return m_hMemDC;
 }
-
-
 
 void CRenderManager::SetText(TextType textType)
 {
@@ -338,8 +349,6 @@ void CRenderManager::SetText(TextType textType)
 	SetTextAlign(m_hMemDC, align);
 
 }
-
-
 
 void CRenderManager::SetPen(PenType penType , COLORREF color, int width)
 {
@@ -384,15 +393,11 @@ void CRenderManager::SetBrush(BrushType brushType , COLORREF color )
 {
 	if (m_typeBrush == brushType && 
 		m_colorBrush == color )
-	{
-		return;
-	}
+	{	return;		}
 	else
 	{
-		if (m_hBrush != nullptr)
-		{
-			DeleteObject(m_hPen);
-		}
+		if (m_hBrush != nullptr)	
+		{	DeleteObject(m_hPen);	}
 	}
 	switch (brushType)
 	{
@@ -420,7 +425,6 @@ void CRenderManager::SetBrush(Color color)
 			(FLOAT)	color.b / 255.f,
 					color.a / 255.f)
 	);
-
 }
 
 void CRenderManager::SetTextFormat(wstring fontName, DWRITE_FONT_WEIGHT fontWeight, DWRITE_FONT_STYLE fontstyle, DWRITE_FONT_STRETCH fontStretch, FLOAT fontSize, wstring localName)
@@ -460,76 +464,223 @@ void CRenderManager::SetTextParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT paragr
 
 
 
-void CRenderManager::Image(CImage* pImg, Vector startPoint, Vector endPoint, float alph)
+#pragma region  Image
+
+void CRenderManager::Image(CImage* pImg, const Vector& startPoint, const Vector& endPoint, float alpha)
 {
-	D2D1_RECT_F imgRect = { startPoint.x, startPoint.y, endPoint.x, endPoint.y };
+	Vector start = CAMERA->WorldToScreenPoint(startPoint);
+	Vector end = CAMERA->WorldToScreenPoint(endPoint);
+	D2D1_RECT_F imgRect = { start.x, start.y, end.x, end.y };
 	m_pRenderTarget->DrawBitmap(pImg->GetImage(), imgRect);
 }
 
-void CRenderManager::FrameImage(CImage* pImg, float dstX, float dstY, float dstW, float dstH, float srcX, float srcY, float srcW, float srcH, float alph)
+void CRenderManager::FrameImage(CImage* pImg, const Vector& drawStartPoint, const Vector& drawEndPoint, const Vector& sliceStartPoint, const Vector& sliceEndPoint, float alpha)
 {
-	D2D1_RECT_F imgRect = { dstX,dstY, dstW,dstH };
-	D2D1_RECT_F srcRect = { srcX,srcY, srcW,srcH };
-	m_pRenderTarget->DrawBitmap(pImg->GetImage(), imgRect, 1.0f, D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR, srcRect);
+	Vector start = CAMERA->WorldToScreenPoint(drawStartPoint);
+	Vector end = CAMERA->WorldToScreenPoint(drawEndPoint);
+	D2D1_RECT_F pointRect = { start.x,	start.y,	end.x,		end.y };
+	D2D1_RECT_F srcImgRect = { sliceStartPoint.x,	sliceStartPoint.y,	sliceEndPoint.x,	sliceEndPoint.y };
+	m_pRenderTarget->DrawBitmap(pImg->GetImage(), pointRect, alpha, D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR, srcImgRect);
 }
 
-IWICImagingFactory* CRenderManager::GetImageFactory()
+#pragma endregion
+
+#pragma region  Text
+
+void CRenderManager::Text(const wstring& str, const Vector& startPoint, const Vector& endPoint)
 {
-	return m_pImageFactory;
+	Vector start = CAMERA->WorldToScreenPoint(startPoint);
+	Vector end = CAMERA->WorldToScreenPoint(endPoint);
+	D2D1_RECT_F rect = { start.x, start.y, end.x, end.x};
+	m_pRenderTarget->DrawTextW(str.c_str(), (UINT32)str.size(), m_pDefaultTextFormat, rect, m_pDefaultBrush);
 }
 
-ID2D1HwndRenderTarget* CRenderManager::GetRenderTarget()
+void CRenderManager::Text(const wstring& str, const Vector& startPoint, const Vector& endPoint, const Color& color, float fontSize)
 {
-	return m_pRenderTarget;
+	Vector start = CAMERA->WorldToScreenPoint(startPoint);
+	Vector end = CAMERA->WorldToScreenPoint(endPoint);
+	D2D1_RECT_F rect = { start.x, start.y, end.x, end.y };
+
+	SetCurFontSize(fontSize);
+	SetCurBrush(color);
+	m_pRenderTarget->DrawTextW(str.c_str(), (UINT32)str.size(), m_pCurTextFormat, rect, m_pCurBrush);
 }
 
-void CRenderManager::FillEllipse(Vector startPoint, float radius)
+void CRenderManager::Text(const wstring& str, float dstX, float dstY, float dstW, float dstH)
 {
-	D2D1_ELLIPSE ellipse = { startPoint.x, startPoint.y ,radius , radius };
-	m_pRenderTarget->FillEllipse(ellipse, m_pDefaultBrush);
+	Vector start = CAMERA->WorldToScreenPoint(Vector(dstX, dstY));
+	D2D1_RECT_F rect = { start.x, start.y, start.x + dstW, start.x + dstH };
+	m_pRenderTarget->DrawTextW(str.c_str(), (UINT32)str.size(), m_pDefaultTextFormat, rect, m_pDefaultBrush);
 }
 
-void CRenderManager::FillEllipse(Vector startPoint, float radius, Color color, float strokeWidth)
+void CRenderManager::Text(const wstring& str, float dstX, float dstY, float dstW, float dstH, const Color& color, float fontSize)
 {
-	D2D1_ELLIPSE ellipse = { startPoint.x, startPoint.y ,radius , radius };
-	m_pCurBrush->SetColor(D2D1::ColorF(
-		(FLOAT)color.r / 255.f,
-		(FLOAT)color.g / 255.f,
-		(FLOAT)color.b / 255.f,
-		color.a));
-	m_pRenderTarget->FillEllipse(ellipse, m_pCurBrush);
+	Vector start = CAMERA->WorldToScreenPoint(Vector(dstX, dstY));
+	D2D1_RECT_F rect = { start.x, start.y, start.x + dstW, start.x + dstH };
+
+	SetCurFontSize(fontSize);
+	SetCurBrush(color);
+	m_pRenderTarget->DrawTextW(str.c_str(), (UINT32)str.size(), m_pCurTextFormat, rect, m_pCurBrush);
+}
+#pragma endregion
+
+#pragma region  Line
+
+void CRenderManager::Line(const Vector& startPoint, const Vector& endPoint)
+{
+	Vector vecStart = CAMERA->WorldToScreenPoint(startPoint);
+	Vector vecEnd = CAMERA->WorldToScreenPoint(startPoint);
+
+	D2D1_POINT_2F start = { vecStart.x , vecStart.y };
+	D2D1_POINT_2F end = { vecEnd.x , vecEnd.y };
+	m_pRenderTarget->DrawLine(start, end, m_pDefaultBrush);
 }
 
-void CRenderManager::FrameCircle(Vector startPoint, float radius)
+void CRenderManager::Line(const Vector& startPoint, const Vector& endPoint, const Color& color, float strokeWidth)
 {
-	D2D1_ELLIPSE ellipse = { startPoint.x, startPoint.y ,radius , radius };
-	m_pRenderTarget->DrawEllipse(ellipse, m_pDefaultBrush);
+	Vector vecStart = CAMERA->WorldToScreenPoint(startPoint);
+	Vector vecEnd = CAMERA->WorldToScreenPoint(startPoint);
+
+	D2D1_POINT_2F start = { vecStart.x , vecStart.y };
+	D2D1_POINT_2F end = { vecEnd.x , vecEnd.y };
+	SetCurBrush(color);
+	m_pRenderTarget->DrawLine(start, end, m_pCurBrush);
+}
+#pragma endregion
+
+#pragma region  Frame
+
+void CRenderManager::FrameRect(const Vector& startPoint, const Vector& endPoint, float strokeWidth)
+{
+	Vector start = CAMERA->WorldToScreenPoint(startPoint);
+	Vector end = CAMERA->WorldToScreenPoint(endPoint);
+	D2D1_RECT_F rect = { start.x, start.y, end.x , end.y };
+	m_pRenderTarget->DrawRectangle(rect, m_pDefaultBrush, strokeWidth);
 }
 
-void CRenderManager::FrameCircle(Vector startPoint, float radius, Color color, float strokeWidth)
+void CRenderManager::FrameRect(const Vector& startPoint, const Vector& endPoint, const Color& color, float strokeWidth)
 {
-	D2D1_ELLIPSE ellipse = { startPoint.x, startPoint.y , radius , radius };
-	m_pCurBrush->SetColor(D2D1::ColorF(
-		(FLOAT)color.r / 255.f,
-		(FLOAT)color.g / 255.f,
-		(FLOAT)color.b / 255.f,
-		color.a));
+	Vector start = CAMERA->WorldToScreenPoint(startPoint);
+	Vector end = CAMERA->WorldToScreenPoint(endPoint);
+	D2D1_RECT_F rect = { start.x, start.y, end.x , end.y };
+	SetCurBrush(color);
+	m_pRenderTarget->DrawRectangle(rect, m_pCurBrush, strokeWidth);
+}
+
+void CRenderManager::FrameEllipse(const Vector& startPoint, float radius, float strokeWidth)
+{
+	Vector start = CAMERA->WorldToScreenPoint(startPoint);
+	D2D1_ELLIPSE ellipse = { start.x, start.y ,radius , radius };
+	m_pRenderTarget->DrawEllipse(ellipse, m_pDefaultBrush, strokeWidth);
+}
+
+void CRenderManager::FrameEllipse(const Vector& startPoint, float radius, const Color& color, float strokeWidth)
+{
+	Vector start = CAMERA->WorldToScreenPoint(startPoint);
+	D2D1_ELLIPSE ellipse = { start.x, start.y ,radius , radius };
+	SetCurBrush(color);
 	m_pRenderTarget->DrawEllipse(ellipse, m_pCurBrush, strokeWidth);
 }
 
-void CRenderManager::FillCircle(Vector startPoint, float radius)
+void CRenderManager::FrameCircle(const Vector& startPoint, float radius)
 {
-	D2D1_ELLIPSE ellipse = { startPoint.x, startPoint.y ,radius , radius };
+	Vector start = CAMERA->WorldToScreenPoint(startPoint);
+	D2D1_ELLIPSE ellipse = { start.x, start.y ,radius , radius };
+	m_pRenderTarget->DrawEllipse(ellipse, m_pDefaultBrush);
+}
+
+void CRenderManager::FrameCircle(const Vector& startPoint, float radius, const Color& color, float strokeWidth)
+{
+	Vector start = CAMERA->WorldToScreenPoint(startPoint);
+	D2D1_ELLIPSE ellipse = { start.x, start.y , radius , radius };
+	SetCurBrush(color);
+	m_pRenderTarget->DrawEllipse(ellipse, m_pCurBrush, strokeWidth);
+}
+#pragma endregion
+
+#pragma region  Fill
+
+void CRenderManager::FillRect(const Vector& startPoint, const Vector& endPoint)
+{
+	Vector start = CAMERA->WorldToScreenPoint(startPoint);
+	Vector end = CAMERA->WorldToScreenPoint(endPoint);
+	D2D1_RECT_F rect = { start.x, start.y, end.x , end.y };
+	m_pRenderTarget->FillRectangle(rect, m_pDefaultBrush);
+}
+
+void CRenderManager::FillRect(const Vector& startPoint, const Vector& endPoint, const Color& color)
+{
+	Vector start = CAMERA->WorldToScreenPoint(startPoint);
+	Vector end = CAMERA->WorldToScreenPoint(endPoint);
+	D2D1_RECT_F rect = { start.x, start.y, end.x , end.y };
+	SetCurBrush(color);
+	m_pRenderTarget->FillRectangle(rect, m_pCurBrush);
+}
+
+void CRenderManager::FillEllipse(const Vector& startPoint, float radius)
+{
+	Vector start = CAMERA->WorldToScreenPoint(startPoint);
+	D2D1_ELLIPSE ellipse = { start.x, start.y ,radius , radius };
 	m_pRenderTarget->FillEllipse(ellipse, m_pDefaultBrush);
 }
 
-void CRenderManager::FillCircle(Vector startPoint, float radius, Color color, float strokeWidth)
+void CRenderManager::FillEllipse(const Vector& startPoint, float radius, const Color& color)
 {
-	D2D1_ELLIPSE ellipse = { startPoint.x, startPoint.y ,radius , radius };
+	Vector start = CAMERA->WorldToScreenPoint(startPoint);
+	D2D1_ELLIPSE ellipse = { start.x, start.y ,radius , radius };
+	SetCurBrush(color);
+	m_pRenderTarget->FillEllipse(ellipse, m_pCurBrush);
+}
+
+void CRenderManager::FillCircle(const Vector& startPoint, float radius)
+{
+	Vector start = CAMERA->WorldToScreenPoint(startPoint);
+	D2D1_ELLIPSE ellipse = { start.x, start.y ,radius , radius };
+	m_pRenderTarget->FillEllipse(ellipse, m_pDefaultBrush);
+}
+
+void CRenderManager::FillCircle(const Vector& startPoint, float radius, const Color& color)
+{
+	Vector start = CAMERA->WorldToScreenPoint(startPoint);
+	D2D1_ELLIPSE ellipse = { start.x, start.y ,radius , radius };
+	SetCurBrush(color);
+	m_pRenderTarget->FillEllipse(ellipse, m_pCurBrush);
+}
+#pragma endregion
+
+void CRenderManager::SetCurBrush(const Color& color)
+{
 	m_pCurBrush->SetColor(D2D1::ColorF(
 		(FLOAT)color.r / 255.f,
 		(FLOAT)color.g / 255.f,
 		(FLOAT)color.b / 255.f,
 		color.a));
-	m_pRenderTarget->FillEllipse(ellipse, m_pCurBrush);
 }
+
+void CRenderManager::SetCurFontSize(float fontSize)
+{
+	if (m_pCurTextFormat->GetFontSize() != fontSize)
+	{
+		WCHAR fontFamilyName[255];
+		WCHAR localName[255];
+
+		m_pDefaultTextFormat->GetFontFamilyName(fontFamilyName, 255);
+		m_pDefaultTextFormat->GetLocaleName(localName, 255);
+		m_pCurTextFormat->Release();
+
+		HRESULT hResult = m_pWriteFactory->CreateTextFormat(
+			fontFamilyName,
+			NULL,
+			m_pDefaultTextFormat->GetFontWeight(),
+			m_pDefaultTextFormat->GetFontStyle(),
+			m_pDefaultTextFormat->GetFontStretch(),
+			fontSize,
+			localName,
+			&m_pCurTextFormat
+		);
+	}
+}
+
+IWICImagingFactory* CRenderManager::GetImageFactory()			{	return m_pImageFactory;		}
+
+ID2D1HwndRenderTarget* CRenderManager::GetRenderTarget()		{	return m_pRenderTarget;		}

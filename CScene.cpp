@@ -1,7 +1,7 @@
 #include "framework.h"
 #include "CScene.h"
 #include "CGameObject.h"
-
+#include "CCameraManager.h"
 
 
 CScene::CScene()
@@ -14,6 +14,19 @@ void CScene::AddGameObject(CGameObject * pObj)
 {
 	m_listObj[(int)pObj->GetLayer()].push_back(pObj);
 	pObj->Init();
+}
+
+
+void CScene::SceneEnter()
+{
+	CAMERA->SetTargetObject(nullptr);
+	CAMERA->SetTargetPosition(Vector(WINSIZEX * 0.5f, WINSIZEY * 0.5f));
+	Enter();
+}
+
+void CScene::SceneExit()
+{
+	Exit();
 }
 
 void CScene::SceneInit()
@@ -64,13 +77,13 @@ void CScene::SceneUpdate()
 	{
 		for (CGameObject* pGameObject : m_listObj[i])
 		{
-			if (pGameObject->GetReserveDelete() == false)
+			if (pGameObject->GetReserveDelete())
 			{
-				pGameObject->GameObjectUpdate();
+				pGameObject->SetSafeToDelete();
 			}
 			else
 			{
-				pGameObject->SetSafeToDelete();
+				pGameObject->GameObjectUpdate();
 			}
 		}
 	}
@@ -105,12 +118,3 @@ void CScene::SceneRender()
 }
 
 
-void CScene::SceneEnter()
-{
-	Enter();
-}
-
-void CScene::SceneExit()
-{
-	Exit();
-}

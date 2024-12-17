@@ -82,9 +82,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             {
                 nextTickCount = tickCount + 10;
 
-                CORE->Update();
-                CORE->Render();
+                
             }
+            CORE->Update();
+            CORE->Render();
         }
     }
 

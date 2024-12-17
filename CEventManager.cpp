@@ -1,11 +1,14 @@
 #include "framework.h"
 #include "CEventManager.h"
 #include "CSceneManager.h"
+#include "CTimeManager.h"
 
 #include "CScene.h"
 #include "CGameObject.h"
 
-CEventManager::CEventManager()		{	}
+CEventManager::CEventManager():
+	m_pChangeScene(nullptr)
+{	}
 
 CEventManager::~CEventManager()		{	}
 
@@ -23,9 +26,17 @@ void CEventManager::EventDeleteObject(CGameObject* pGameObj)
 	m_quequeDeleteObject.push(pGameObj);
 }
 
-void CEventManager::EventChangerScene(GroupScene eScene)
+void CEventManager::EventChangerScene(GroupScene eScene, float delay)
 {
-	m_queueChangeScene.push(eScene);
+	if (m_pChangeScene == nullptr)
+	{
+		m_pChangeScene = new pair<GroupScene, float>(eScene, delay);
+	}
+	else if (m_pChangeScene->second > delay)
+	{
+		delete m_pChangeScene;
+		m_pChangeScene = new pair<GroupScene, float>(eScene, delay);
+	}
 }
 
 void CEventManager::ProgressAddObject()
@@ -50,10 +61,17 @@ void CEventManager::ProgressDeleteObject()
 
 void CEventManager::ProgressChangeScene()
 {
-	while (m_queueChangeScene.empty() == false)
+	if (nullptr == m_pChangeScene)
 	{
-		GroupScene scene = m_queueChangeScene.front();
-		m_queueChangeScene.pop();
+		return;
+	}
+	m_pChangeScene->second -= DeltaTime;
+	if (m_pChangeScene->second <= 0)
+	{
+		GroupScene scene = m_pChangeScene->first;
+		delete m_pChangeScene;
+		m_pChangeScene = nullptr;
+
 		SCENE->ChangeScene(scene);
 	}
 }

@@ -8,7 +8,8 @@ public :
 	bool GetButton		(const int keyId) const;
 	bool GetButtonDown	(const int keyId) const;
 	bool GetButtonUp	(const int keyId) const;
-	POINT GetMousePos();
+	Vector GetMouseScreenPosition() const;
+	Vector GetMouseWorldPosition() const;
 
 	friend CCore;
 	friend SingleTon<CInputManager>;
@@ -27,10 +28,11 @@ private :
 	static const int VKEY_SIZE = 255;
 	bool m_arrCurKey[VKEY_SIZE];
 	bool m_arrPrevKey[VKEY_SIZE];
-	POINT m_ptMousePos;
+	Vector m_vecMousePos;
 };
-#define INPUT			CInputManager::GetInstance()
-#define BUTTONSTAY(key) CInputManager::GetInstance()->GetButton(key)
-#define BUTTONDOWN(key) CInputManager::GetInstance()->GetButtonDown(key)
-#define BUTTONUP(key)	CInputManager::GetInstance()->GetButtonUp(key)
-#define MOUSEPOS		CInputManager::GetInstance()->GetMousePos;
+#define INPUT				CInputManager::GetInstance()
+#define BUTTONSTAY(key)		CInputManager::GetInstance()->GetButton(key)
+#define BUTTONDOWN(key)		CInputManager::GetInstance()->GetButtonDown(key)
+#define BUTTONUP(key)		CInputManager::GetInstance()->GetButtonUp(key)
+#define MOUSESCREENPOSITION CInputManager::GetInstance()->GetMouseScreenPosition()
+#define MOUSEWORLDPOSITION	CInputManager::GetInstance()->GetMouseWorldPosition()
