@@ -42,9 +42,16 @@ protected:
 
 	void AddCollider(ColliderType type, SHORT colliderId, Vector scale, Vector offset);
 	void RemoveCollider();
+	CCollider* GetCollider();
+
 	void AddComponent(CComponent* component);
 
-	CCollider* GetCollider();
+	virtual void GameObjectInit();
+	virtual void GameObjectUpdate();
+	virtual void GameObjectPhysicsUpdate();
+	virtual void GameObjectRender();
+	virtual void GameObjectRelease();
+
 
 	friend CScene;
 	friend CCollider;
@@ -69,11 +76,7 @@ private:
 
 	void RemoveComponent(CComponent* component);
 
-	void GameObjectInit();
-	void GameObjectUpdate();
-	void GameObjectPhysicsUpdate();
-	void GameObjectRender();
-	void GameObjectRelease();
+	
 
 public:
 

@@ -98,12 +98,17 @@ float CCameraManager::GetScale()
 {
 	return m_fScale;
 }
-//화면상의 좌표로 반환
+/// <summary>
+///화면상의 좌표로 반환
+/// /// </summary>
 Vector CCameraManager::WorldToScreenPoint(Vector vecWorld)
 {
-	return vecWorld - (m_vecLookAt - Vector(WINSIZEX * 0.5f , WINSIZEY * 0.5f));
+	return vecWorld - (m_vecLookAt - Vector(WINSIZEX * 0.5f, WINSIZEY * 0.5f));
 }
-//월드상의 좌표로 반환
+
+/// <summary>
+/// 월드상의 좌표로 반환
+/// </summary>
 Vector CCameraManager::ScreenToWorldPoint(Vector vecScreen)
 {
 	return vecScreen + (m_vecLookAt - Vector(WINSIZEX * 0.5f, WINSIZEY * 0.5f));

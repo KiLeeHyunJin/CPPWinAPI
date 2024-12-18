@@ -37,6 +37,9 @@
     <Filter Include="Engine\Resource">
       <UniqueIdentifier>{966df866-84e9-4fa6-8fb5-3ab50deffbce}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Resource\UI">
+      <UniqueIdentifier>{57112910-7dae-41e5-9ad9-ca5ce12cb16d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -126,6 +129,12 @@
     <ClInclude Include="CCameraManager.h">
       <Filter>Engine\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="CUI.h">
+      <Filter>Engine\Resource\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="CButton.h">
+      <Filter>Engine\Resource\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CPPWinAPI.cpp">
@@ -196,6 +205,12 @@
     </ClCompile>
     <ClCompile Include="CCameraManager.cpp">
       <Filter>Engine\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="CUI.cpp">
+      <Filter>Engine\Resource\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="CButton.cpp">
+      <Filter>Engine\Resource\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
