@@ -1,5 +1,7 @@
 #pragma once
 #include "CUI.h"
+
+
 class CButton :
     public CUI
 {
@@ -16,14 +18,15 @@ protected:
 
 
     // CUI을(를) 통해 상속됨
-    void OnMouseEnter() override;
-    void OnMouseExit()  override;
+    void OnMouseEnter()     final;
+    void OnMouseExit()      final;
 
-    void OnMouseOver()  override;
-    void OnMouseClicked() override;
+    void OnMouseOver()      final;
+    void OnMouseClicked()   final;
 
-    void OnMouseUp()    override;
-    void OnMouseDown()  override;
+    void OnMouseUp()        final;
+    void OnMouseDown()      final;
 
+    void AddChildUI(CUI* pChildUI) = delete;
 };
 

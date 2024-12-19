@@ -5,6 +5,7 @@ class CCore;
 class CScene;
 class CEventManager;
 class CCollisionManager;
+class CUIManager;
 
 class CSceneManager : 
 	public SingleTon<CSceneManager>
@@ -16,6 +17,7 @@ public :
 	friend SingleTon<CSceneManager>;
 	friend CCollisionManager;
 	friend CEventManager;
+	friend CUIManager;
 private :
 	CSceneManager();
 	virtual ~CSceneManager();

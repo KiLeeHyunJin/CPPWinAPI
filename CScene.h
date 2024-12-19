@@ -5,6 +5,8 @@
 class CSceneManager;
 class CGameObject;
 class CCollisionManager;
+class CUIManager;
+
 class CScene
 {
 public:
@@ -15,6 +17,7 @@ public:
 
 	friend CSceneManager;
 	friend CCollisionManager;
+	friend CUIManager;
 private:
 	//코어에서 호출  // 게임오브젝트 호출 및 virtual 메소드 호출
 	void SceneInit();

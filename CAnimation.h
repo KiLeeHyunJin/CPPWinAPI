@@ -3,13 +3,6 @@
 class CAnimator;
 class CImage;
 
-struct AnimationFrame
-{
-	Vector leftTop;
-	Vector slice;
-	float duration;
-};
-
 class CAnimation
 {
 public : 
@@ -34,7 +27,9 @@ private:
 	CImage*		m_pImg;
 	UINT		m_uiCurFrame;
 
-	vector<AnimationFrame> m_vecAnimFrame;
+	vector<Vector> m_vecAnimFrame;
+	Vector		m_vecSliceScale;
+	float		m_fduration;
 
 	float		m_fAccTime;
 	bool		m_bRepeat;

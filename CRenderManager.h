@@ -1,21 +1,8 @@
 #pragma once
 #pragma comment(lib, "Msimg32.lib")
+
 class CCore;
 class CImage;
-
-struct Color
-{
-	BYTE r, g, b;
-	FLOAT a;
-	Color(BYTE r, BYTE g, BYTE b, FLOAT a)
-	{
-		this->r = r;
-		this->g = g;
-		this->b = b;
-		this->a = a;
-	}
-};
-
 
 enum class PenType
 {	Solid, Dot, Dash, Null,	};

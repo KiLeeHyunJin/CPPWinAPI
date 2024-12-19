@@ -11,6 +11,7 @@
 #include "CPathManager.h"
 #include "CResourceManager.h"
 #include "CCameraManager.h"
+#include "CUIManager.h"
 
 #pragma region Scene Header
 #include "CScene.h"
@@ -38,6 +39,7 @@ void CCore::Init()
 	COLLISION->Init();
 	SCENE->Init();
 	CAMERA->Init();
+	UI->Init();
 }
 
 void CCore::Release()
@@ -54,6 +56,7 @@ void CCore::Release()
 	PATH->Release();
 	RESOURCE->Release();
 	CAMERA->Release();
+	UI->Release();
 }
 
 void CCore::Update()
@@ -66,6 +69,7 @@ void CCore::Update()
 	CAMERA->Update();
 
 	COLLISION->PhysicsUpdate();
+	UI->Update();
 }
 
 void CCore::Render() const
@@ -89,7 +93,7 @@ void CCore::Render() const
 #pragma region MousePos
 	//RENDER->SetText(TextType::Left);
 	Vector point = MOUSESCREENPOSITION;
-	wstring pointStr = L"X : " + to_wstring(point.x) + L", Y : " + to_wstring(point.y);
+	wstring pointStr = L"X : " + to_wstring((int)point.x) + L", Y : " + to_wstring((int)point.y);
 	//RENDER->Text((float)point.x, (float)point.y, pointStr);
 	start	= CAMERA->ScreenToWorldPoint(Vector(point.x, point.y - 5));
 	end		= CAMERA->ScreenToWorldPoint(Vector(point.x + 80, point.y + 10));

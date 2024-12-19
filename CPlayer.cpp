@@ -136,7 +136,7 @@ void CPlayer::AnimationUpdate()
 	if (m_vecLookDir.y < 0)			str += L"Up";
 	else if (m_vecLookDir.y > 0)	str += L"Down";
 
-	Logger::Debug(str);
+	//Logger::Debug(str);
 
 	m_pAnim->Play(str, false);
 }

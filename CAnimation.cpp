@@ -37,18 +37,19 @@ void CAnimation::Release()
 void CAnimation::Render()
 {
 	Vector pos = m_pAnimator->GetOwner()->GetPosition();
-	AnimationFrame frame = m_vecAnimFrame[m_uiCurFrame];
+	Vector vecLeftTop;
+	memcpy(&vecLeftTop, &m_vecAnimFrame[m_uiCurFrame], sizeof(Vector));
 	RENDER->FrameImage(m_pImg, 
-		Vector(pos - (frame.slice * 0.5f)), 
-		Vector(pos + (frame.slice * 0.5f)),
-		frame.leftTop, 
-		frame.leftTop + frame.slice);
+		Vector(pos - (m_vecSliceScale * 0.5f)), 
+		Vector(pos + (m_vecSliceScale * 0.5f)),
+		vecLeftTop,
+		vecLeftTop + m_vecSliceScale);
 }
 
 void CAnimation::Update()
 {
 	m_fAccTime += DeltaTime;
-	if (m_vecAnimFrame[m_uiCurFrame].duration <= m_fAccTime)
+	if (m_fduration <= m_fAccTime)
 	{
 		m_uiCurFrame++;
 		memset(&m_fAccTime, 0, sizeof(float));
@@ -75,18 +76,16 @@ void CAnimation::Create(CImage* pImg, Vector leftTop, Vector slice, Vector step,
 {
 	m_pImg = pImg;
 	m_bRepeat = repeat;
+	m_fduration = duration;
+	m_vecSliceScale = slice;
 	for (UINT i = 0; i < count; i++)
 	{
-		AnimationFrame frame;
-		frame.slice = slice;
-		frame.duration = duration;
-		frame.leftTop = leftTop + (step * i);
-		m_vecAnimFrame.push_back(frame);
+		m_vecAnimFrame.push_back(leftTop + (step * i));
 	}
 }
 
 void CAnimation::Replay()
 {
-	memset(&m_uiCurFrame, 0, sizeof(UINT));
-	memset(&m_fAccTime, 0, sizeof(float));
+	memset(&m_uiCurFrame,	0, sizeof(UINT));
+	memset(&m_fAccTime,		0, sizeof(float));
 }

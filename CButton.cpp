@@ -48,27 +48,3 @@ void CButton::OnMouseUp()
 void CButton::OnMouseDown()
 {
 }
-
-void CButton::OnMouseExit()
-{
-}
-
-void CButton::OnMouseOver()
-{
-}
-
-void CButton::OnMouseClicked()
-{
-}
-
-void CButton::OnMouseUp()
-{
-}
-
-void CButton::OnMouseDown()
-{
-}
-
-void CButton::OnMouseEnter()
-{
-}

@@ -468,16 +468,16 @@ void CRenderManager::SetTextParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT paragr
 
 void CRenderManager::Image(CImage* pImg, const Vector& startPoint, const Vector& endPoint, float alpha)
 {
-	Vector start = CAMERA->WorldToScreenPoint(startPoint);
-	Vector end = CAMERA->WorldToScreenPoint(endPoint);
+	Vector start	= CAMERA->WorldToScreenPoint(startPoint);
+	Vector end		= CAMERA->WorldToScreenPoint(endPoint);
 	D2D1_RECT_F imgRect = { start.x, start.y, end.x, end.y };
 	m_pRenderTarget->DrawBitmap(pImg->GetImage(), imgRect);
 }
 
 void CRenderManager::FrameImage(CImage* pImg, const Vector& drawStartPoint, const Vector& drawEndPoint, const Vector& sliceStartPoint, const Vector& sliceEndPoint, float alpha)
 {
-	Vector start = CAMERA->WorldToScreenPoint(drawStartPoint);
-	Vector end = CAMERA->WorldToScreenPoint(drawEndPoint);
+	Vector start	= CAMERA->WorldToScreenPoint(drawStartPoint);
+	Vector end		= CAMERA->WorldToScreenPoint(drawEndPoint);
 	D2D1_RECT_F pointRect = { start.x,	start.y,	end.x,		end.y };
 	D2D1_RECT_F srcImgRect = { sliceStartPoint.x,	sliceStartPoint.y,	sliceEndPoint.x,	sliceEndPoint.y };
 	m_pRenderTarget->DrawBitmap(pImg->GetImage(), pointRect, alpha, D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR, srcImgRect);

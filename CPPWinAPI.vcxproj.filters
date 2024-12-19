@@ -135,6 +135,9 @@
     <ClInclude Include="CButton.h">
       <Filter>Engine\Resource\UI</Filter>
     </ClInclude>
+    <ClInclude Include="CUIManager.h">
+      <Filter>Engine\Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CPPWinAPI.cpp">
@@ -211,6 +214,9 @@
     </ClCompile>
     <ClCompile Include="CButton.cpp">
       <Filter>Engine\Resource\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="CUIManager.cpp">
+      <Filter>Engine\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

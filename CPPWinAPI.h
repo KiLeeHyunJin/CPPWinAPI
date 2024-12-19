@@ -21,7 +21,7 @@ enum class Layer
 	Monster,
 	Character,
 
-	UI,
+	Ui,
 	Size
 };
 

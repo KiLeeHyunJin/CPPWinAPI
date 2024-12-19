@@ -1,6 +1,6 @@
 #pragma once
 #include "CGameObject.h"
-
+class CUIManager;
 
 class CUI :
     public CGameObject
@@ -19,6 +19,8 @@ public:
     void SetScreenFixed(bool bFixedState);
 
 protected:
+    void MouseOnCheck();
+
     virtual void OnMouseEnter()     = 0;
     virtual void OnMouseExit()      = 0;
 
@@ -42,6 +44,7 @@ protected:
 
     bool        m_bScreenFixed;
 
+    friend CUIManager;
 private:
     // CGameObject을(를) 통해 상속됨
     void Init() override;
@@ -50,5 +53,9 @@ private:
     void Update() override;
     void Render() override;
 
+    bool m_bPrevMouseOn;
+    bool m_bCurMouseOn;
+    bool m_bPrevMouseDown;
+    bool m_bCurMouseDown;
 };
 
