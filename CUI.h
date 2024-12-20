@@ -43,6 +43,7 @@ protected:
     Vector      m_vecAbsolutePos;
 
     bool        m_bScreenFixed;
+    bool m_bCurMouseOn;
 
     friend CUIManager;
 private:
@@ -54,7 +55,6 @@ private:
     void Render() override;
 
     bool m_bPrevMouseOn;
-    bool m_bCurMouseOn;
     bool m_bPrevMouseDown;
     bool m_bCurMouseDown;
 };

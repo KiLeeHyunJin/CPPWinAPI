@@ -156,6 +156,7 @@ struct ColliderMatrix
 
 struct Color
 {
+	Color(){}
 	BYTE r, g, b;
 	FLOAT a;
 	Color(BYTE r, BYTE g, BYTE b, FLOAT a)

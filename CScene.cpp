@@ -89,9 +89,6 @@ void CScene::SceneUpdate()
 	}
 
 	Update();
-
-
-	
 }
 
 void CScene::ScenePhysicsUpdate()

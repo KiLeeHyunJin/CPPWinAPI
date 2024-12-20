@@ -11,10 +11,11 @@ CUI::CUI():
 	m_vecAbsolutePos = Vector(0, 0);
 	m_vecRenderPos = Vector(0, 0);
 	m_layer = Layer::Ui;
+
 	m_bPrevMouseOn = false;
 	m_bCurMouseOn = false;
 	m_bPrevMouseDown = false;
-	m_bCurMouseDonw = false;
+	m_bCurMouseDown = false;
 }
 
 CUI::~CUI()
@@ -29,13 +30,13 @@ CUI* CUI::GetParentUI()
 void CUI::SetParentUI(CUI* pParentUI)
 {
 	m_pParentUI = pParentUI;
-	pParentUI->SetParentUI(this);
-	pParentUI->SetScreenFixed(m_bScreenFixed);
 }
 
 void CUI::AddChildUI(CUI* pChildUI)
 {
 	m_listChildUI.push_back(pChildUI);
+	pChildUI->SetParentUI(this);
+	pChildUI->SetScreenFixed(m_bScreenFixed);
 }
 
 void CUI::RemoveChildUI(CUI* pChildUI)
@@ -64,8 +65,8 @@ void CUI::MouseOnCheck()
 
 	m_bPrevMouseOn = m_bCurMouseOn;
 
-	if (uiPos.x <= mousePos.x && mousePos.x <= uiPos.x + m_vecScale.x &&
-		uiPos.y <= mousePos.y && mousePos.y <= uiPos.y + m_vecScale.y)
+	if (uiPos.x <= mousePos.x && mousePos.x < uiPos.x + m_vecScale.x &&
+		uiPos.y <= mousePos.y && mousePos.y < uiPos.y + m_vecScale.y)
 	{
 		m_bCurMouseOn = true;
 	}
@@ -100,7 +101,6 @@ void CUI::GameObjectInit()
 	{
 		childUI->GameObjectInit();
 	}
-	MouseOnCheck();
 }
 
 void CUI::GameObjectUpdate()
@@ -110,10 +110,10 @@ void CUI::GameObjectUpdate()
 	m_vecAbsolutePos = m_vecPos;
 	if (m_pParentUI != nullptr)
 	{
-		m_vecAbsolutePos = m_vecAbsolutePos + m_pParentUI->m_vecAbsolutePos;
+		m_vecAbsolutePos = m_vecAbsolutePos + (m_pParentUI->m_vecAbsolutePos);
 	}
 
-	if (m_bScreenFixed)
+	if (m_bScreenFixed == false)
 	{
 		m_vecRenderPos = CAMERA->ScreenToWorldPoint(m_vecAbsolutePos);
 	}
@@ -126,6 +126,7 @@ void CUI::GameObjectUpdate()
 	{
 		childUI->GameObjectUpdate();
 	}
+	MouseOnCheck();
 }
 
 void CUI::GameObjectRender()
