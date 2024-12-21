@@ -12,7 +12,7 @@ extern HWND hWnd;
 
 enum class GroupScene
 {
-	Title, Stage01, Size
+	Title, Stage01, EditScene,Size
 };
 
 enum class Layer

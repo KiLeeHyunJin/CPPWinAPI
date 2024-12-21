@@ -5,6 +5,7 @@
 #include "CScene.h"
 #include "CSceneTitle.h"
 #include "CSceneStage01.h"
+#include "CTileToolScene.h"
 
 CSceneManager::CSceneManager() :
 	m_pCurScene(nullptr)
@@ -16,14 +17,15 @@ CSceneManager::~CSceneManager()
 
 void CSceneManager::Init()
 {
+	CScene* pSceneTitle = new CSceneTitle;
 
 #pragma region  AddScene
 
-	CScene* pSceneTitle = new CSceneTitle;
-	m_mapScene.insert(make_pair(GroupScene::Title, pSceneTitle));
 
-	CScene* pStatge01 = new CSceneStage01;
-	m_mapScene.insert(make_pair(GroupScene::Stage01, pStatge01));
+	AddScene(pSceneTitle, GroupScene::Title);
+	AddScene(new CSceneStage01, GroupScene::Stage01);
+	AddScene(new CTileToolScene, GroupScene::EditScene);
+
 
 #pragma endregion
 
@@ -62,6 +64,11 @@ void CSceneManager::ChangeScene(GroupScene changeScene)
 	m_pCurScene->SceneExit();
 	m_pCurScene = m_mapScene[changeScene];
 	m_pCurScene->SceneEnter();
+}
+
+void CSceneManager::AddScene(CScene* pScene, GroupScene sceneName)
+{
+	m_mapScene.insert(make_pair(sceneName, pScene));
 }
 
 

@@ -40,6 +40,12 @@
     <Filter Include="Engine\Resource\UI">
       <UniqueIdentifier>{57112910-7dae-41e5-9ad9-ca5ce12cb16d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Resource\Tile">
+      <UniqueIdentifier>{6ead8260-6fbb-46d0-a839-0cd80b70fe72}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Resource\Resource">
+      <UniqueIdentifier>{b7cd0642-6cb9-468d-89be-2be6e276262c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -111,12 +117,6 @@
     <ClInclude Include="CPathManager.h">
       <Filter>Engine\Manager</Filter>
     </ClInclude>
-    <ClInclude Include="CResource.h">
-      <Filter>Engine\Resource</Filter>
-    </ClInclude>
-    <ClInclude Include="CImage.h">
-      <Filter>Engine\Resource</Filter>
-    </ClInclude>
     <ClInclude Include="CResourceManager.h">
       <Filter>Engine\Manager</Filter>
     </ClInclude>
@@ -140,6 +140,18 @@
     </ClInclude>
     <ClInclude Include="CPanel.h">
       <Filter>Engine\Resource\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="CTileToolScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="CTile.h">
+      <Filter>Engine\Resource\Tile</Filter>
+    </ClInclude>
+    <ClInclude Include="CImage.h">
+      <Filter>Engine\Resource\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="CResource.h">
+      <Filter>Engine\Resource\Resource</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -194,12 +206,6 @@
     <ClCompile Include="CPathManager.cpp">
       <Filter>Engine\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="CResource.cpp">
-      <Filter>Engine\Resource</Filter>
-    </ClCompile>
-    <ClCompile Include="CImage.cpp">
-      <Filter>Engine\Resource</Filter>
-    </ClCompile>
     <ClCompile Include="CResourceManager.cpp">
       <Filter>Engine\Manager</Filter>
     </ClCompile>
@@ -223,6 +229,18 @@
     </ClCompile>
     <ClCompile Include="CPanel.cpp">
       <Filter>Engine\Resource\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="CTileToolScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="CTile.cpp">
+      <Filter>Engine\Resource\Tile</Filter>
+    </ClCompile>
+    <ClCompile Include="CImage.cpp">
+      <Filter>Engine\Resource\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="CResource.cpp">
+      <Filter>Engine\Resource\Resource</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

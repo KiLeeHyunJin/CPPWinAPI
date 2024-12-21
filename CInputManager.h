@@ -11,16 +11,10 @@ public :
 	bool GetButtonDown	(const int keyId) const;
 	bool GetButtonUp	(const int keyId) const;
 
-	bool GetLMouseUp(bool ignoreUI);
-	bool GetLMouseDown(bool ignoreUI);
-	bool GetLMouseStay(bool ignoreUI);
-	bool GetRMouseUp(bool ignoreUI);
-	bool GetRMouseDown(bool ignoreUI);
-	bool GetRMouseStay(bool ignoreUI);
 	bool GetMouse(MouseState mouse, ClickState click, bool ignoreUI);
 
 	Vector GetMouseScreenPosition() const;
-	Vector GetMouseWorldPosition() const;
+	Vector GetMouseWorldPosition()	const;
 
 	friend CCore;
 	friend SingleTon<CInputManager>;
@@ -38,8 +32,8 @@ private :
 	bool GetMouseOnUI();
 
 	static const int VKEY_SIZE = 255;
-	bool m_arrCurKey[VKEY_SIZE];
-	bool m_arrPrevKey[VKEY_SIZE];
+	bool m_arrCurKey	[VKEY_SIZE];
+	bool m_arrPrevKey	[VKEY_SIZE];
 
 	bool (*MouseFunc[3])(const int keyId);
 	int m_arrMouseID[2] = {VK_LBUTTON, VK_RBUTTON};

@@ -30,6 +30,7 @@ private :
 
 	void ChangeScene(GroupScene changeScene);
 
+	void AddScene(CScene* pScene, GroupScene sceneName);
 	/// Scene
 	map<GroupScene, CScene*>	m_mapScene;
 	CScene*						m_pCurScene;
