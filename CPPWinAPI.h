@@ -20,6 +20,7 @@ enum class Layer
 	Default,
 	Monster,
 	Character,
+	Tile,
 
 	Ui,
 	Size

@@ -23,6 +23,11 @@ void CSceneTitle::Update()
 		CAMERA->FadeOut(1);
 		DELAYCHANGESCENE(GroupScene::Stage01, 1);
 	}
+	else if (BUTTONDOWN(VK_F1))
+	{
+		CAMERA->FadeOut(1);
+		DELAYCHANGESCENE(GroupScene::EditScene, 1);
+	}
 }
 
 void CSceneTitle::Render()

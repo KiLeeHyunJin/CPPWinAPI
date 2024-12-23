@@ -36,6 +36,7 @@ using namespace std;
 #include "SingleTon.h"
 #include "Struct.h"
 #include "Logger.h"
+#include <commdlg.h>
 
 
 //D2D

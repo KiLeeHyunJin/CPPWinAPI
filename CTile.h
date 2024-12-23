@@ -2,6 +2,7 @@
 #include "CGameObject.h"
 
 class CImage;
+class CScene;
 
 class CTile :
     public CGameObject
@@ -17,12 +18,34 @@ public :
     void SetTilePosY(UINT y);
 
     void SetTilePos(UINT x, UINT y);
-
+    void SetTileIndex(UINT index);
     int GetTilePosX();
     int GetTilePosY();
     int GetTileIndex();
-private:
+
+    bool GetLineRender();
+
+    virtual void Load(FILE* pFile);
+    virtual void Save(FILE* pFile);
+
     const static int TILESIZE = 32;
+
+protected:
+
+
+    friend CScene;
+private:
+    // CGameObject을(를) 통해 상속됨
+    void Init() override;
+
+    void Release() override;
+
+    void Update() override;
+
+    void Render() override;
+
+
+    
 
     CImage* m_pImg;
     UINT m_uiImgXCount;
@@ -31,5 +54,9 @@ private:
     UINT m_uiTilePosX;
     UINT m_uiTilePosY;
     UINT m_uiTileIndex;
+
+    bool m_bLineRender;
+
+
 };
 
