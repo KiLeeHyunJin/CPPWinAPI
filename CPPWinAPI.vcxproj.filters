@@ -46,6 +46,9 @@
     <Filter Include="Engine\Resource\Resource">
       <UniqueIdentifier>{b7cd0642-6cb9-468d-89be-2be6e276262c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Resource\UI\TileToolUI">
+      <UniqueIdentifier>{c1fa2c40-a586-499d-a0f6-40859dc57950}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -153,6 +156,12 @@
     <ClInclude Include="CResource.h">
       <Filter>Engine\Resource\Resource</Filter>
     </ClInclude>
+    <ClInclude Include="CTilePanel.h">
+      <Filter>Engine\Resource\UI\TileToolUI</Filter>
+    </ClInclude>
+    <ClInclude Include="CTileButton.h">
+      <Filter>Engine\Resource\UI\TileToolUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CPPWinAPI.cpp">
@@ -241,6 +250,12 @@
     </ClCompile>
     <ClCompile Include="CResource.cpp">
       <Filter>Engine\Resource\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="CTileButton.cpp">
+      <Filter>Engine\Resource\UI\TileToolUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CTilePanel.cpp">
+      <Filter>Engine\Resource\UI\TileToolUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

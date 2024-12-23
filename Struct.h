@@ -10,6 +10,16 @@ struct Vector
 		this->x = 0;
 		this->y = 0;
 	}
+	Vector(int x, int y)
+	{
+		this->x = (float)x;
+		this->y = (float)y;
+	}
+	Vector(int x)
+	{
+		this->x = (float)x;
+		this->y = (float)x;
+	}
 	Vector(float x, float y)
 	{
 		this->x = x;

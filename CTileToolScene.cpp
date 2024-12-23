@@ -11,13 +11,19 @@
 LRESULT CALLBACK   WinTileToolProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
 
 
-CTileToolScene::CTileToolScene()
+CTileToolScene::CTileToolScene():
+	m_iTileSizeX(0), m_iTileSizeY(0), m_fScrollSpeed(0)
 {
 	m_hWndTileTool = 0;
 }
 
 CTileToolScene::~CTileToolScene()
 {
+}
+
+void CTileToolScene::ClickTileButton(UINT tileIndex)
+{
+
 }
 
 void CTileToolScene::Init()
@@ -60,6 +66,8 @@ void CTileToolScene::Enter()
 	MoveWindow(m_hWndTileTool, WINSIZEX + STARTPOSX, WINSIZEY + STARTPOSY, rect.right - rect.left, rect.bottom - rect.top, true);
 
 	CreateTiles(10, 10);
+
+	CAMERA->FadeIn(0.25f);
 }
 
 void CTileToolScene::Exit()

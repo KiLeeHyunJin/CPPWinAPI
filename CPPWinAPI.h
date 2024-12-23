@@ -26,3 +26,12 @@ enum class Layer
 	Size
 };
 
+enum class TileType 
+{
+	None,
+	Ground,
+	Platform,
+	Wall,
+
+	Size
+};

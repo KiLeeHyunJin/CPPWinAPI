@@ -4,7 +4,8 @@
 #include "CCameraManager.h"
 #include "CTile.h"
 
-CScene::CScene()
+CScene::CScene():
+	m_iTileSizeX(0), m_iTileSizeY(0)
 {	}
 
 CScene::~CScene()

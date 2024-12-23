@@ -160,6 +160,8 @@
     <ClInclude Include="CSceneStage01.h" />
     <ClInclude Include="CSceneTitle.h" />
     <ClInclude Include="CTile.h" />
+    <ClInclude Include="CTileButton.h" />
+    <ClInclude Include="CTilePanel.h" />
     <ClInclude Include="CTileToolScene.h" />
     <ClInclude Include="CTimeManager.h" />
     <ClInclude Include="CUI.h" />
@@ -197,6 +199,8 @@
     <ClCompile Include="CSceneStage01.cpp" />
     <ClCompile Include="CSceneTitle.cpp" />
     <ClCompile Include="CTile.cpp" />
+    <ClCompile Include="CTileButton.cpp" />
+    <ClCompile Include="CTilePanel.cpp" />
     <ClCompile Include="CTileToolScene.cpp" />
     <ClCompile Include="CTimeManager.cpp" />
     <ClCompile Include="CUI.cpp" />

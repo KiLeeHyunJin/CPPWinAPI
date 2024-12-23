@@ -10,6 +10,8 @@ public:
     CTileToolScene();
     virtual ~CTileToolScene();
 
+    void ClickTileButton(UINT tileIndex);
+
 private:
     void Init()     override;
     void Release()  override;

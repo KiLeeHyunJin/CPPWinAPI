@@ -14,6 +14,13 @@ CButton::~CButton()
 {
 }
 
+void CButton::SetClickedCallBack(CallBackFunc pCallback, DWORD_PTR param1, DWORD_PTR param2)
+{
+	m_pCallBack = pCallback;
+	m_pParam1 = param1;
+	m_pParam2 = param2;
+}
+
 void CButton::Init()
 {
 }
