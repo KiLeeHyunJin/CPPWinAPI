@@ -147,7 +147,7 @@ void CTileToolScene::LoadTileData()
 	ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
 	if (GetSaveFileName(&ofn))
 	{
-		SaveTile(szName);
+		LoadTile(szName);
 	}
 }
 
