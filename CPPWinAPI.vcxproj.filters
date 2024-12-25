@@ -162,6 +162,9 @@
     <ClInclude Include="CTileButton.h">
       <Filter>Engine\Resource\UI\TileToolUI</Filter>
     </ClInclude>
+    <ClInclude Include="CGroundTile.h">
+      <Filter>Engine\Resource\Tile</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CPPWinAPI.cpp">
@@ -256,6 +259,9 @@
     </ClCompile>
     <ClCompile Include="CTilePanel.cpp">
       <Filter>Engine\Resource\UI\TileToolUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CGroundTile.cpp">
+      <Filter>Engine\Resource\Tile</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

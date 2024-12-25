@@ -4,6 +4,7 @@
 #include "CImage.h"
 #include "CRenderManager.h"
 
+
 CTile::CTile() :
 	m_bLineRender(false), m_uiImgXCount(0), m_uiImgYCount(0),
 	m_uiTileIndex(0), m_uiTilePosX(0), m_uiTilePosY(0)

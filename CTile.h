@@ -3,6 +3,7 @@
 
 class CImage;
 class CScene;
+class CGroundTile;
 
 class CTile :
     public CGameObject
@@ -32,8 +33,20 @@ public :
 
 protected:
 
+    TileType m_tileType;
+
+    CImage* m_pImg;
+    UINT m_uiImgXCount;
+    UINT m_uiImgYCount;
+
+    UINT m_uiTilePosX;
+    UINT m_uiTilePosY;
+    UINT m_uiTileIndex;
+
+    bool m_bLineRender;
 
     friend CScene;
+    friend CGroundTile;
 private:
     // CGameObject을(를) 통해 상속됨
     void Init() override;
@@ -47,15 +60,6 @@ private:
 
     
 
-    CImage* m_pImg;
-    UINT m_uiImgXCount;
-    UINT m_uiImgYCount;
-
-    UINT m_uiTilePosX;
-    UINT m_uiTilePosY;
-    UINT m_uiTileIndex;
-
-    bool m_bLineRender;
 
 
 };
