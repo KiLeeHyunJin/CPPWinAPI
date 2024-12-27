@@ -165,6 +165,9 @@
     <ClInclude Include="CGroundTile.h">
       <Filter>Engine\Resource\Tile</Filter>
     </ClInclude>
+    <ClInclude Include="CSound.h">
+      <Filter>Engine\Resource\Resource</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CPPWinAPI.cpp">
@@ -262,6 +265,9 @@
     </ClCompile>
     <ClCompile Include="CGroundTile.cpp">
       <Filter>Engine\Resource\Tile</Filter>
+    </ClCompile>
+    <ClCompile Include="CSound.cpp">
+      <Filter>Engine\Resource\Resource</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
