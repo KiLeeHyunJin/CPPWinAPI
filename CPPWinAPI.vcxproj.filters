@@ -168,6 +168,9 @@
     <ClInclude Include="CSound.h">
       <Filter>Engine\Resource\Resource</Filter>
     </ClInclude>
+    <ClInclude Include="CSoundManager.h">
+      <Filter>Engine\Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CPPWinAPI.cpp">
@@ -268,6 +271,9 @@
     </ClCompile>
     <ClCompile Include="CSound.cpp">
       <Filter>Engine\Resource\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="CSoundManager.cpp">
+      <Filter>Engine\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

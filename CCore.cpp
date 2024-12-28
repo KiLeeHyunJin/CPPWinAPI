@@ -12,6 +12,7 @@
 #include "CResourceManager.h"
 #include "CCameraManager.h"
 #include "CUIManager.h"
+#include "CSoundManager.h"
 
 #pragma region Scene Header
 #include "CScene.h"
@@ -40,6 +41,7 @@ void CCore::Init()
 	SCENE->Init();
 	CAMERA->Init();
 	UI->Init();
+	SOUND->Init();
 }
 
 void CCore::Release()
@@ -57,6 +59,7 @@ void CCore::Release()
 	RESOURCE->Release();
 	CAMERA->Release();
 	UI->Release();
+	SOUND->Release();
 }
 
 void CCore::Update()
@@ -70,6 +73,7 @@ void CCore::Update()
 
 	COLLISION->PhysicsUpdate();
 	UI->Update();
+	SOUND->Update();
 }
 
 void CCore::Render() const
