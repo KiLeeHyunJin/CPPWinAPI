@@ -1,40 +1,40 @@
 #pragma once
+//class CCore;
 
-class CCore;
-
-class CTimeManager : 
-	public SingleTon<CTimeManager>
+class CTimeManager
 {
-	public :
-		UINT	GetFPS()		const;
-		float	GetDeltaTime()	const;
+public :
+		static UINT	GetFPS();
+		static float GetDeltaTime();
 
+		//CTimeManager();
+		//virtual ~CTimeManager();
 
-		friend CCore;
-		friend SingleTon<CTimeManager>;
-	private :
-		CTimeManager();
-		virtual ~CTimeManager();
+		static void	Init();
+		static void	Update();
 
-		void	Init();
-		void	Release();
+//private:
+		/// Frame Delta Time
 
-		void	Update();
+		static LARGE_INTEGER m_liCpuFrequency;
+		static LARGE_INTEGER m_liPrevFrequency;
+		static LARGE_INTEGER m_liCurrentFrequency;
+		static UINT	m_uiFPS;
+
+		static float	m_fDeltaTime;
+
 
 		/// Frame Per Second
-		UINT	m_uiFPS;
-		UINT	m_uiUpdateCount;
-		float	m_fUpdateOnSecond;	
-
-		/// Frame Delta Time
-		float	m_fDeltaTime;
+		//UINT	m_uiUpdateCount;
+		//float	m_fUpdateOnSecond;	
 
 		/// Chrono Time
-		chrono::high_resolution_clock::time_point curTime;
-		chrono::high_resolution_clock::time_point prevTime;
+		//chrono::high_resolution_clock::time_point curTime;
+		//chrono::high_resolution_clock::time_point prevTime;
 };	
-#define TIME		CTimeManager::GetInstance()
-#define FPS			CTimeManager::GetInstance()->GetFPS()
-#define DeltaTime	CTimeManager::GetInstance()->GetDeltaTime()
+
+//#define TIME		CTimeManager
+//#define FPS			CTimeManager::GetFPS()
+//#define DeltaTime	CTimeManager::GetDeltaTime()
 
 

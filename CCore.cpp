@@ -32,7 +32,7 @@ void CCore::Init()
 	RESOURCE->Init();
 
 	EVENT->Init();
-	TIME->Init();
+	//TIME::Init();
 
 	INPUT->Init();
 	RENDER->Init();
@@ -47,7 +47,6 @@ void CCore::Init()
 void CCore::Release()
 {
 	EVENT->Release();
-	TIME->Release();
 
 	INPUT->Release();
 	RENDER->Release();
@@ -65,7 +64,7 @@ void CCore::Release()
 void CCore::Update()
 {
 	EVENT->Update();
-	TIME->Update();
+	//TIME::Update();
 
 	INPUT->Update();
 	SCENE->Update();
@@ -85,12 +84,12 @@ void CCore::Render() const
 
 #pragma region FPS
 	//RENDER->SetText(TextType::Right);
-	wstring str = L"FPS : " + to_wstring(FPS);
+	//wstring str = L"FPS : " + to_wstring(FPS);
 	//RENDER->Text(WINSIZEX - 30, 0, str);
 	Vector start	= CAMERA->ScreenToWorldPoint(Vector(WINSIZEX - 80, 0));
 	Vector end		= CAMERA->ScreenToWorldPoint(Vector(WINSIZEX, 50));
 
-	RENDER->Text(str, start, end, Color(0, 0, 0, 1), 12);
+	//RENDER->Text(str, start, end, Color(0, 0, 0, 1), 12);
 
 #pragma endregion
 
